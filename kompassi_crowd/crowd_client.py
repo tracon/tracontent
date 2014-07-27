@@ -33,7 +33,12 @@ def crowd_session_url(token=None):
         return base_url
 
 
-def crowd_get_logged_in_user(request, token):
+def crowd_get_token(request):
+    return request.COOKIES.get(settings.KOMPASSI_CROWD_COOKIE_NAME, None)
+
+def crowd_get_logged_in_user(request):
+    token = crowd_get_token(request)
+
     if token is None:
         return None
 
@@ -52,17 +57,19 @@ def crowd_get_logged_in_user(request, token):
 
         response_json = response.json()
 
-        return response_json['username']
+        return response_json['user']['name']
     except Exception as e:
         log.error(u'Crowd session fetching failed: {e}'.format(e=e))
         unused, unused, traceback = sys.exc_info()
         raise CrowdError, e, traceback
 
 
-def crowd_refresh_session(token, username):
+def crowd_refresh_session(request):
     """
-    Validates a Crowd SSO session for the specified user.
+    Refreshes a Crowd SSO session for the specified user.
     """
+
+    token = crowd_get_token(request)
 
     validation_factors = []
 
@@ -80,10 +87,7 @@ def crowd_refresh_session(token, username):
     params = {'validate-password': 'false'}
 
     payload = {
-        'username': username,
-        'validation-factors': {
-            'validationFactors': validation_factors
-        },
+        'validationFactors': validation_factors
     }
 
     headers = {
@@ -92,11 +96,8 @@ def crowd_refresh_session(token, username):
     }
 
     log.debug(
-        u'Refreshing Crowd SSO session for {username} validation factors: {validation_factors}'
-        .format(
-            username=username,
-            validation_factors=validation_factors,
-        )
+        u'Refreshing Crowd SSO session with validation factors: {validation_factors}'
+        .format(validation_factors=validation_factors)
     )
 
     try:
@@ -110,26 +111,21 @@ def crowd_refresh_session(token, username):
 
         response.raise_for_status()
     except Exception as e:
-        log.error(u'Crowd authentication failed for {username}: {e}'.format(username=username, e=e))
+        log.error(u'Crowd authentication failed: {e}'.format(e=e))
         unused, unused, traceback = sys.exc_info()
         raise CrowdError, e, traceback
 
-    log.debug(u'Crowd session refresh succeeded for {username}'.format(username=username))
+    log.debug(u'Crowd session refresh succeeded')
 
 
 def crowd_validate_session(request):
-    token = request.COOKIES.get(settings.KOMPASSI_CROWD_COOKIE_NAME, None)
-
-    if token is None:
-        return None
-
-    username = crowd_get_logged_in_user(token)
+    username = crowd_get_logged_in_user(request)
 
     if username is None:
         return None
 
     try:
-        crowd_refresh_session(token, username)
+        crowd_refresh_session(request)
     except CrowdError as e:
         log.error(u'Failed to validate session: {e}'.format(e=e))
         return None

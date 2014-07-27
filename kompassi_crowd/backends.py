@@ -1,4 +1,12 @@
-from .kompassi_client import kompassi_get, user_defaults_from_kompassi
+import logging
+
+from django.contrib.auth.models import User
+
+from .kompassi_client import kompassi_get, user_defaults_from_kompassi, KompassiError
+
+
+log = logging.getLogger('kompassi_crowd')
+
 
 
 class KompassiCrowdAuthenticationBackend(object):
@@ -9,7 +17,7 @@ class KompassiCrowdAuthenticationBackend(object):
 
         try:
             kompassi_user = kompassi_get('people', username)
-        except KompassiException as e:
+        except KompassiError as e:
             log.error(u'failed to get kompassi user {username}: {e}'.format(username=username, e=e))
             return None
 

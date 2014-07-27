@@ -18,8 +18,10 @@ class KompassiCrowdAuthenticationMiddleware(object):
                 return None
 
             if username is not None:
-                user = authenticate(username=username, validate_password=False)
-                login(request, user)
+                user = authenticate(username=username) # look, no password
+
+                if not user.is_anonymous():
+                    login(request, user)
 
                 log.debug("logged in {username} via Crowd".format(username=username))
 

@@ -1,7 +1,11 @@
+import sys
 import logging
+
+from django.conf import settings
 
 import requests
 from requests.auth import HTTPBasicAuth
+
 
 
 log = logging.getLogger('kompassi_crowd')
@@ -32,6 +36,8 @@ KOMPASSI_GET_DEFAULT_HEADERS = {
 
 
 def kompassi_get(*args, **kwargs):
+    auth = kompassi_application_auth()
+
     try:
         response = requests.get(
             kompassi_url(*args),
@@ -40,9 +46,19 @@ def kompassi_get(*args, **kwargs):
             params=kwargs,
         )
 
+        response.raise_for_status()
+
         return response.json()
     except Exception as e:
         log.error(u'Kompassi client GET failed: {e}'.format(e=e))
         unused, unused, traceback = sys.exc_info()
-        raise CrowdError, e, traceback
+        raise KompassiError, e, traceback
 
+
+def user_defaults_from_kompassi(kompassi_user):
+    return dict((django_key, kompassi_user[kompassi_key]) for (django_key, kompassi_key) in [
+        ('username', 'username'),
+        ('email', 'email'),
+        ('first_name', 'first_name'),
+        ('last_name', 'surname'),
+    ])
