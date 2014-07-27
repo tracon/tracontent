@@ -8,7 +8,6 @@ from .kompassi_client import kompassi_get, user_defaults_from_kompassi, Kompassi
 log = logging.getLogger('kompassi_crowd')
 
 
-
 class KompassiCrowdAuthenticationBackend(object):
     def authenticate(self, username=None, password=None):
         if password is not None:
