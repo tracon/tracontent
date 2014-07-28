@@ -1,2 +1,4 @@
 Django==1.6.1
 requests==2.2.1
+gunicorn==19.1.0
+
