@@ -66,12 +66,13 @@ For your development pleasure, `kompassidev.tracon.fi` deals out cookies that do
 5. On the Directories tab, select the correct directories. In Tracon, this would be `Tracon ry IPA`.
 6. On the Authorisation tab, either allow all users to authenticate or select some groups whose users will be allowed in.
 7. Review the details on the Confirmation tab and hit Add Application.
-8. Fill in the authentication details into `settings.py`:
+8. Fill in the authentication details into `settings.py`
 
-
-    KOMPASSI_CROWD_URL = 'https://crowd.tracon.fi/crowd'
-    KOMPASSI_CROWD_APPLICATION_NAME = 'the application name you selected in phase 3'
-    KOMPASSI_CROWD_APPLICATION_PASSWORD = 'the password you selected in phase 3'
+```python
+KOMPASSI_CROWD_URL = 'https://crowd.tracon.fi/crowd'
+KOMPASSI_CROWD_APPLICATION_NAME = 'the application name you selected in phase 3'
+KOMPASSI_CROWD_APPLICATION_PASSWORD = 'the password you selected in phase 3'
+```
 
 ### Create an API user in Kompassi
 
@@ -87,10 +88,11 @@ We are lazy and will use a local Django user instead of an IPA user. If we are r
 6. Remember to save the modifications to the user account.
 7. Fill in the authentication details into `settings.py`:
 
-
-    KOMPASSI_API_URL = 'https://kompassidev.tracon.fi/api/v1'
-    KOMPASSI_API_APPLICATION_NAME = 'the username you selected in phase 4'
-    KOMPASSI_API_APPLICATION_PASSWORD = 'the password you selected in phase 4'
+```python
+KOMPASSI_API_URL = 'https://kompassidev.tracon.fi/api/v1'
+KOMPASSI_API_APPLICATION_NAME = 'the username you selected in phase 4'
+KOMPASSI_API_APPLICATION_PASSWORD = 'the password you selected in phase 4'
+```
 
 ### Validation factors
 
