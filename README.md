@@ -92,7 +92,36 @@ We are lazy and will use a local Django user instead of an IPA user. If we are r
 
 ### Validation factors
 
-You probably don't have a reverse proxy in your development setup, so you need to fake the validation factors.
+Crowd requires that you use the same validation factors for refreshing the session as you did for setting the session up. The validation factors used in our installation are as follows:
+
+* `remote_address`: Always `127.0.0.1`.
+* `X-Forwarded-For`: The public, Internet-facing IP address of the browser.
+
+In `settings.py` there are lambdas that are used to extract this information from the request object. What the lambdas should do depends on your setup:
+
+#### Production installation behind a reverse proxy
+
+It is recommended to install Django apps behind an Apache or nginx proxy. In this case, `REMOTE_ADDR` is always `127.0.0.1` and the real IP address is in the `X-Forwarded-For` HTTP header.
+
+    KOMPASSI_CROWD_VALIDATION_FACTORS = {
+        'remote_address': lambda request: '127.0.0.1',
+        'X-Forwarded-For': lambda request: request.META['HTTP_X_FORWARDED_FOR'],
+    }
+
+#### Production or development installation without a proxy
+
+If the Django instance is not behind a proxy and sees your public, Internet-facing IP address in `REMOTE_ADDR`, you should fake being behind a proxy as our Crowd, Confluence etc. installations **are** behind a proxy.
+
+    KOMPASSI_CROWD_VALIDATION_FACTORS = {
+        'remote_address': lambda request: '127.0.0.1',
+        'X-Forwarded-For': lambda request: request.META['REMOTE_ADDR'],
+    }
+
+NB. The Django development server is not suitable for use in production, but you might use `gunicorn` or `uwsgi`.
+
+#### Development server in a private IP address or localhost
+
+If your development server does not get your Internet-facing IP address in either X-Forwarded-For or REMOTE_ADDR, you need to fake it in the validation factors. This is usually the case for local development setups where you have the Django instance running in either `localhost` or a (virtual) machine behind a NAT.
 
     KOMPASSI_CROWD_VALIDATION_FACTORS = {
         'remote_address': lambda request: '127.0.0.1',
