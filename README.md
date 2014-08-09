@@ -130,7 +130,7 @@ NB. The Django development server is not suitable for use in production, but you
 
 #### Development server in a private IP address or localhost
 
-If your development server does not get your Internet-facing IP address in either X-Forwarded-For or REMOTE_ADDR, you need to fake it in the validation factors. This is usually the case for local development setups where you have the Django instance running in either `localhost` or a (virtual) machine behind a NAT.
+If your development server does not get your Internet-facing IP address in either `X-Forwarded-For` or `REMOTE_ADDR`, you need to fake it in the validation factors. This is usually the case for local development setups where you have the Django instance running in either `localhost` or a (virtual) machine behind a NAT.
 
 ```python
 KOMPASSI_CROWD_VALIDATION_FACTORS = {
