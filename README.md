@@ -49,20 +49,46 @@ This is one tricky S.O.B. to develop due to multiple security measures.
 
 ### Cookie domain
 
-For the client app to see the `crowd.token_key` cookie, it needs to be in the `tracon.fi` domain. You can get around this by putting something like this in `/etc/hosts` (that is, `C:\Windows\System32\Drivers\etc\hosts`):
+For the client app to see the `crowd.token_key` cookie, it needs to be in the `tracon.fi` domain.
+
+You can get around this by putting something like this in the `/etc/hosts` file (that is, `C:\Windows\System32\Drivers\etc\hosts`) **of the computer that runs your web browser**:
 
     127.0.0.1 localhost ssoexample-dev.tracon.fi
 
-For your development pleasure, `kompassidev.tracon.fi` deals out cookies that do not have the "secure" flag set.
+For your development pleasure, `kompassidev.tracon.fi` deals out cookies that do not have the "secure" flag set so that you don't need to access your development instance via HTTPS.
 
-### Application password and IP
+### Create an application in Crowd
 
-For obvious reasons, I will not put a working application password in a public example.
+1. Log in to the Crowd console as an admin user.
+2. Navigate to Applications > Add Application.
+3. On the Details tab, set Application type to Generic application, pick an application name (eg. `ssoexample`) and enter it in the Name field, and pick a password and enter it twice.
+4. On the Connection tab, enter anything that looks like a URL in the URL field, and enter the Internet-facing IP address of your installation in the IP address field.
+5. On the Directories tab, select the correct directories. In Tracon, this would be `Tracon ry IPA`.
+6. On the Authorisation tab, either allow all users to authenticate or select some groups whose users will be allowed in.
+7. Review the details on the Confirmation tab and hit Add Application.
+8. Fill in the authentication details into `settings.py`:
 
-You need to create an application user in two places:
+    KOMPASSI_CROWD_URL = 'https://crowd.tracon.fi/crowd'
+    KOMPASSI_CROWD_APPLICATION_NAME = 'the application name you selected in phase 3'
+    KOMPASSI_CROWD_APPLICATION_PASSWORD = 'the password you selected in phase 3'
 
-* in the Kompassi instance you are using for authentication (put it in the `{slug}-apps` group)
-* in Crowd (remember to allow the public IP of your workstation in the Crowd config for your application)
+### Create an API user in Kompassi
+
+We are lazy and will use a local Django user instead of an IPA user. If we are really lazy, we might even use the same username and password as we did for Crowd.
+
+1. Log in to your Kompassi instance as an admin user.
+2. Go to the Django admin interface at `/admin/`.
+3. Navigate to Auth > Users and select Add user.
+4. Pick a username and password for the API user and select `Save and continue editing`.
+5. Figure out the application user group for your Kompassi installation and add the newly created user into that group.
+  * In Tracon Kompassi development, this would be `turskadev-apps`.
+  * In Tracon Kompassi production, this would be `turska-apps`.
+6. Remember to save the modifications to the user account.
+7. Fill in the authentication details into `settings.py`:
+
+    KOMPASSI_API_URL = 'https://kompassidev.tracon.fi/api/v1'
+    KOMPASSI_API_APPLICATION_NAME = 'the username you selected in phase 4'
+    KOMPASSI_API_APPLICATION_PASSWORD = 'the password you selected in phase 4'
 
 ### Validation factors
 
@@ -70,5 +96,5 @@ You probably don't have a reverse proxy in your development setup, so you need t
 
     KOMPASSI_CROWD_VALIDATION_FACTORS = {
         'remote_address': lambda request: '127.0.0.1',
-        'X-Forwarded-For': lambda request: '84.248.69.106', # your Internet-facing IP address
+        'X-Forwarded-For': lambda request: '84.248.69.106', # the Internet-facing IP address of your browser
     }
