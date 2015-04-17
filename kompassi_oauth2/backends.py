@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from .kompassi_client import kompassi_get, user_defaults_from_kompassi, KompassiError
 
 
-log = logging.getLogger('kompassi_crowd')
+log = logging.getLogger('kompassi_oauth2')
 
 
 class KompassiCrowdAuthenticationBackend(object):

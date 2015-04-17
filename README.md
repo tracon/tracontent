@@ -1,6 +1,6 @@
 # Example for interim Kompassi SSO via Crowd
 
-The `kompassi_crowd` directory contains reusable code for your Django application. Would package it and release it into PyPI if this wasn't just a hacky interim solution.
+The `kompassi_oauth2` directory contains reusable code for your Django application. Would package it and release it into PyPI if this wasn't just a hacky interim solution.
 
 ## Configuration
 
@@ -14,7 +14,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 
     # Has to be after AuthenticationMiddleware
-    'kompassi_crowd.middleware.KompassiCrowdAuthenticationMiddleware',
+    'kompassi_oauth2.middleware.KompassiCrowdAuthenticationMiddleware',
 
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -22,23 +22,23 @@ MIDDLEWARE_CLASSES = (
 
 AUTHENTICATION_BACKENDS = (
     # Has to be before ModelBackend
-    'kompassi_crowd.backends.KompassiCrowdAuthenticationBackend',
+    'kompassi_oauth2.backends.KompassiCrowdAuthenticationBackend',
 
     'django.contrib.auth.backends.ModelBackend',
 )
 
-KOMPASSI_CROWD_URL = 'https://crowd.tracon.fi/crowd'
-KOMPASSI_CROWD_APPLICATION_NAME = 'ssoexample'
-KOMPASSI_CROWD_APPLICATION_PASSWORD = 'fill me in'
-KOMPASSI_CROWD_SESSION_URL = '{KOMPASSI_CROWD_URL}/rest/usermanagement/1/session'.format(**locals())
-KOMPASSI_CROWD_COOKIE_NAME = 'crowd.token_key'
-KOMPASSI_CROWD_VALIDATION_FACTORS = {
+kompassi_oauth2_URL = 'https://crowd.tracon.fi/crowd'
+kompassi_oauth2_APPLICATION_NAME = 'ssoexample'
+kompassi_oauth2_APPLICATION_PASSWORD = 'fill me in'
+kompassi_oauth2_SESSION_URL = '{kompassi_oauth2_URL}/rest/usermanagement/1/session'.format(**locals())
+kompassi_oauth2_COOKIE_NAME = 'crowd.token_key'
+kompassi_oauth2_VALIDATION_FACTORS = {
     'remote_address': lambda request: '127.0.0.1',
     'X-Forwarded-For': lambda request: request.META['HTTP_X_FORWARDED_FOR'],
 }
 KOMPASSI_API_URL = 'https://kompassidev.tracon.fi/api/v1'
-KOMPASSI_API_APPLICATION_NAME = KOMPASSI_CROWD_APPLICATION_NAME
-KOMPASSI_API_APPLICATION_PASSWORD = KOMPASSI_CROWD_APPLICATION_PASSWORD
+KOMPASSI_API_APPLICATION_NAME = kompassi_oauth2_APPLICATION_NAME
+KOMPASSI_API_APPLICATION_PASSWORD = kompassi_oauth2_APPLICATION_PASSWORD
 
 LOGIN_URL = 'https://kompassidev.tracon.fi/crowd'
 LOGOUT_URL = 'https://kompassidev.tracon.fi/logout'
@@ -70,9 +70,9 @@ For your development pleasure, `kompassidev.tracon.fi` deals out cookies that do
 8. Fill in the authentication details into `settings.py`
 
 ```python
-KOMPASSI_CROWD_URL = 'https://crowd.tracon.fi/crowd'
-KOMPASSI_CROWD_APPLICATION_NAME = 'the application name you selected in phase 3'
-KOMPASSI_CROWD_APPLICATION_PASSWORD = 'the password you selected in phase 3'
+kompassi_oauth2_URL = 'https://crowd.tracon.fi/crowd'
+kompassi_oauth2_APPLICATION_NAME = 'the application name you selected in phase 3'
+kompassi_oauth2_APPLICATION_PASSWORD = 'the password you selected in phase 3'
 ```
 
 ### Create an API user in Kompassi
@@ -109,7 +109,7 @@ In `settings.py` there are lambdas that are used to extract this information fro
 It is recommended to install Django apps behind an Apache or nginx proxy. In this case, `REMOTE_ADDR` is always `127.0.0.1` and the real IP address is in the `X-Forwarded-For` HTTP header.
 
 ```python
-KOMPASSI_CROWD_VALIDATION_FACTORS = {
+kompassi_oauth2_VALIDATION_FACTORS = {
     'remote_address': lambda request: '127.0.0.1',
     'X-Forwarded-For': lambda request: request.META['HTTP_X_FORWARDED_FOR'],
 }
@@ -120,7 +120,7 @@ KOMPASSI_CROWD_VALIDATION_FACTORS = {
 If the Django instance is not behind a proxy and sees your public, Internet-facing IP address in `REMOTE_ADDR`, you should fake being behind a proxy as our Crowd, Confluence etc. installations **are** behind a proxy.
 
 ```python
-KOMPASSI_CROWD_VALIDATION_FACTORS = {
+kompassi_oauth2_VALIDATION_FACTORS = {
     'remote_address': lambda request: '127.0.0.1',
     'X-Forwarded-For': lambda request: request.META['REMOTE_ADDR'],
 }
@@ -133,7 +133,7 @@ NB. The Django development server is not suitable for use in production, but you
 If your development server does not get your Internet-facing IP address in either `X-Forwarded-For` or `REMOTE_ADDR`, you need to fake it in the validation factors. This is usually the case for local development setups where you have the Django instance running in either `localhost` or a (virtual) machine behind a NAT.
 
 ```python
-KOMPASSI_CROWD_VALIDATION_FACTORS = {
+kompassi_oauth2_VALIDATION_FACTORS = {
     'remote_address': lambda request: '127.0.0.1',
     'X-Forwarded-For': lambda request: '84.248.69.106', # the Internet-facing IP address of your browser
 }

@@ -16,7 +16,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'example',
+    'kompassi_oauth2_example',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -25,14 +25,14 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 
-    'kompassi_crowd.middleware.KompassiCrowdAuthenticationMiddleware',
+    # 'kompassi_oauth2.middleware.KompassiCrowdAuthenticationMiddleware',
 
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
 AUTHENTICATION_BACKENDS = (
-    'kompassi_crowd.backends.KompassiCrowdAuthenticationBackend',
+    'kompassi_oauth2.backends.KompassiCrowdAuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -41,14 +41,14 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
 )
 
-ROOT_URLCONF = 'kompassi_crowd_sso_example.urls'
+ROOT_URLCONF = 'kompassi_oauth2_example.urls'
 
-WSGI_APPLICATION = 'kompassi_crowd_sso_example.wsgi.application'
+WSGI_APPLICATION = 'kompassi_oauth2_example.wsgi.application'
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'kompassi_crowd_sso_example.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'kompassi_oauth2_example.sqlite3'),
     }
 }
 
@@ -91,7 +91,7 @@ LOGGING = {
             'level': 'DEBUG' if DEBUG else 'WARNING',
             'propagate': True
         },
-        'kompassi_crowd': {
+        'kompassi_oauth2': {
             'handlers': ['console'],
             'level': 'DEBUG' if DEBUG else 'WARNING',
             'propagate': True
@@ -109,18 +109,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-KOMPASSI_CROWD_URL = 'https://crowd.tracon.fi/crowd'
-KOMPASSI_CROWD_APPLICATION_NAME = 'ssoexample'
-KOMPASSI_CROWD_APPLICATION_PASSWORD = 'fill me in'
-KOMPASSI_CROWD_SESSION_URL = '{KOMPASSI_CROWD_URL}/rest/usermanagement/1/session'.format(**locals())
-KOMPASSI_CROWD_COOKIE_NAME = 'crowd.token_key'
-KOMPASSI_CROWD_VALIDATION_FACTORS = {
-    'remote_address': lambda request: '127.0.0.1',
-    'X-Forwarded-For': lambda request: request.META['HTTP_X_FORWARDED_FOR'],
-}
-KOMPASSI_API_URL = 'https://kompassidev.tracon.fi/api/v1'
-KOMPASSI_API_APPLICATION_NAME = KOMPASSI_CROWD_APPLICATION_NAME
-KOMPASSI_API_APPLICATION_PASSWORD = KOMPASSI_CROWD_APPLICATION_PASSWORD
+KOMPASSI_OAUTH2_AUTHORIZATION_URL = 'http://localhost:8000/oauth2/authorize'
+KOMPASSI_OAUTH2_ACCESS_TOKEN_URL = 'http://localhost:8000/oauth2/token'
+KOMPASSI_OAUTH2_REVOKE_URL = 'http://localhost:8000/oauth2/revoke_token'
+KOMPASSI_API_URL = 'http://localhost:8000/api/v2'
 
-LOGIN_URL = 'https://kompassidev.tracon.fi/crowd'
-LOGOUT_URL = 'https://kompassidev.tracon.fi/logout'
+LOGIN_URL = '/login'
+LOGOUT_URL = '/logout'
