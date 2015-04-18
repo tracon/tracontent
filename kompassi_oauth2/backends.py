@@ -1,27 +1,28 @@
-import logging
-
 from django.contrib.auth.models import User
-
-from .kompassi_client import kompassi_get, user_defaults_from_kompassi, KompassiError
-
-
-log = logging.getLogger('kompassi_oauth2')
+from django.conf import settings
 
 
-class KompassiCrowdAuthenticationBackend(object):
-    def authenticate(self, username=None, password=None):
-        if password is not None:
-            log.debug(u'KompassiCrowdAuthenticationBackend called with password, passing to next backend')
+def user_defaults_from_kompassi(kompassi_user):
+    return dict((django_key, kompassi_user[kompassi_key]) for (django_key, kompassi_key) in [
+        ('username', 'username'),
+        ('email', 'email'),
+        ('first_name', 'first_name'),
+        ('last_name', 'surname'),
+    ])
+
+
+class KompassiOAuth2AuthenticationBackend(object):
+    def authenticate(self, oauth2_session=None, **kwargs):
+        if oauth2_session is None:
+            # Not ours (password login)
             return None
 
-        try:
-            kompassi_user = kompassi_get('people', username)
-        except KompassiError as e:
-            log.error(u'failed to get kompassi user {username}: {e}'.format(username=username, e=e))
-            return None
+        response = oauth2_session.get(settings.KOMPASSI_API_V2_USER_INFO_URL)
+        response.raise_for_status()
+        kompassi_user = response.json()
 
         user, created = User.objects.get_or_create(
-            username=username,
+            username=kompassi_user['username'],
             defaults=user_defaults_from_kompassi(kompassi_user)
         )
 

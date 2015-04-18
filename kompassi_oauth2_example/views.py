@@ -4,7 +4,10 @@ from django.shortcuts import redirect
 
 
 def index_view(request):
-    return redirect('oauth2_login_view')
+    return HttpResponse('''
+      <h1>Public page</h1>
+      <p><a href='/protected'>Go to protected page</a></p>
+    ''')
 
 
 @login_required
