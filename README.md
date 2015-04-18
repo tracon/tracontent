@@ -26,7 +26,6 @@ Now, in another terminal, install and run this example:
     cd kompassi-oauth2-example
     pip install -r requirements.txt
     ./manage.py migrate
-    ./manage.py createsuperuser # use something else than "mahti" for username
     ./manage.py runserver 127.0.0.1:8001
     iexplore http://ssoexample.dev:8001
 
