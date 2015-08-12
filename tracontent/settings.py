@@ -1,4 +1,8 @@
 import os
+
+import django.conf.global_settings as defaults
+
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 def mkpath(*parts):
@@ -43,7 +47,7 @@ INSTALLED_APPS = (
 
     'kompassi_oauth2',
     'content',
-    'example_content',
+    'example',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -61,8 +65,16 @@ AUTHENTICATION_BACKENDS = (
 )
 
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
+    ('pyjade.ext.django.Loader',(
+        'django.template.loaders.filesystem.Loader',
+        'django.template.loaders.app_directories.Loader',
+    )),
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = defaults.TEMPLATE_CONTEXT_PROCESSORS + (
+    'django.core.context_processors.request',
+    'django.contrib.messages.context_processors.messages',
+    'content.context_processors.content_context',
 )
 
 ROOT_URLCONF = 'tracontent.urls'

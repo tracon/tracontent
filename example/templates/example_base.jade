@@ -1,0 +1,9 @@
+doctype 5
+html
+  head
+    title
+      block full_title
+        {% if page.title %}{{ page.title }} – {{ site_settings.title }}{% else %}{{ site_settings.title }}{% endif %}
+  body
+    h1 {{ page.title }}
+    {{ page.body|safe }}

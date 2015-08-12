@@ -31,6 +31,24 @@ PATH_FIELD_PARAMS = dict(
 )
 
 
+class SiteSettings(models.Model):
+    site = models.OneToOneField(Site)
+    title = models.CharField(
+        max_length=1023,
+        verbose_name=u'Otsikko',
+        help_text=u'Sivuston otsikko näkyy mm. selaimen välilehden otsikossa.'
+    )
+    base_template = models.CharField(
+        max_length=1023,
+        verbose_name=u'Sivupohjan nimi',
+        help_text=u'Sivut näytetään käyttäen tätä sivupohjaa. Tämännimisen sivupohjan tulee löytyä lähdekoodista.',
+    )
+
+    class Meta:
+        verbose_name = u'sivuston asetukset'
+        verbose_name = u'sivustojen asetukset'
+
+
 class Page(models.Model):
     site = models.ForeignKey(Site, verbose_name=u'Sivusto')
     path = models.CharField(**PATH_FIELD_PARAMS)

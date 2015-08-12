@@ -1,12 +1,13 @@
 from django.http import Http404, HttpResponse
 from django.contrib.sites.shortcuts import get_current_site
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404, render
 
 from .models import Page, BlogPost, Redirect
 
 
 def content_page_view(request, path):
     site = get_current_site(request)
+    site_settings = site.sitesettings
 
     # Look for redirect at the current path
     try:
@@ -19,8 +20,9 @@ def content_page_view(request, path):
     # Look for page at the current path
     page = get_object_or_404(Page, path=path)
 
-    return HttpResponse(page.body)
+    vars = dict(page=page)
 
+    return render(request, site_settings.base_template, vars)
 
 
 def content_blog_post_view(request, year, month, day, slug):

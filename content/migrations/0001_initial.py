@@ -49,6 +49,18 @@ class Migration(migrations.Migration):
                 ('site', models.ForeignKey(to='sites.Site')),
             ],
         ),
+        migrations.CreateModel(
+            name='SiteSettings',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('title', models.CharField(help_text='Sivuston otsikko n\xe4kyy mm. selaimen v\xe4lilehden otsikossa.', max_length=1023, verbose_name='Otsikko')),
+                ('base_template', models.CharField(help_text='Sivut n\xe4ytet\xe4\xe4n k\xe4ytt\xe4en t\xe4t\xe4 sivupohjaa. T\xe4m\xe4nnimisen sivupohjan tulee l\xf6yty\xe4 l\xe4hdekoodista.', max_length=1023, verbose_name='Sivupohjan nimi')),
+                ('site', models.OneToOneField(to='sites.Site')),
+            ],
+            options={
+                'verbose_name': 'sivustojen asetukset',
+            },
+        ),
         migrations.AlterUniqueTogether(
             name='redirect',
             unique_together=set([('site', 'path')]),

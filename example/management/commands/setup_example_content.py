@@ -29,7 +29,7 @@ class Command(BaseCommand):
     def setup_content(self):
         from django.contrib.sites.models import Site
         from django.contrib.auth.models import User
-        from content.models import Page, Redirect
+        from content.models import Page, Redirect, SiteSettings
 
         t = now()
 
@@ -39,10 +39,18 @@ class Command(BaseCommand):
             parent=None,
             slug='',
             defaults=dict(
-                title='Root page',
-                body='',
+                title='',
+                body='<p>This is the front page.</p>',
                 public_from=t,
                 visible_from=t,
+            )
+        )
+
+        site_settings, unused = SiteSettings.objects.get_or_create(
+            site=site,
+            defaults=dict(
+                title='Example site',
+                base_template='example_base.jade',
             )
         )
 
