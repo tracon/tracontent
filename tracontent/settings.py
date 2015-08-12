@@ -1,6 +1,9 @@
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+def mkpath(*parts):
+    return os.path.abspath(os.path.join(BASE_DIR, *parts))
+
 SECRET_KEY = '9()(lzm)jdr$szjfdx8^^#j_6efj@d&$9pb6l2h&=udxom3(bn'
 
 DEBUG = True
@@ -37,7 +40,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'django.contrib.flatpages',
+
+    'kompassi_oauth2',
+    'content',
+    'example_content',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -59,14 +65,14 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
 )
 
-ROOT_URLCONF = 'kompassi_oauth2_example.urls'
+ROOT_URLCONF = 'tracontent.urls'
 
-WSGI_APPLICATION = 'kompassi_oauth2_example.wsgi.application'
+WSGI_APPLICATION = 'tracontent.wsgi.application'
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'kompassi_oauth2_example.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'tracontent.sqlite3'),
     }
 }
 
@@ -126,6 +132,7 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+STATIC_ROOT = mkpath('static')
 
 KOMPASSI_OAUTH2_AUTHORIZATION_URL = 'http://kompassi.dev:8000/oauth2/authorize'
 KOMPASSI_OAUTH2_TOKEN_URL = 'http://kompassi.dev:8000/oauth2/token'
@@ -136,5 +143,3 @@ KOMPASSI_API_V2_USER_INFO_URL = 'http://kompassi.dev:8000/api/v2/people/me'
 
 LOGIN_URL = '/oauth2/login'
 LOGOUT_URL = '/logout'
-
-SITE_ID = 3

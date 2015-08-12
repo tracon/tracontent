@@ -1,0 +1,32 @@
+from django.http import Http404, HttpResponse
+from django.contrib.sites.shortcuts import get_current_site
+from django.shortcuts import redirect, get_object_or_404
+
+from .models import Page, BlogPost, Redirect
+
+
+def content_page_view(request, path):
+    site = get_current_site(request)
+
+    # Look for redirect at the current path
+    try:
+        current_url_redirect = Redirect.objects.get(site=site, path=path)
+    except Redirect.DoesNotExist:
+        pass
+    else:
+        return redirect(current_url_redirect.target)
+
+    # Look for page at the current path
+    page = get_object_or_404(Page, path=path)
+
+    return HttpResponse(page.body)
+
+
+
+def content_blog_post_view(request, year, month, day, slug):
+    site = get_current_site(request)
+
+    try:
+        date = date(year, month, day)
+    except ValueError:
+        raise Http404(u'Invalid date')
