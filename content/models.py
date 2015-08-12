@@ -92,6 +92,8 @@ class Page(models.Model):
         )
 
     class Meta:
+        verbose_name = u'sivu'
+        verbose_name_plural = u'sivut'
         unique_together = [('site', 'path'), ('site', 'parent', 'slug')]
 
 
@@ -102,6 +104,8 @@ class Redirect(models.Model):
 
     class Meta:
         unique_together = [('site', 'path')]
+        verbose_name = u'uudelleenohjaus'
+        verbose_name_plural = u'uudelleenohjaukset'
 
 
 class BlogPost(models.Model):
@@ -131,4 +135,6 @@ class BlogPost(models.Model):
         return super(BlogPost, self).save(*args, **kwargs)
 
     class Meta:
+        verbose_name = u'blogipostaus'
+        verbose_name_plural = u'blogipostaukset'
         unique_together = [('site', 'path'), ('site', 'date', 'slug')]
