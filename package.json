@@ -1,0 +1,25 @@
+{
+  "name": "tracontent",
+  "version": "0.0.0",
+  "description": " Content management system for Tracon 2016 and forwards",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tracon/tracontent.git"
+  },
+  "author": "Santtu Pajukanta <japsu@tracon.fi>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tracon/tracontent/issues"
+  },
+  "homepage": "https://github.com/tracon/tracontent#readme",
+  "devDependencies": {
+    "bootstrap": "^3.3.5"
+  }
+}

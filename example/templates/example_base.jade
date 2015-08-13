@@ -1,9 +1,18 @@
 doctype 5
+- load static from staticfiles
 html
   head
     title
       block full_title
         {% if page.title %}{{ page.title }} – {{ site_settings.title }}{% else %}{{ site_settings.title }}{% endif %}
+    link(rel='stylesheet', type='text/css', href='{% static "example/css/bootstrap.min.css" %}')
+    link(rel='stylesheet', type='text/css', href='{% static "example/css/example.css" %}')
   body
-    h1 {{ page.title }}
-    {{ page.body|safe }}
+    .navbar.navbar-inverse.navbar-fixed-top
+      .container
+        .navbar-header
+          a.navbar-brand(href='/') {{ site_settings.title }}
+    .example-navbar-push
+    .container
+      h1 {{ page.title }}
+      {{ page.body|safe }}
