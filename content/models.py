@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 from django.contrib.sites.models import Site
+from django.core.urlresolvers import reverse
 from django.core.validators import RegexValidator
 from django.db import models
 
@@ -14,14 +15,13 @@ SLUG_FIELD_PARAMS = dict(
     validators=[validate_slug],
     verbose_name=u'Tekninen nimi',
     help_text=u'Tekninen nimi eli "slug" näkyy URL-osoitteissa. Sallittuja '
-        u'merkkejä ovat pienet kirjaimet, numerot ja väliviiva. Teknistä nimeä ei voi '
-        u'muuttaa luomisen jälkeen.',
+        u'merkkejä ovat pienet kirjaimet, numerot ja väliviiva.'
 )
 
 
 validate_path = RegexValidator(
-    regex=r'[a-z0-9-]+',
-    message=u'Tekninen nimi saa sisältää vain pieniä kirjaimia, numeroita sekä väliviivoja.'
+    regex=r'[a-z0-9-/]+',
+    message=u'Polku saa sisältää vain pieniä kirjaimia, numeroita, väliviivoja sekä kauttaviivoja.'
 )
 PATH_FIELD_PARAMS = dict(
     max_length=1023,
@@ -52,7 +52,14 @@ class SiteSettings(models.Model):
 class Page(models.Model):
     site = models.ForeignKey(Site, verbose_name=u'Sivusto')
     path = models.CharField(**PATH_FIELD_PARAMS)
-    parent = models.ForeignKey('Page', null=True, blank=True)
+    parent = models.ForeignKey('Page',
+        null=True,
+        blank=True,
+        verbose_name=u'Yläsivu',
+        help_text=u'Jos valitset tähän sivun, tämä sivu luodaan valitun sivun alaisuuteen. Jos jätät tämän tyhjäksi, sivu luodaan päätasolle.',
+        related_name='child_page_set',
+    )
+
     slug = models.CharField(blank=True, **SLUG_FIELD_PARAMS)
 
     public_from = models.DateTimeField(
@@ -83,7 +90,12 @@ class Page(models.Model):
         if self.slug:
             self.path = self._make_path()
 
-        return super(Page, self).save(*args, **kwargs)
+        return_value = super(Page, self).save(*args, **kwargs)
+
+        # In case path changed, update child pages' paths.
+        # TODO prevent parent loop in somewhere else
+        for child_page in self.child_page_set.all():
+            child_page.save()
 
     def __unicode__(self):
         return u'{domain}/{path}'.format(

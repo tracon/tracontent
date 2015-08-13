@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.http import Http404, HttpResponse
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import redirect, get_object_or_404, render
@@ -20,15 +22,26 @@ def content_page_view(request, path):
     # Look for page at the current path
     page = get_object_or_404(Page, path=path)
 
-    vars = dict(page=page)
+    vars = dict(
+        page=page,
+    )
 
     return render(request, site_settings.base_template, vars)
 
 
 def content_blog_post_view(request, year, month, day, slug):
     site = get_current_site(request)
+    site_settings = site.sitesettings
 
     try:
-        date = date(year, month, day)
+        post_date = date(int(year), int(month), int(day))
     except ValueError:
         raise Http404(u'Invalid date')
+
+    blog_post = get_object_or_404(BlogPost, site=site, date=post_date, slug=slug)
+
+    vars = dict(
+        page=blog_post,
+    )
+
+    return render(request, site_settings.base_template, vars)

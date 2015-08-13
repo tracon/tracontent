@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
@@ -29,7 +29,7 @@ class Command(BaseCommand):
     def setup_content(self):
         from django.contrib.sites.models import Site
         from django.contrib.auth.models import User
-        from content.models import Page, Redirect, SiteSettings
+        from content.models import Page, Redirect, SiteSettings, BlogPost
 
         t = now()
 
@@ -41,6 +41,18 @@ class Command(BaseCommand):
             defaults=dict(
                 title='',
                 body='<p>This is the front page.</p>',
+                public_from=t,
+                visible_from=t,
+            )
+        )
+
+        blog_post, unused = BlogPost.objects.get_or_create(
+            site=site,
+            slug='example-blog-post',
+            defaults=dict(
+                date=date(2015, 8, 13),
+                title='Example blog post',
+                body='<p>This is an example blog post.</p>',
                 public_from=t,
                 visible_from=t,
             )
