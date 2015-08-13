@@ -21,6 +21,21 @@ class PageAdmin(admin.ModelAdmin):
     readonly_fields = ('path',)
 
 
+class BlogPostAdminForm(forms.ModelForm):
+    body = forms.CharField(widget=CKEditorWidget())
+
+    class Meta:
+        model = BlogPost
+        fields = ('site', 'date', 'slug', 'title', 'body', 'public_from', 'visible_from', 'path')
+
+
+class BlogPostAdmin(admin.ModelAdmin):
+    model = BlogPost
+    form = BlogPostAdminForm
+    list_display = ('site', 'path', 'title')
+    readonly_fields = ('path',)
+
+
 admin.site.register(Page, PageAdmin)
 admin.site.register(Redirect)
-admin.site.register(BlogPost)
+admin.site.register(BlogPost, BlogPostAdmin)
