@@ -22,7 +22,9 @@ class PageAdmin(admin.ModelAdmin):
     model = Page
     form = PageAdminForm
     list_display = ('site', 'path', 'title')
+    list_filter = ('site',)
     readonly_fields = ('path',)
+    view_on_site = True
 
 
 class BlogPostAdminForm(forms.ModelForm):
@@ -40,7 +42,9 @@ class BlogPostAdmin(admin.ModelAdmin):
     model = BlogPost
     form = BlogPostAdminForm
     list_display = ('site', 'path', 'title')
+    list_filter = ('site',)
     readonly_fields = ('path',)
+    view_on_site = True
 
 
 admin.site.register(Page, PageAdmin)

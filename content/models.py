@@ -102,6 +102,13 @@ class Page(models.Model):
     title = models.CharField(blank=True, **CommonFields.title)
     body = models.TextField(**CommonFields.body)
 
+    @property
+    def edit_link(self):
+        return reverse('admin:content_page_change', args=(self.id,))
+
+    def get_absolute_url(self):
+        return '/' + self.path
+
     def _make_path(self):
         if self.parent is None:
             return self.slug
@@ -156,6 +163,13 @@ class BlogPost(models.Model):
 
     title = models.CharField(**CommonFields.title)
     body = models.TextField(**CommonFields.body)
+
+    @property
+    def edit_link(self):
+        return reverse('admin:content_blogpost_change', args=(self.id,))
+
+    def get_absolute_url(self):
+        return '/' + self.path
 
     def _make_path(self):
         return reverse('content_blog_post_view', kwargs=dict(

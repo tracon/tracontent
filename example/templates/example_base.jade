@@ -14,5 +14,8 @@ html
           a.navbar-brand(href='/') {{ site_settings.title }}
     .example-navbar-push
     .container
+      if request.user.is_staff
+        .btn-group.pull-right
+          a.btn.btn-primary(href='{{ page.edit_link }}', target='_blank') Muokkaa sivua...
       h1 {{ page.title }}
       {{ page.body|safe }}
