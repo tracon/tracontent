@@ -10,39 +10,73 @@ validate_slug = RegexValidator(
     regex=r'[a-z0-9-]+',
     message=u'Tekninen nimi saa sisältää vain pieniä kirjaimia, numeroita sekä väliviivoja.'
 )
-SLUG_FIELD_PARAMS = dict(
-    max_length=63,
-    validators=[validate_slug],
-    verbose_name=u'Tekninen nimi',
-    help_text=u'Tekninen nimi eli "slug" näkyy URL-osoitteissa. Sallittuja '
-        u'merkkejä ovat pienet kirjaimet, numerot ja väliviiva.'
-)
-
 
 validate_path = RegexValidator(
     regex=r'[a-z0-9-/]+',
     message=u'Polku saa sisältää vain pieniä kirjaimia, numeroita, väliviivoja sekä kauttaviivoja.'
 )
-PATH_FIELD_PARAMS = dict(
-    max_length=1023,
-    validators=[validate_path],
-    verbose_name=u'Polku',
-    help_text=u'Polku määritetään automaattisesti teknisen nimen perusteella.',
-)
+
+
+class CommonFields:
+    path = dict(
+        max_length=1023,
+        validators=[validate_path],
+        verbose_name=u'Polku',
+        help_text=u'Polku määritetään automaattisesti teknisen nimen perusteella.',
+    )
+
+    slug = dict(
+        max_length=63,
+        validators=[validate_slug],
+        verbose_name=u'Tekninen nimi',
+        help_text=u'Tekninen nimi eli "slug" näkyy URL-osoitteissa. Sallittuja '
+            u'merkkejä ovat pienet kirjaimet, numerot ja väliviiva.'
+    )
+
+    title = dict(
+        max_length=1023,
+        verbose_name=u'Otsikko',
+        help_text=u'Otsikko näytetään automaattisesti sivun ylälaidassa. Älä lisää erillistä pääotsikkoa sivun tekstiin.',
+    )
+
+    body = dict(
+        verbose_name=u'Leipäteksti',
+    )
+
+    template = dict(
+        max_length=127,
+        verbose_name=u'Sivupohja',
+        help_text=u'Sivut näytetään käyttäen tätä sivupohjaa. Tämännimisen sivupohjan tulee löytyä lähdekoodista.',
+    )
+
+    site = dict(
+        verbose_name=u'Sivusto',
+        help_text=u'Sivusto, jolle tämä sivu kuuluu. HUOM! Kun haluat luoda saman sivun toiselle sivustolle, älä siirrä vanhaa sivua vaan käytä sivunkopiointitoimintoa.',
+    )
+
+    public_from = dict(
+        null=True,
+        blank=True,
+        verbose_name=u'Julkaisuaika',
+        help_text=u'Sivu on tästä hetkestä alkaen myös sisäänkirjautumattomien käyttäjien luettavissa, jos nämä tietävät osoitteen.',
+    )
+
+    visible_from = dict(
+        null=True,
+        blank=True,
+        verbose_name=u'Näkyvissä alkaen',
+        help_text=u'Sivu on tästä hetkestä alkaen näkyvissä valikossa tai listauksessa.',
+    )
 
 
 class SiteSettings(models.Model):
     site = models.OneToOneField(Site)
     title = models.CharField(
         max_length=1023,
-        verbose_name=u'Otsikko',
-        help_text=u'Sivuston otsikko näkyy mm. selaimen välilehden otsikossa.'
+        verbose_name=u'Sivuston otsikko',
+        help_text=u'Sivuston otsikko näkyy mm. selaimen välilehden otsikossa.',
     )
-    base_template = models.CharField(
-        max_length=1023,
-        verbose_name=u'Sivupohjan nimi',
-        help_text=u'Sivut näytetään käyttäen tätä sivupohjaa. Tämännimisen sivupohjan tulee löytyä lähdekoodista.',
-    )
+    base_template = models.CharField(**CommonFields.template)
 
     class Meta:
         verbose_name = u'sivuston asetukset'
@@ -50,8 +84,8 @@ class SiteSettings(models.Model):
 
 
 class Page(models.Model):
-    site = models.ForeignKey(Site, verbose_name=u'Sivusto')
-    path = models.CharField(**PATH_FIELD_PARAMS)
+    site = models.ForeignKey(Site, **CommonFields.site)
+    path = models.CharField(**CommonFields.path)
     parent = models.ForeignKey('Page',
         null=True,
         blank=True,
@@ -60,25 +94,13 @@ class Page(models.Model):
         related_name='child_page_set',
     )
 
-    slug = models.CharField(blank=True, **SLUG_FIELD_PARAMS)
+    slug = models.CharField(blank=True, **CommonFields.slug)
 
-    public_from = models.DateTimeField(
-        null=True,
-        blank=True,
-        verbose_name='Julkaisuaika',
-        help_text=u'Sivu on tästä hetkestä alkaen myös sisäänkirjautumattomien käyttäjien luettavissa, jos nämä tietävät osoitteen.',
+    public_from = models.DateTimeField(**CommonFields.public_from)
+    visible_from = models.DateTimeField(**CommonFields.visible_from)
 
-    )
-    visible_from = models.DateTimeField(
-        null=True,
-        blank=True,
-        verbose_name=u'Näkyvissä valikossa alkaen',
-        help_text=u'Sivu on tästä hetkestä alkaen näkyvissä valikossa.',
-
-    )
-
-    title = models.CharField(max_length=1023)
-    body = models.TextField()
+    title = models.CharField(blank=True, **CommonFields.title)
+    body = models.TextField(**CommonFields.body)
 
     def _make_path(self):
         if self.parent is None:
@@ -111,7 +133,7 @@ class Page(models.Model):
 
 class Redirect(models.Model):
     site = models.ForeignKey(Site)
-    path = models.CharField(**PATH_FIELD_PARAMS)
+    path = models.CharField(**CommonFields.path)
     target = models.CharField(max_length=1023)
 
     class Meta:
@@ -121,24 +143,27 @@ class Redirect(models.Model):
 
 
 class BlogPost(models.Model):
-    site = models.ForeignKey(Site)
-    path = models.CharField(**PATH_FIELD_PARAMS)
-    date = models.DateField()
-    slug = models.CharField(**SLUG_FIELD_PARAMS)
+    site = models.ForeignKey(Site, **CommonFields.site)
+    path = models.CharField(**CommonFields.path)
+    date = models.DateField(
+        verbose_name=u'Päivämäärä',
+        help_text=u'Päivämäärä on osa postauksen osoitetta. Älä muuta päivämäärää julkaisun jälkeen.',
+    )
+    slug = models.CharField(**CommonFields.slug)
 
-    public_from = models.DateTimeField(null=True, blank=True)
-    visible_from = models.DateTimeField(null=True, blank=True)
+    public_from = models.DateTimeField(**CommonFields.public_from)
+    visible_from = models.DateTimeField(**CommonFields.visible_from)
 
-    title = models.CharField(max_length=1023)
-    body = models.TextField()
+    title = models.CharField(**CommonFields.title)
+    body = models.TextField(**CommonFields.body)
 
     def _make_path(self):
         return reverse('content_blog_post_view', kwargs=dict(
             year=self.date.year,
-            month=self.date.month,
-            day=self.date.day,
+            month="{:02d}".format(self.date.month),
+            day="{:02d}".format(self.date.day),
             slug=self.slug,
-        ))
+        ))[1:] # remove leading /
 
     def save(self, *args, **kwargs):
         if self.date and self.slug:

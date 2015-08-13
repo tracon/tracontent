@@ -3,11 +3,15 @@ from django import forms
 
 from ckeditor.widgets import CKEditorWidget
 
-from .models import Page, BlogPost, Redirect
+from .models import Page, BlogPost, Redirect, CommonFields
+
 
 
 class PageAdminForm(forms.ModelForm):
-    body = forms.CharField(widget=CKEditorWidget())
+    body = forms.CharField(
+        widget=CKEditorWidget(),
+        label=CommonFields.body['verbose_name'],
+    )
 
     class Meta:
         model = Page
@@ -22,7 +26,10 @@ class PageAdmin(admin.ModelAdmin):
 
 
 class BlogPostAdminForm(forms.ModelForm):
-    body = forms.CharField(widget=CKEditorWidget())
+    body = forms.CharField(
+        widget=CKEditorWidget(),
+        label=CommonFields.body['verbose_name'],
+    )
 
     class Meta:
         model = BlogPost
