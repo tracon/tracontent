@@ -11,6 +11,7 @@ class PageAdminForm(forms.ModelForm):
     body = forms.CharField(
         widget=CKEditorWidget(),
         label=CommonFields.body['verbose_name'],
+        required=not CommonFields.body['blank'],
     )
 
     class Meta:
@@ -31,6 +32,7 @@ class BlogPostAdminForm(forms.ModelForm):
     body = forms.CharField(
         widget=CKEditorWidget(),
         label=CommonFields.body['verbose_name'],
+        required=not CommonFields.body['blank'],
     )
 
     class Meta:

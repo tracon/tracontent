@@ -19,7 +19,7 @@ urlpatterns = patterns('',
     url(
         r'^$',
         content_page_view,
-        dict(path=''),
+        dict(path='front-page'),
         name='content_front_page_view',
     ),
 )

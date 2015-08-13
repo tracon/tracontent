@@ -8,14 +8,23 @@ html
     link(rel='stylesheet', type='text/css', href='{% static "example/css/bootstrap.min.css" %}')
     link(rel='stylesheet', type='text/css', href='{% static "example/css/example.css" %}')
   body
-    .navbar.navbar-inverse.navbar-fixed-top
+    .navbar.navbar-default.navbar-fixed-top
       .container
         .navbar-header
           a.navbar-brand(href='/') {{ site_settings.title }}
-    .example-navbar-push
-    .container
-      if request.user.is_staff
-        .btn-group.pull-right
-          a.btn.btn-primary(href='{{ page.edit_link }}', target='_blank') Muokkaa sivua...
-      h1 {{ page.title }}
-      {{ page.body|safe }}
+    .example-content-wrap
+      .container
+        if request.user.is_staff
+          .btn-group.pull-right
+            a.btn.btn-primary(href='{{ page.edit_link }}', target='_blank') Muokkaa sivua...
+        h1 {{ page.title }}
+        {{ page.body|safe }}
+
+      .example-footer-push
+
+    footer
+      .container
+        p.example-credit
+          small.text-muted
+            | <a href='https://github.com/tracon/tracontent' target='_blank'>TraContent CMS Enterprise Edition</a>
+            |  © 2015 <a href="https://github.com/tracon/tracontent/blob/master/LICENSE">Santtu Pajukanta</a>.

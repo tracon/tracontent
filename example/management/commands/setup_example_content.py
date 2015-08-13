@@ -37,9 +37,9 @@ class Command(BaseCommand):
         root_page, unused = Page.objects.get_or_create(
             site=site,
             parent=None,
-            slug='',
+            slug='front-page',
             defaults=dict(
-                title='',
+                title='Welcome to your example site',
                 body='<p>This is the front page.</p>',
                 public_from=t,
                 visible_from=t,
@@ -66,11 +66,16 @@ class Command(BaseCommand):
             )
         )
 
-        redirect, unused = Redirect.objects.get_or_create(
-            site=site,
-            path='admin',
-            defaults=dict(target='/admin/'),
-        )
+        for path, target in [
+            ('admin', '/admin/'),
+        ]:
+            redirect, unused = Redirect.objects.get_or_create(
+                site=site,
+                path=path,
+                defaults=dict(
+                    target=target
+                ),
+            )
 
         user, created = User.objects.get_or_create(
             username='mahti',
