@@ -8,13 +8,7 @@ from ckeditor.widgets import CKEditorWidget
 from .models import Page, BlogPost, Redirect, CommonFields
 
 
-class PageAdminForm(forms.ModelForm):
-    body = forms.CharField(
-        widget=CKEditorWidget(),
-        label=CommonFields.body['verbose_name'],
-        required=not CommonFields.body['blank'],
-    )
-
+class CommonAdminFormMixin(object):
     def clean_visible_from(self):
         public_from = self.cleaned_data.get('public_from')
         visible_from = self.cleaned_data.get('visible_from')
@@ -27,6 +21,13 @@ class PageAdminForm(forms.ModelForm):
 
         return visible_from
 
+class PageAdminForm(CommonAdminFormMixin, forms.ModelForm):
+    body = forms.CharField(
+        widget=CKEditorWidget(),
+        label=CommonFields.body['verbose_name'],
+        required=not CommonFields.body['blank'],
+    )
+    
     class Meta:
         model = Page
         fields = ('site', 'parent', 'slug', 'title', 'body', 'public_from', 'visible_from', 'path')
@@ -41,7 +42,7 @@ class PageAdmin(admin.ModelAdmin):
     view_on_site = True
 
 
-class BlogPostAdminForm(forms.ModelForm):
+class BlogPostAdminForm(CommonAdminFormMixin, forms.ModelForm):
     body = forms.CharField(
         widget=CKEditorWidget(),
         label=CommonFields.body['verbose_name'],
