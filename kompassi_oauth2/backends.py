@@ -1,13 +1,16 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.conf import settings
 
 
-def user_defaults_from_kompassi(kompassi_user):
-    return dict((django_key, kompassi_user[kompassi_key]) for (django_key, kompassi_key) in [
-        ('username', 'username'),
-        ('email', 'email'),
-        ('first_name', 'first_name'),
-        ('last_name', 'surname'),
+def user_attrs_from_kompassi(kompassi_user):
+    return dict((django_key, accessor_func(kompassi_user)) for (django_key, accessor_func) in [
+        ('username', lambda u: u['username']),
+        ('email', lambda u: u['email']),
+        ('first_name', lambda u: u['first_name']),
+        ('last_name', lambda u: u['surname']),
+        ('is_superuser', lambda u: settings.KOMPASSI_ADMIN_GROUP in u['groups']),
+        ('is_staff', lambda u: settings.KOMPASSI_EDITOR_GROUP in u['groups']),
+        ('groups', lambda u: [Group.objects.get_or_create(name=group_name)[0] for group_name in u['groups']]),
     ])
 
 
@@ -21,10 +24,12 @@ class KompassiOAuth2AuthenticationBackend(object):
         response.raise_for_status()
         kompassi_user = response.json()
 
-        user, created = User.objects.get_or_create(
-            username=kompassi_user['username'],
-            defaults=user_defaults_from_kompassi(kompassi_user)
-        )
+        user, created = User.objects.get_or_create(username=kompassi_user['username'])
+
+        for key, value in user_attrs_from_kompassi(kompassi_user).iteritems():
+            setattr(user, key, value)
+
+        user.save()
 
         return user
 
