@@ -66,14 +66,14 @@ class CommonFields:
         null=True,
         blank=True,
         verbose_name=u'Julkaisuaika',
-        help_text=u'Sivu on tästä hetkestä alkaen myös sisäänkirjautumattomien käyttäjien luettavissa, jos nämä tietävät osoitteen.',
+        help_text=u'Sivu on tästä hetkestä alkaen myös sisäänkirjautumattomien käyttäjien luettavissa, jos nämä tietävät osoitteen. Jätä tyhjäksi, jos haluat jättää sivun luonnokseksi.',
     )
 
     visible_from = dict(
         null=True,
         blank=True,
         verbose_name=u'Näkyvissä alkaen',
-        help_text=u'Sivu on tästä hetkestä alkaen näkyvissä valikossa tai listauksessa.',
+        help_text=u'Sivu on tästä hetkestä alkaen näkyvissä valikossa tai listauksessa. Jätä tyhjäksi, jos haluat jättää sivun piilotetuksi.',
     )
 
 
