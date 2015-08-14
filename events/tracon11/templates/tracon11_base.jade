@@ -5,22 +5,22 @@ html
     title
       block full_title
         {% if page.title %}{{ page.title }} – {{ site_settings.title }}{% else %}{{ site_settings.title }}{% endif %}
-    link(rel='stylesheet', type='text/css', href='{% static "example/css/bootstrap.min.css" %}')
-    link(rel='stylesheet', type='text/css', href='{% static "example/css/example.css" %}')
+    link(rel='stylesheet', type='text/css', href='{% static "tracon11/css/bootstrap.min.css" %}')
+    link(rel='stylesheet', type='text/css', href='{% static "tracon11/css/tracon11.css" %}')
   body
     .navbar.navbar-default.navbar-fixed-top
       .container
         .navbar-header
           a.navbar-brand(href='/') {{ site_settings.title }}
-    .example-content-wrap
+    .tracon-content-wrap
       .container
         include content_admin_toolbar.jade
         h1 {{ page.title }}
         {{ page.body|safe }}
 
-      .example-footer-push
+      .tracon-footer-push
 
     footer
       .container
-        p.example-credit
+        p.tracon-credit
           small.text-muted {{ tracontent_footer|safe }}

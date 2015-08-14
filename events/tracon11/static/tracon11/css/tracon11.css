@@ -1,0 +1,30 @@
+.tracon-navbar-push {
+  margin-top: 60px;
+}
+
+.tracon-footer-push, footer {
+  height: 45px;
+}
+
+/* Fixed footer black magic */
+html,
+body {
+  height: 100%;
+}
+.tracon-content-wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -45px;
+  padding-top: 60px;
+}
+.tracon-footer-push, footer {
+  height: 45px;
+}
+footer {
+  background-color: #f8f8f8;
+  border-top: 1px solid #e7e7e7;
+}
+footer .tracon-credit {
+  padding-top: 10px;
+}
