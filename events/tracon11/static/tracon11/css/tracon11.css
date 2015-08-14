@@ -1,3 +1,12 @@
+.tracon-navbar {
+  background-color: #226;
+  border-bottom: 1px solid #669;
+}
+
+.tracon-navbar .navbar-brand, .tracon-navbar .navbar-nav>li>a {
+  color: #f8f8f8;
+}
+
 .tracon-navbar-push {
   margin-top: 60px;
 }

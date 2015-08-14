@@ -1,9 +1,12 @@
 # encoding: utf-8
 
+from collections import namedtuple
+
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 from django.core.validators import RegexValidator
 from django.db import models
+from django.utils.timezone import now
 
 from .utils import slugify
 
@@ -95,21 +98,25 @@ class SiteSettings(models.Model):
             )
         )
 
-    def get_menu(self):
-        menu_items = []
+    def get_menu(self, t=None, current_url=None):
+        if t is None:
+            t = now()
 
-        for top_level_page in Page.objects.filter(site=self.site, parent=None).prefetch_related('child_page_set').all():
-            href = top_level_page.get_absolute_url()
-            title = top_level_page.menu_text
-            children = [(child_page.get_absolute_url(), child_page.menu_text) for child_page in top_level_page.child_page_set.all()]
-
-            menu_items.append((href, title, children))
-
-        return menu_items
+        return [
+            page.get_menu_entry(t=t, current_url=current_url)
+            for page in Page.objects.filter(site=self.site, parent=None, visible_from__lte=t).prefetch_related('child_page_set').all()
+        ]
 
     class Meta:
         verbose_name = u'sivuston asetukset'
         verbose_name = u'sivustojen asetukset'
+
+
+BaseMenuEntry = namedtuple('MenuEntry', 'active href text children')
+class MenuEntry(BaseMenuEntry):
+    @property
+    def active_css(self):
+        return 'active' if self.active else ''
 
 
 class Page(models.Model):
@@ -157,6 +164,39 @@ class Page(models.Model):
             return '/'
         else:            
             return '/' + self.path
+
+    def get_menu_entry(self, child_levels=1, t=None, current_url=None):
+        # Guard against infinite recursion on parent loop and prevent lots of queries on default 2-level menu structure
+        if child_levels > 0:
+            children = [
+                child_page.get_menu_entry(
+                    child_levels=child_levels - 1,
+                    t=t,
+                    current_url=current_url,
+                )
+
+                # TODO check if this hits the prefetch
+                for child_page in self.child_page_set.filter(visible_from__lte=t)
+            ]
+        else:
+            children = []
+
+        href = self.get_absolute_url()
+
+        if current_url:
+            if children:
+                active = current_url.startswith(href)
+            else:
+                active = current_url == href
+        else:
+            active = False
+
+        return MenuEntry(
+            active=active,
+            href=href,
+            text=self.menu_text,
+            children=children,
+        )      
 
     def _make_path(self):
         if self.parent is None:

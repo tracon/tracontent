@@ -10,24 +10,24 @@ html
     script(src='{% static "common/js/jquery.min.js" %}', defer)
     script(src='{% static "common/js/bootstrap.min.js" %}', defer)
   body
-    .navbar.navbar-default.navbar-fixed-top
+    .navbar.navbar-inverse.navbar-fixed-top.tracon-navbar
       .container
         .navbar-header
           a.navbar-brand(href='/') {{ site_settings.title }}
 
         .collapse.navbar-collapse
           ul.nav.navbar-nav
-            for href, title, children in site_settings.get_menu
-              if children
-                li.dropdown
-                  a(href, class="dropdown-toggle", data-toggle="dropdown")= title
+            for entry in menu
+              if entry.children
+                li.dropdown(class="#{entry.active_css}")
+                  a(href, class="dropdown-toggle", data-toggle="dropdown")= entry.text
                     b.caret
                   ul.dropdown-menu
-                    li: a(href='#{href}')= title
-                    for child_href, child_title in children
-                      li: a(href='#{child_href}')= child_title
+                    li(class="#{child.active_css}"): a(href='#{entry.href}')= entry.text
+                    for child in entry.children
+                      li(class="#{child.active_css}"): a(href='#{child.href}')= child.text
               else
-                li: a(href='#{href}')= title
+                li(class="#{entry.active_css}"): a(href='#{entry.href}')= entry.text
     .tracon-content-wrap
       .container
         include content_admin_toolbar.jade
