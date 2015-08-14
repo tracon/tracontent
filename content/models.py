@@ -95,6 +95,18 @@ class SiteSettings(models.Model):
             )
         )
 
+    def get_menu(self):
+        menu_items = []
+
+        for top_level_page in Page.objects.filter(site=self.site, parent=None).prefetch_related('child_page_set').all():
+            href = top_level_page.get_absolute_url()
+            title = top_level_page.menu_text
+            children = [(child_page.get_absolute_url(), child_page.menu_text) for child_page in top_level_page.child_page_set.all()]
+
+            menu_items.append((href, title, children))
+
+        return menu_items
+
     class Meta:
         verbose_name = u'sivuston asetukset'
         verbose_name = u'sivustojen asetukset'
@@ -117,14 +129,34 @@ class Page(models.Model):
     visible_from = models.DateTimeField(**CommonFields.visible_from)
 
     title = models.CharField(**CommonFields.title)
+    override_menu_text = models.CharField(
+        max_length=1023,
+        blank=True,
+        verbose_name=u'Valikkoteksti',
+        help_text=u'Sivu näkyy tällä nimellä valikossa. Jos jätät tämän tyhjäksi, käytetään otsikkoa.',
+    )
     body = models.TextField(**CommonFields.body)
 
     @property
     def edit_link(self):
         return reverse('admin:content_page_change', args=(self.id,))
 
+    @property
+    def menu_text(self):
+        if self.override_menu_text:
+            return self.override_menu_text
+        else:
+            return self.title
+
+    @property
+    def is_front_page(self):
+        return self.parent is None and self.slug == 'front-page'
+    
     def get_absolute_url(self):
-        return '/' + self.path
+        if self.is_front_page:
+            return '/'
+        else:            
+            return '/' + self.path
 
     def _make_path(self):
         if self.parent is None:

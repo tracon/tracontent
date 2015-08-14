@@ -13,7 +13,7 @@ class Command(BaseCommand):
     help = 'Setup example content'
 
     def add_arguments(self, parser):
-        parser.add_argument('domain', nargs=1, type=unicode)
+        parser.add_argument('domain', type=unicode)
 
     def handle(self, *args, **options):
         self.setup_content(domain=options['domain'])
@@ -25,12 +25,14 @@ class Command(BaseCommand):
 
         t = now()
 
+        print 'NOTE: Setting up Tracon 11 site at {domain}'.format(domain=domain)
+
         site, unused = Site.objects.get_or_create(domain=domain)
 
         site_settings, unused = SiteSettings.objects.get_or_create(
             site=site,
             defaults=dict(
-                title='Example site',
+                title='Tracon 11',
                 base_template='tracon11_base.jade',
             )
         )
@@ -77,6 +79,11 @@ class Command(BaseCommand):
                         visible_from=t,
                     )
                 )
+
+        front_page = Page.objects.get(site=site, slug='front-page')
+        if not front_page.override_menu_text:
+            front_page.override_menu_text = 'Etusivu'
+            front_page.save()
 
         for path, target in [
             ('admin', '/admin/'),

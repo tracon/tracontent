@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 def content_context(request):
     from django.conf import settings
     from django.contrib.sites.shortcuts import get_current_site

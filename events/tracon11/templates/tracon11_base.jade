@@ -5,13 +5,29 @@ html
     title
       block full_title
         {% if page.title %}{{ page.title }} – {{ site_settings.title }}{% else %}{{ site_settings.title }}{% endif %}
-    link(rel='stylesheet', type='text/css', href='{% static "tracon11/css/bootstrap.min.css" %}')
+    link(rel='stylesheet', type='text/css', href='{% static "common/css/bootstrap.min.css" %}')
     link(rel='stylesheet', type='text/css', href='{% static "tracon11/css/tracon11.css" %}')
+    script(src='{% static "common/js/jquery.min.js" %}', defer)
+    script(src='{% static "common/js/bootstrap.min.js" %}', defer)
   body
     .navbar.navbar-default.navbar-fixed-top
       .container
         .navbar-header
           a.navbar-brand(href='/') {{ site_settings.title }}
+
+        .collapse.navbar-collapse
+          ul.nav.navbar-nav
+            for href, title, children in site_settings.get_menu
+              if children
+                li.dropdown
+                  a(href, class="dropdown-toggle", data-toggle="dropdown")= title
+                    b.caret
+                  ul.dropdown-menu
+                    li: a(href='#{href}')= title
+                    for child_href, child_title in children
+                      li: a(href='#{child_href}')= child_title
+              else
+                li: a(href='#{href}')= title
     .tracon-content-wrap
       .container
         include content_admin_toolbar.jade
@@ -23,4 +39,4 @@ html
     footer
       .container
         p.tracon-credit
-          small.text-muted {{ tracontent_footer|safe }}
+          small.text-muted Tracon 11 -tapahtuman järjestää <a href='http://ry.tracon.fi'>Tracon ry</a>. {{ tracontent_footer|safe }}
