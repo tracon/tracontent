@@ -1,7 +1,6 @@
 # encoding: utf-8
 
 from django.utils.timezone import now
-from pprint import pprint
 
 
 def content_context(request):
@@ -11,8 +10,6 @@ def content_context(request):
     site = get_current_site(request)
     site_settings = site.sitesettings
     menu = site_settings.get_menu(t=now(), current_url=request.path)
-
-    pprint(menu)
 
     vars = dict(
         site=site,
