@@ -83,6 +83,18 @@ class SiteSettings(models.Model):
     )
     base_template = models.CharField(**CommonFields.template)
 
+    @classmethod
+    def get_or_create_dummy(cls):
+        site, unused = Site.objects.get_or_create(domain='example.com')
+
+        return cls.objects.get_or_create(
+            site=site,
+            defaults=dict(
+                title='Test site',
+                base_template='example_base.jade',
+            )
+        )
+
     class Meta:
         verbose_name = u'sivuston asetukset'
         verbose_name = u'sivustojen asetukset'
@@ -118,7 +130,7 @@ class Page(models.Model):
         if self.parent is None:
             return self.slug
         else:
-            return self.parent.path + '/' + self.path
+            return self.parent.path + '/' + self.slug
 
     def save(self, *args, **kwargs):
         if self.title and not self.slug:

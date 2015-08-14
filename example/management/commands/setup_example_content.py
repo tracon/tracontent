@@ -2,10 +2,13 @@
 
 from datetime import datetime, timedelta, date
 
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.sites.models import Site
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
-from django.contrib.contenttypes.models import ContentType
 from django.utils.timezone import now
+
+from content.models import Page, Redirect, SiteSettings, BlogPost
 
 
 class Command(BaseCommand):
@@ -13,24 +16,6 @@ class Command(BaseCommand):
     help = 'Setup example content'
 
     def handle(self, *args, **options):
-        self.run_other_commands()
-        self.setup_content()
-
-    def run_other_commands(self):
-        management_commands = [
-            (('collectstatic',), dict(interactive=False)),
-            (('migrate',), dict()),
-        ]
-
-        for pargs, opts in management_commands:
-            call_command(*pargs, **opts)
-
-
-    def setup_content(self):
-        from django.contrib.sites.models import Site
-        from django.contrib.auth.models import User
-        from content.models import Page, Redirect, SiteSettings, BlogPost
-
         t = now()
 
         site, unused = Site.objects.get_or_create(domain='tracontent.dev:8000')
@@ -76,13 +61,3 @@ class Command(BaseCommand):
                     target=target
                 ),
             )
-
-        user, created = User.objects.get_or_create(
-            username='mahti',
-            is_staff=True,
-            is_superuser=True,
-        )
-
-        if created:
-            user.set_password('mahti')
-            user.save()
