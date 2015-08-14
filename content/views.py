@@ -3,6 +3,7 @@ from datetime import date
 from django.http import Http404, HttpResponse
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import redirect, get_object_or_404, render
+from django.utils.timezone import now
 
 from .models import Page, BlogPost, Redirect
 
@@ -19,8 +20,14 @@ def content_page_view(request, path):
     else:
         return redirect(current_url_redirect.target)
 
+    criteria = dict(path=path)
+
+    if not request.user.is_staff:
+        # Only show published pages
+        criteria.update(public_from__lte=now())
+
     # Look for page at the current path
-    page = get_object_or_404(Page, path=path)
+    page = get_object_or_404(Page, **criteria)
 
     vars = dict(
         page=page,
