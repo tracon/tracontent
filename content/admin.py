@@ -29,6 +29,15 @@ class PageAdminForm(CommonAdminFormMixin, forms.ModelForm):
         required=not CommonFields.body['blank'],
     )
 
+    def clean_parent(self):
+        site = self.cleaned_data.get('site')
+        parent = self.cleaned_data.get('parent')
+
+        if site and parent and parent.site != site:
+            raise forms.ValidationError(u'Yläsivun tulee olla valitulla sivustolla')
+
+        return parent
+
     class Meta:
         model = Page
         fields = ('site', 'parent', 'slug', 'title', 'body', 'public_from', 'visible_from', 'path', 'order')
