@@ -21,6 +21,9 @@ class Command(BaseCommand):
             (('migrate',), dict()),
         ]
 
+        if 'kompassi_oauth2' in settings.INSTALLED_APPS:
+            management_commands.append((('setup_kompassi_oauth2',), dict()))
+
         for pargs, opts in management_commands:
             call_command(*pargs, **opts)
 
