@@ -142,7 +142,12 @@ class Page(models.Model):
         verbose_name=u'Valikkoteksti',
         help_text=u'Sivu näkyy tällä nimellä valikossa. Jos jätät tämän tyhjäksi, käytetään otsikkoa.',
     )
-    order = models.IntegerField(default=0, verbose_name=u'Järjestys', help_text=u'Saman yläsivun alaiset sivut järjestetään tämän luvun mukaan nousevaan järjestykseen (pienin ensin).')
+    order = models.IntegerField(
+        default=0,
+        verbose_name=u'Järjestys',
+        help_text=u'Saman yläsivun alaiset sivut järjestetään valikossa tämän luvun mukaan nousevaan '
+            u'järjestykseen (pienin ensin).'
+    )
     body = models.TextField(**CommonFields.body)
 
     @property

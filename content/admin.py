@@ -31,7 +31,19 @@ class PageAdminForm(CommonAdminFormMixin, forms.ModelForm):
 
     class Meta:
         model = Page
-        fields = ('site', 'parent', 'slug', 'title', 'body', 'public_from', 'visible_from', 'path')
+        fields = ('site', 'parent', 'slug', 'title', 'body', 'public_from', 'visible_from', 'path', 'order')
+
+
+class PageAdminTabularInline(admin.TabularInline):
+    model = Page
+    extra = 0
+    fields = ('order', 'slug', 'title')
+    readonly_fields = ('slug', 'title')
+    can_delete = False
+    show_change_link = True
+    verbose_name = u'alasivujen järjestys'
+    verbose_name_plural = u'alasivujen järjestys'
+    max_num = 0
 
 
 class PageAdmin(admin.ModelAdmin):
@@ -43,6 +55,22 @@ class PageAdmin(admin.ModelAdmin):
     view_on_site = True
     ordering = ('site', 'parent', 'order')
     search_fields = ('path', 'title')
+    inlines = (PageAdminTabularInline,)
+    fieldsets = (
+        (u'Sivun sijainti', dict(
+            fields=('site', 'parent')
+        )),
+        (u'Sisältö', dict(
+            fields=('title', 'body')
+        )),
+        (u'Julkaisuasetukset', dict(
+            fields=('public_from', 'visible_from')
+        )),
+        (u'Tekniset tiedot', dict(
+            fields=('slug', 'order'),
+            classes=('collapse',),
+        ))
+    )
 
 
 class BlogPostAdminForm(CommonAdminFormMixin, forms.ModelForm):
