@@ -15,9 +15,15 @@ html
     .navbar.navbar-inverse.navbar-fixed-top.tracon-navbar
       .container
         .navbar-header
+          button(type="button", class="navbar-toggle", data-toggle="collapse", data-target="#tracon-navbar-collapse")
+            span(class="sr-only") Avaa valikko
+            span(class="icon-bar")
+            span(class="icon-bar")
+            span(class="icon-bar")
+
           a.navbar-brand(href='/') {{ site_settings.title }}
 
-        .collapse.navbar-collapse
+        .collapse.navbar-collapse#tracon-navbar-collapse
           ul.nav.navbar-nav
             for entry in menu
               if entry.children
