@@ -13,6 +13,10 @@ Here's a cool feature matrix:
 | Support | Purchased separately | Purchased separately |
 | OAuth2 authentication | No | Yes |
 
+### No, really, what's the difference?
+
+If you have Kompassi OAuth2 support enabled, you're running the Enterprise Edition. Because starships, that's why :)
+
 ## Getting started
 
 Install dependencies:
