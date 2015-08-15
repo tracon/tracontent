@@ -158,7 +158,14 @@ CKEDITOR_IMAGE_BACKEND = 'pillow'
 CKEDITOR_JQUERY_URL = '/static/common/js/jquery.min.js'
 CKEDITOR_CONFIGS = {
     'default': {
-        'toolbar': 'Full',
+        'toolbar': [
+            ['Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker'],
+            ['NumberedList', 'BulletedList', 'Indent', 'Outdent', 'JustifyLeft', 'JustifyCenter', 'JustifyRight'],
+            ['Image', 'Table', 'Link', 'Unlink', 'Anchor', 'SectionLink', 'Subscript', 'Superscript'],
+            ['Undo', 'Redo'],
+            ['Source'],
+            ['Maximize']
+        ],
     },
 }
 
