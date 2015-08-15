@@ -37,6 +37,7 @@ class Command(BaseCommand):
             )
         )
 
+        ordering = 0
         for page_slug, page_title, child_pages in [
             ('front-page', u'Tracon 11 Tampere-talossa 3.–4. syyskuuta 2016', []),
             ('blog', u'Ajankohtaista', []), # pseudo page for menu, actually taken over by blog
@@ -55,6 +56,8 @@ class Command(BaseCommand):
                 ('sponsorit', u'Yhteistyökumppaneille'),
             ])
         ]:
+            ordering += 10
+
             parent_page, unused = Page.objects.get_or_create(
                 site=site,
                 parent=None,
@@ -64,10 +67,19 @@ class Command(BaseCommand):
                     body=u'Placeholder for {slug}'.format(slug=page_slug),
                     public_from=t,
                     visible_from=t,
+                    order=ordering,
                 )
             )
 
+            # v2
+            if parent_page.order == 0:
+                parent_page.order = ordering
+                parent_page.save()
+
+            child_ordering = 0
             for child_slug, child_title in child_pages:
+                child_ordering += 10
+
                 child_page, unused = Page.objects.get_or_create(
                     site=site,
                     parent=parent_page,
@@ -77,8 +89,14 @@ class Command(BaseCommand):
                         body=u'Placeholder for {slug}'.format(slug=child_slug),
                         public_from=t,
                         visible_from=t,
+                        order=child_ordering,
                     )
                 )
+
+                # v2
+                if child_page.order == 0:
+                    child_page.order = child_ordering
+                    child_page.save()
 
         front_page = Page.objects.get(site=site, slug='front-page')
         if not front_page.override_menu_text:

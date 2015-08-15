@@ -41,6 +41,8 @@ class PageAdmin(admin.ModelAdmin):
     list_filter = ('site',)
     readonly_fields = ('path',)
     view_on_site = True
+    ordering = ('site', 'parent', 'order')
+    search_fields = ('path', 'title')
 
 
 class BlogPostAdminForm(CommonAdminFormMixin, forms.ModelForm):
