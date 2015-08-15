@@ -158,11 +158,11 @@ class Page(models.Model):
     @property
     def is_front_page(self):
         return self.parent is None and self.slug == 'front-page'
-    
+
     def get_absolute_url(self):
         if self.is_front_page:
             return '/'
-        else:            
+        else:
             return '/' + self.path
 
     def get_menu_entry(self, child_levels=1, t=None, current_url=None):
@@ -196,7 +196,7 @@ class Page(models.Model):
             href=href,
             text=self.menu_text,
             children=children,
-        )      
+        )
 
     def _make_path(self):
         if self.parent is None:
