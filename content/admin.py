@@ -21,13 +21,14 @@ class CommonAdminFormMixin(object):
 
         return visible_from
 
+
 class PageAdminForm(CommonAdminFormMixin, forms.ModelForm):
     body = forms.CharField(
         widget=CKEditorWidget(),
         label=CommonFields.body['verbose_name'],
         required=not CommonFields.body['blank'],
     )
-    
+
     class Meta:
         model = Page
         fields = ('site', 'parent', 'slug', 'title', 'body', 'public_from', 'visible_from', 'path')
