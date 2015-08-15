@@ -1,6 +1,17 @@
-# Content management system for Tracon 2016 and forwards
+# TraContent CMS
 
 Too long have we suffered of Wordpress, Drupal and PencilBlue. We shall have content! And we shall be content!
+
+## Standard Edition vs. Enterprise Edition
+
+Here's a cool feature matrix:
+
+| Feature | Standard Edition | Enterprise Edition |
+|---------|------------------|--------------------|
+| License | MIT | MIT |
+| Price | Free | Free |
+| Support | Purchased separately | Purchased separately |
+| OAuth2 authentication | No | Yes |
 
 ## Getting started
 
