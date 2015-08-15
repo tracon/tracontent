@@ -24,6 +24,10 @@ class KompassiOAuth2AuthenticationBackend(object):
         response.raise_for_status()
         kompassi_user = response.json()
 
+        # Non-editor users may not log in via OAuth2
+        if settings.KOMPASSI_EDITOR_GROUP not in kompassi_user['groups']:
+            return None
+
         user, created = User.objects.get_or_create(username=kompassi_user['username'])
 
         for key, value in user_attrs_from_kompassi(kompassi_user).iteritems():

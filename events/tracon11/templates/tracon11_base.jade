@@ -28,6 +28,18 @@ html
                       li(class="#{child.active_css}"): a(href='#{child.href}')= child.text
               else
                 li(class="#{entry.active_css}"): a(href='#{entry.href}')= entry.text
+          ul.nav.navbar-nav.navbar-right
+            if user.is_authenticated
+              li.dropdown
+                a(href="#", class="dropdown-toggle", data-toggle="dropdown")
+                  | {{ user.get_full_name }}
+                  b.caret
+                ul.dropdown-menu
+                  li: a(href='/admin/') Sivuston ylläpito
+                  li: a(href='/admin/logout/?next=/') Kirjaudu ulos
+            else
+              li: a(href="#{settings.LOGIN_URL}") Kirjaudu...
+
     .tracon-content-wrap
       .container
         include content_admin_toolbar.jade

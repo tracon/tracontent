@@ -49,7 +49,7 @@ INSTALLED_APPS = (
 
     'kompassi_oauth2',
     'content',
-    'example',
+    #'example',
 
     'events.tracon11',
 )
@@ -174,5 +174,5 @@ KOMPASSI_API_V2_EVENT_INFO_URL_TEMPLATE = '{kompassi_host}/api/v2/events/{event_
 KOMPASSI_ADMIN_GROUP = 'admins'
 KOMPASSI_EDITOR_GROUP = 'tracontent-staff'
 
-LOGIN_URL = '/oauth2/login'
-LOGOUT_URL = '/logout'
+LOGIN_URL = '/oauth2/login' if 'kompassi_oauth2' in INSTALLED_APPS else '/admin/login/'
+LOGOUT_URL = '/admin/logout/'

@@ -16,9 +16,15 @@ def content_context(request):
         site_settings=site_settings,
         menu=menu,
         settings=settings,
-        tracontent_footer=u"<a href='https://github.com/tracon/tracontent' target='_blank'>TraContent "
-          u"CMS Enterprise Edition</a> © 2015 <a href='https://github.com/tracon/tracontent/blob/master/LICENSE'>"
-          "Santtu Pajukanta</a>.",
+        tracontent_footer=u"<a href='https://github.com/tracon/tracontent' target='_blank'>{app_name}"
+          u"</a> © 2015 <a href='https://github.com/tracon/tracontent/blob/master/LICENSE'>"
+          "Santtu Pajukanta</a>.".format(
+            app_name=(
+                'TraContent CMS Enterprise Edition'
+                if 'kompassi_oauth2' in settings.INSTALLED_APPS
+                else 'TraContent CMS Standard Edition'
+            ),
+        ),
     )
 
     return vars
