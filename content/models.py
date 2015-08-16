@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.timezone import now
+from django.shortcuts import render
 
 from .utils import slugify
 
@@ -119,7 +120,18 @@ class MenuEntry(BaseMenuEntry):
         return 'active' if self.active else ''
 
 
-class Page(models.Model):
+class RenderPageMixin(object):
+    def render(self, request):
+        site_settings = self.site.sitesettings
+
+        vars = dict(
+            page=self,
+        )
+
+        return render(request, site_settings.base_template, vars)
+
+
+class Page(models.Model, RenderPageMixin):
     site = models.ForeignKey(Site, **CommonFields.site)
     path = models.CharField(**CommonFields.path)
     parent = models.ForeignKey('Page',
@@ -250,7 +262,7 @@ class Redirect(models.Model):
         verbose_name_plural = u'uudelleenohjaukset'
 
 
-class BlogPost(models.Model):
+class BlogPost(models.Model, RenderPageMixin):
     site = models.ForeignKey(Site, **CommonFields.site)
     path = models.CharField(**CommonFields.path)
     date = models.DateField(

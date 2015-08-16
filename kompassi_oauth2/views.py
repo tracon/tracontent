@@ -1,11 +1,16 @@
+# encoding: utf-8
+
 from django.http import HttpResponse
 from django.views.generic import View
 from django.shortcuts import redirect
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login
+from django.contrib.sites.shortcuts import get_current_site
 
 from requests_oauthlib import OAuth2Session
+
+from content.models import RenderPageMixin
 
 
 def get_session(request, **kwargs):
@@ -22,6 +27,25 @@ class LoginView(View):
         request.session['oauth_state'] = state
         request.session['oauth_next'] = request.GET.get('next', None)
         return redirect(authorization_url)
+
+
+class LoginFailedPage(RenderPageMixin):
+    """
+    Renders a "login failed" error message into the site base template.
+    """
+    def __init__(self, site):
+        self.site = site
+        self.title = u'Sisäänkirjautuminen epäonnistui'
+        self.body = u"""
+            <p>Sisäänkirjautuminen Kompassin kautta epäonnistui. Todennäköisesti tämä johtuu siitä, että sinulla
+            ei ole oikeutta sivuston muokkaamiseen.</p>
+            <ul>
+            <li>Jos olet saanut muokkausoikeuden aivan taannoin, <a href='{kompassi}/logout'>kirjaudu ulos Kompassista</a> ja yritä uudelleen.
+            Muokkausoikeus tulee voimaan sisäänkirjautumisen yhteydessä.</li>
+            <li>Mikäli sinulla tulisi mielestäsi olla muokkausoikeus ja ylläoleva ei auttanut, ota yhteyttä
+            Japsuun.</li>
+            </ul>
+        """.format(kompassi=settings.KOMPASSI_HOST)
 
 
 class CallbackView(View):
@@ -45,4 +69,5 @@ class CallbackView(View):
             login(request, user)
             return redirect(next_url if next_url else '/')
         else:
-            return HttpResponse('OAuth2 login failed', status=403)
+            site = get_current_site(request)
+            return LoginFailedPage(site).render(request)

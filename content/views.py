@@ -29,11 +29,7 @@ def content_page_view(request, path):
     # Look for page at the current path
     page = get_object_or_404(Page, **criteria)
 
-    vars = dict(
-        page=page,
-    )
-
-    return render(request, site_settings.base_template, vars)
+    return page.render(request)
 
 
 def content_blog_post_view(request, year, month, day, slug):
