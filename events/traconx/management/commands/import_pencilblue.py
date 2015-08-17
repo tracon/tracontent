@@ -30,7 +30,7 @@ class Command(BaseCommand):
 
         tc_site = Site.objects.get(domain=options['domain'])
 
-        tc_root_page = Page.objects.get_or_create(
+        tc_root_page, unused = Page.objects.get_or_create(
             site=tc_site,
             slug='imported',
             defaults=dict(
