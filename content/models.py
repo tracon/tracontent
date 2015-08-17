@@ -392,9 +392,6 @@ class BlogPost(models.Model, RenderPageMixin):
         if self.title and not self.slug:
             self.slug = slugify(self.title)
 
-        if not self.date:
-            self.date = now().date()
-
         if self.date and self.slug:
             self.path = self._make_path()
 

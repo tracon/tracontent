@@ -29,21 +29,21 @@ class CommonAdminFormMixin(object):
         return visible_from
 
 
-class PageAdminForm(CommonAdminFormMixin, forms.ModelForm):
+class PageAdminForm(forms.ModelForm, CommonAdminFormMixin):
     body = forms.CharField(
         widget=CKEditorWidget(),
         label=CommonFields.body['verbose_name'],
         required=not CommonFields.body['blank'],
     )
 
-    def clean_parent(self):
+    def clean_site(self):
         site = self.cleaned_data.get('site')
         parent = self.cleaned_data.get('parent')
 
         if site and parent and parent.site != site:
             raise forms.ValidationError(u'Yläsivun tulee olla valitulla sivustolla')
 
-        return parent
+        return site
 
     class Meta:
         model = Page
@@ -73,28 +73,36 @@ class PageAdmin(admin.ModelAdmin):
     search_fields = ('path', 'title')
     inlines = (PageAdminTabularInline,)
     fieldsets = (
-        (u'Sivun sijainti', dict(
-            fields=('site', 'parent')
-        )),
         (u'Sisältö', dict(
             fields=('title', 'body')
         )),
         (u'Julkaisuasetukset', dict(
-            fields=('public_from', 'visible_from')
+            fields=('parent', 'public_from', 'visible_from')
         )),
         (u'Lisäasetukset', dict(
-            fields=('slug', 'order', 'path'),
+            fields=('site', 'slug', 'order', 'path'),
             classes=('collapse',),
         ))
     )
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'site':
+            kwargs['initial'] = request.site
 
-class BlogPostAdminForm(CommonAdminFormMixin, forms.ModelForm):
+        return super(PageAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
+
+class BlogPostAdminForm(forms.ModelForm, CommonAdminFormMixin):
     body = forms.CharField(
         widget=CKEditorWidget(),
         label=CommonFields.body['verbose_name'],
         required=not CommonFields.body['blank'],
     )
+
+    def __init__(self, *args, **kwargs):
+        super(BlogPostAdminForm, self).__init__(*args, **kwargs)
+
+        self.fields['date'].initial = now().date()
 
     class Meta:
         model = BlogPost
@@ -109,25 +117,25 @@ class BlogPostAdmin(admin.ModelAdmin):
     readonly_fields = ('path',)
     view_on_site = True
     fieldsets = (
-        (u'Postauksen sijainti', dict(
-            fields=('site', 'date'),
-        )),
         (u'Sisältö', dict(
             fields=('title', 'body'),
         )),
         (u'Julkaisuasetukset', dict(
-            fields=('public_from', 'visible_from'),
+            fields=('date', 'public_from', 'visible_from'),
         )),
         (u'Lisäasetukset', dict(
-            fields=('slug', 'author', 'path'),
+            fields=('site', 'slug', 'author', 'path'),
             classes=('collapse',),
         ))
     )
 
-    def save_model(self, request, obj, form, change):
-        if getattr(obj, 'author', None) is None:
-            obj.author = request.user
-        obj.save()
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'site':
+            kwargs['initial'] = request.site
+        elif db_field.name == 'author':
+            kwargs['initial'] = request.user
+
+        return super(BlogPostAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 admin.site.register(Page, PageAdmin)
