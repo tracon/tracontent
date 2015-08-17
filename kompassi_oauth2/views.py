@@ -46,6 +46,7 @@ class LoginFailedPage(RenderPageMixin):
             Japsuun.</li>
             </ul>
         """.format(kompassi=settings.KOMPASSI_HOST)
+        self.template = site.site_settings.page_template
 
 
 class CallbackView(View):
