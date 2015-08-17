@@ -53,9 +53,7 @@ class CommonFields:
     )
 
     template = dict(
-        max_length=127,
-        verbose_name=u'Sivupohja',
-        help_text=u'Sivut näytetään käyttäen tätä sivupohjaa. Tämännimisen sivupohjan tulee löytyä lähdekoodista.',
+
     )
 
     site = dict(
@@ -85,7 +83,18 @@ class SiteSettings(models.Model):
         verbose_name=u'Sivuston otsikko',
         help_text=u'Sivuston otsikko näkyy mm. selaimen välilehden otsikossa.',
     )
-    base_template = models.CharField(**CommonFields.template)
+
+    base_template = models.CharField(
+        max_length=127,
+        verbose_name=u'Asettelupohja',
+        help_text=u'Asettelupohja määrittelee sivuston perusasettelun. Tämännimisen asettelupohjan tulee löytyä lähdekoodista.',
+    )
+
+    page_template = models.CharField(
+        max_length=127,
+        verbose_name=u'Sivupohja',
+        help_text=u'Sivut näytetään käyttäen tätä sivupohjaa. Tämännimisen sivupohjan tulee löytyä lähdekoodista.',
+    )
 
     @classmethod
     def get_or_create_dummy(cls):
@@ -96,6 +105,7 @@ class SiteSettings(models.Model):
             defaults=dict(
                 title='Test site',
                 base_template='example_base.jade',
+                page_template='example_page.jade',
             )
         )
 
@@ -128,7 +138,7 @@ class RenderPageMixin(object):
             page=self,
         )
 
-        return render(request, site_settings.base_template, vars)
+        return render(request, site_settings.page_template, vars)
 
 
 class Page(models.Model, RenderPageMixin):

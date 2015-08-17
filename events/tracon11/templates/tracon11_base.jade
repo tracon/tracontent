@@ -49,10 +49,8 @@ html
               li: a(href="#{settings.LOGIN_URL}") Kirjaudu...
 
     .tracon-content-wrap
-      .container
-        include content_admin_toolbar.jade
-        h1 {{ page.title }}
-        {{ page.body|safe }}
+      block content
+        p Content goes here.
 
       .tracon-footer-push
 

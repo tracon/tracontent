@@ -34,8 +34,14 @@ class Command(BaseCommand):
             defaults=dict(
                 title='Tracon 11',
                 base_template='tracon11_base.jade',
+                page_template='tracon11_base.jade',
             )
         )
+
+        # v3
+        if site_settings.page_template == 'example_page.jade':
+            site_settings.page_template = 'tracon11_page.jade'
+            site_settings.save()
 
         ordering = 0
         for page_slug, page_title, child_pages in [
