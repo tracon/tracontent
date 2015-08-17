@@ -93,6 +93,20 @@ class SiteSettings(models.Model):
         help_text=u'Sivuston otsikko näkyy mm. selaimen välilehden otsikossa.',
     )
 
+    description = models.TextField(
+        verbose_name=u'Sivuston kuvaus',
+        help_text=u'Näkyy mm. hakukoneille sekä RSS-asiakasohjelmille.',
+        blank=True,
+        default='',
+    )
+
+    keywords = models.TextField(
+        verbose_name=u'Sivuston avainsanat',
+        help_text=u'Pilkuilla erotettu avainsanalista. Näkyy mm. hakukoneille.',
+        blank=True,
+        default='',
+    )
+
     base_template = models.CharField(
         max_length=127,
         verbose_name=u'Asettelupohja',
@@ -143,6 +157,11 @@ class SiteSettings(models.Model):
     def get_absolute_url(self):
         return 'http://{domain}'.format(domain=self.site.domain)
 
+    def get_visible_blog_posts(self):
+        t = now()
+
+        return self.site.blog_post_set.filter(visible_from__lte=t)
+
     def __unicode__(self):
         return self.site.domain if self.site else None
 
@@ -180,6 +199,8 @@ class Page(models.Model, RenderPageMixin):
 
     slug = models.CharField(**CommonFields.slug)
 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     public_from = models.DateTimeField(**CommonFields.public_from)
     visible_from = models.DateTimeField(**CommonFields.visible_from)
 
@@ -319,6 +340,8 @@ class BlogPost(models.Model, RenderPageMixin):
         help_text=u'Jos jätät kentän tyhjäksi, tekijäksi asetetaan automaattisesti sinut.',
     )
 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     public_from = models.DateTimeField(**CommonFields.public_from)
     visible_from = models.DateTimeField(**CommonFields.visible_from)
 

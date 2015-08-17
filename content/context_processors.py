@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 from django.utils.timezone import now
+from django.core.urlresolvers import reverse
 
 
 def content_context(request):
@@ -16,6 +17,10 @@ def content_context(request):
         site_settings=site_settings,
         menu=menu,
         settings=settings,
+        feeds=dict(
+            rss=request.build_absolute_uri(reverse('content_blog_feed_rss_view')),
+            atom=request.build_absolute_uri(reverse('content_blog_feed_atom_view')),
+        ),
         tracontent_footer=u"<a href='https://github.com/tracon/tracontent' target='_blank'>{app_name}"
           u"</a> © 2015 <a href='https://github.com/tracon/tracontent/blob/master/LICENSE'>"
           "Santtu Pajukanta</a>.".format(
