@@ -6,14 +6,12 @@ from django.core.urlresolvers import reverse
 
 def content_context(request):
     from django.conf import settings
-    from django.contrib.sites.shortcuts import get_current_site
 
-    site = get_current_site(request)
-    site_settings = site.site_settings
+    site_settings = request.site.site_settings
     menu = site_settings.get_menu(t=now(), current_url=request.path)
 
     vars = dict(
-        site=site,
+        site=request.site,
         site_settings=site_settings,
         menu=menu,
         settings=settings,

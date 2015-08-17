@@ -6,7 +6,6 @@ from django.shortcuts import redirect
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login
-from django.contrib.sites.shortcuts import get_current_site
 
 from requests_oauthlib import OAuth2Session
 
@@ -70,5 +69,4 @@ class CallbackView(View):
             login(request, user)
             return redirect(next_url if next_url else '/')
         else:
-            site = get_current_site(request)
-            return LoginFailedPage(site).render(request)
+            return LoginFailedPage(request.site).render(request)

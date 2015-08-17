@@ -9,12 +9,11 @@ from .models import Page, BlogPost, Redirect
 
 
 def content_page_view(request, path):
-    site = get_current_site(request)
-    site_settings = site.site_settings
+    site_settings = request.site.site_settings
 
     # Look for redirect at the current path
     try:
-        current_url_redirect = Redirect.objects.get(site=site, path=path)
+        current_url_redirect = Redirect.objects.get(site=request.site, path=path)
     except Redirect.DoesNotExist:
         pass
     else:
@@ -33,8 +32,7 @@ def content_page_view(request, path):
 
 
 def content_blog_index_view(request):
-    site = get_current_site(request)
-    site_settings = site.site_settings
+    site_settings = request.site.site_settings
 
     vars = dict(
         blog_posts=site_settings.get_visible_blog_posts(),
@@ -44,15 +42,14 @@ def content_blog_index_view(request):
 
 
 def content_blog_post_view(request, year, month, day, slug):
-    site = get_current_site(request)
-    site_settings = site.site_settings
+    site_settings = request.site.site_settings
 
     try:
         post_date = date(int(year), int(month), int(day))
     except ValueError:
         raise Http404(u'Invalid date')
 
-    criteria = dict(site=site, date=post_date, slug=slug)
+    criteria = dict(site=request.site, date=post_date, slug=slug)
 
     if not request.user.is_staff:
         # Only show published blog posts

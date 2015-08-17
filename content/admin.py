@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 from django.contrib import admin
-from django.contrib.sites.shortcuts import get_current_site
+from django.utils.timezone import now
 from django import forms
 
 from ckeditor.widgets import CKEditorWidget
