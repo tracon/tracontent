@@ -34,14 +34,21 @@ class Command(BaseCommand):
             defaults=dict(
                 title='Tracon 11',
                 base_template='tracon11_base.jade',
-                page_template='tracon11_base.jade',
+                page_template='tracon11_page.jade',
+                blog_index_template='tracon11_blog_index.jade',
+                blog_post_template='tracon11_blog_post.jade',
             )
         )
 
         # v3
         if site_settings.page_template == 'example_page.jade':
             site_settings.page_template = 'tracon11_page.jade'
-            site_settings.save()
+        if site_settings.blog_index_template == 'example_blog_index.jade':
+            site_settings.blog_index_template = 'tracon11_blog_index.jade'
+        if site_settings.blog_post_template == 'example_blog_post.jade':
+            site_settings.blog_post_template = 'tracon11_blog_post.jade'
+
+        site_settings.save()
 
         ordering = 0
         for page_slug, page_title, child_pages in [

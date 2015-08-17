@@ -10,7 +10,7 @@ from .models import Page, BlogPost, Redirect
 
 def content_page_view(request, path):
     site = get_current_site(request)
-    site_settings = site.sitesettings
+    site_settings = site.site_settings
 
     # Look for redirect at the current path
     try:
@@ -32,9 +32,22 @@ def content_page_view(request, path):
     return page.render(request)
 
 
+def content_blog_index_view(request):
+    site = get_current_site(request)
+    site_settings = site.site_settings
+
+    blog_posts = site.blog_post_set.all()
+
+    vars = dict(
+        blog_posts=blog_posts,
+    )
+
+    return render(request, site_settings.blog_index_template, vars)
+
+
 def content_blog_post_view(request, year, month, day, slug):
     site = get_current_site(request)
-    site_settings = site.sitesettings
+    site_settings = site.site_settings
 
     try:
         post_date = date(int(year), int(month), int(day))
@@ -42,9 +55,4 @@ def content_blog_post_view(request, year, month, day, slug):
         raise Http404(u'Invalid date')
 
     blog_post = get_object_or_404(BlogPost, site=site, date=post_date, slug=slug)
-
-    vars = dict(
-        page=blog_post,
-    )
-
-    return render(request, site_settings.base_template, vars)
+    return blog_post.render(request)

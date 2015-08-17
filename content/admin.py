@@ -1,11 +1,18 @@
 # encoding: utf-8
 
 from django.contrib import admin
+from django.contrib.sites.shortcuts import get_current_site
 from django import forms
 
 from ckeditor.widgets import CKEditorWidget
 
-from .models import Page, BlogPost, Redirect, CommonFields
+from .models import (
+    BlogPost,
+    CommonFields,
+    Page,
+    Redirect,
+    SiteSettings,
+)
 
 
 class CommonAdminFormMixin(object):
@@ -75,8 +82,8 @@ class PageAdmin(admin.ModelAdmin):
         (u'Julkaisuasetukset', dict(
             fields=('public_from', 'visible_from')
         )),
-        (u'Tekniset tiedot', dict(
-            fields=('slug', 'order'),
+        (u'Lisäasetukset', dict(
+            fields=('slug', 'order', 'path'),
             classes=('collapse',),
         ))
     )
@@ -91,7 +98,7 @@ class BlogPostAdminForm(CommonAdminFormMixin, forms.ModelForm):
 
     class Meta:
         model = BlogPost
-        fields = ('site', 'date', 'slug', 'title', 'body', 'public_from', 'visible_from', 'path')
+        fields = ('site', 'date', 'slug', 'title', 'body', 'public_from', 'visible_from', 'path', 'author')
 
 
 class BlogPostAdmin(admin.ModelAdmin):
@@ -101,8 +108,29 @@ class BlogPostAdmin(admin.ModelAdmin):
     list_filter = ('site',)
     readonly_fields = ('path',)
     view_on_site = True
+    fieldsets = (
+        (u'Postauksen sijainti', dict(
+            fields=('site', 'date'),
+        )),
+        (u'Sisältö', dict(
+            fields=('title', 'body'),
+        )),
+        (u'Julkaisuasetukset', dict(
+            fields=('public_from', 'visible_from'),
+        )),
+        (u'Lisäasetukset', dict(
+            fields=('slug', 'author', 'path'),
+            classes=('collapse',),
+        ))
+    )
+
+    def save_model(self, request, obj, form, change):
+        if getattr(obj, 'author', None) is None:
+            obj.author = request.user
+        obj.save()
 
 
 admin.site.register(Page, PageAdmin)
 admin.site.register(Redirect)
 admin.site.register(BlogPost, BlogPostAdmin)
+admin.site.register(SiteSettings)

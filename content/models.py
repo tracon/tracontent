@@ -2,12 +2,16 @@
 
 from collections import namedtuple
 
+from django.conf import settings
+from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 from django.core.validators import RegexValidator
 from django.db import models
-from django.utils.timezone import now
 from django.shortcuts import render
+from django.utils.timezone import now
+
+import bleach
 
 from .utils import slugify
 
@@ -38,7 +42,8 @@ class CommonFields:
         verbose_name=u'Tekninen nimi',
         help_text=u'Tekninen nimi eli "slug" näkyy URL-osoitteissa. Sallittuja '
             u'merkkejä ovat pienet kirjaimet, numerot ja väliviiva. Jos jätät teknisen nimen tyhjäksi, '
-            u'se generoidaan automaattisesti otsikosta.'
+            u'se generoidaan automaattisesti otsikosta. Jos muutat teknistä nimeä julkaisun jälkeen, '
+            u'muista luoda tarvittavat uudelleenojaukset.',
     )
 
     title = dict(
@@ -77,7 +82,11 @@ class CommonFields:
 
 
 class SiteSettings(models.Model):
-    site = models.OneToOneField(Site)
+    site = models.OneToOneField(Site,
+        verbose_name=u'Sivusto',
+        related_name='site_settings',
+    )
+
     title = models.CharField(
         max_length=1023,
         verbose_name=u'Sivuston otsikko',
@@ -96,6 +105,18 @@ class SiteSettings(models.Model):
         help_text=u'Sivut näytetään käyttäen tätä sivupohjaa. Tämännimisen sivupohjan tulee löytyä lähdekoodista.',
     )
 
+    blog_index_template = models.CharField(
+        max_length=127,
+        verbose_name=u'Blogilistauspohja',
+        help_text=u'Blogilistaus näytetään käyttäen tätä sivupohjaa. Tämännimisen sivupohjan tulee löytyä lähdekoodista.',
+    )
+
+    blog_post_template = models.CharField(
+        max_length=127,
+        verbose_name=u'Blogipostauspohja',
+        help_text=u'Blogipostaukset näytetään käyttäen tätä sivupohjaa. Tämännimisen sivupohjan tulee löytyä lähdekoodista.',
+    )
+
     @classmethod
     def get_or_create_dummy(cls):
         site, unused = Site.objects.get_or_create(domain='example.com')
@@ -106,6 +127,7 @@ class SiteSettings(models.Model):
                 title='Test site',
                 base_template='example_base.jade',
                 page_template='example_page.jade',
+                blog_index_template='example_blog_index.jade',
             )
         )
 
@@ -118,9 +140,15 @@ class SiteSettings(models.Model):
             for page in Page.objects.filter(site=self.site, parent=None, visible_from__lte=t).prefetch_related('child_page_set').all()
         ]
 
+    def get_absolute_url(self):
+        return 'http://{domain}'.format(domain=self.site.domain)
+
+    def __unicode__(self):
+        return self.site.domain if self.site else None
+
     class Meta:
         verbose_name = u'sivuston asetukset'
-        verbose_name = u'sivustojen asetukset'
+        verbose_name_plural = u'sivustojen asetukset'
 
 
 BaseMenuEntry = namedtuple('MenuEntry', 'active href text children')
@@ -132,13 +160,11 @@ class MenuEntry(BaseMenuEntry):
 
 class RenderPageMixin(object):
     def render(self, request):
-        site_settings = self.site.sitesettings
-
         vars = dict(
             page=self,
         )
 
-        return render(request, site_settings.page_template, vars)
+        return render(request, self.template, vars)
 
 
 class Page(models.Model, RenderPageMixin):
@@ -182,6 +208,10 @@ class Page(models.Model, RenderPageMixin):
             return self.override_menu_text
         else:
             return self.title
+
+    @property
+    def template(self):
+        return self.site.site_settings.page_template
 
     @property
     def is_front_page(self):
@@ -273,23 +303,56 @@ class Redirect(models.Model):
 
 
 class BlogPost(models.Model, RenderPageMixin):
-    site = models.ForeignKey(Site, **CommonFields.site)
+    site = models.ForeignKey(Site, related_name='blog_post_set', **CommonFields.site)
     path = models.CharField(**CommonFields.path)
     date = models.DateField(
+        blank=True,
         verbose_name=u'Päivämäärä',
-        help_text=u'Päivämäärä on osa postauksen osoitetta. Älä muuta päivämäärää julkaisun jälkeen.',
+        help_text=u'Päivämäärä on osa postauksen osoitetta. Älä muuta päivämäärää julkaisun jälkeen. '
+            u'Jos jätät kentän tyhjäksi, siihen valitaan tämä päivä.',
     )
     slug = models.CharField(**CommonFields.slug)
+    author = models.ForeignKey(User,
+        null=True,
+        blank=True,
+        verbose_name=u'Tekijä',
+        help_text=u'Jos jätät kentän tyhjäksi, tekijäksi asetetaan automaattisesti sinut.',
+    )
 
     public_from = models.DateTimeField(**CommonFields.public_from)
     visible_from = models.DateTimeField(**CommonFields.visible_from)
 
     title = models.CharField(**CommonFields.title)
     body = models.TextField(**CommonFields.body)
+    override_excerpt = models.TextField(
+        verbose_name=u'Lyhennelmä',
+        blank=True,
+        default='',
+        help_text=u'Kirjoita muutaman lauseen mittainen lyhennelmä kirjoituksesta. Lyhennelmä näkyy '
+            u'blogilistauksessa. Mikäli lyhennelmää ei ole annettu, leikataan lyhennelmäksi sopivan '
+            u'mittainen pätkä itse kirjoituksesta.',
+    )
 
     @property
     def edit_link(self):
         return reverse('admin:content_blogpost_change', args=(self.id,))
+
+    @property
+    def excerpt(self):
+        max_chars = settings.TRACONTENT_BLOG_AUTO_EXCERPT_MAX_CHARS
+
+        if self.override_excerpt:
+            return self.override_excerpt
+        else:
+            plain_text = bleach.clean(self.body, tags=[], strip=True)
+            if len(plain_text) <= max_chars:
+                return plain_text
+            else:
+                return plain_text[:max_chars] + u'…'
+
+    @property
+    def template(self):
+        return self.site.site_settings.blog_post_template
 
     def get_absolute_url(self):
         return '/' + self.path
@@ -306,6 +369,9 @@ class BlogPost(models.Model, RenderPageMixin):
         if self.title and not self.slug:
             self.slug = slugify(self.title)
 
+        if not self.date:
+            self.date = now().date()
+
         if self.date and self.slug:
             self.path = self._make_path()
 
@@ -315,3 +381,6 @@ class BlogPost(models.Model, RenderPageMixin):
         verbose_name = u'blogipostaus'
         verbose_name_plural = u'blogipostaukset'
         unique_together = [('site', 'path'), ('site', 'date', 'slug')]
+
+        # Usually queries are filtered by site, so we skip it from the ordering.
+        ordering = ('-date', '-public_from')

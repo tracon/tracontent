@@ -8,7 +8,7 @@ def content_context(request):
     from django.contrib.sites.shortcuts import get_current_site
 
     site = get_current_site(request)
-    site_settings = site.sitesettings
+    site_settings = site.site_settings
     menu = site_settings.get_menu(t=now(), current_url=request.path)
 
     vars = dict(

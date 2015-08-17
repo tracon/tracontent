@@ -29,6 +29,7 @@ class LoginView(View):
         return redirect(authorization_url)
 
 
+# TODO use base template instead of Page.render
 class LoginFailedPage(RenderPageMixin):
     """
     Renders a "login failed" error message into the site base template.

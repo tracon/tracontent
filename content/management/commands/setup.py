@@ -30,6 +30,8 @@ class Command(BaseCommand):
         if test:
             user, created = User.objects.get_or_create(
                 username='mahti',
+                first_name='Markku',
+                last_name='Mahtinen',
                 is_staff=True,
                 is_superuser=True,
             )

@@ -12,7 +12,6 @@ actual_patterns = [
 ]
 
 if 'kompassi_oauth2' in settings.INSTALLED_APPS:
-    print 'hello'
     actual_patterns.append(
         url(r'', include('kompassi_oauth2.urls'))
     )
