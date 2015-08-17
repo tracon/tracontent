@@ -299,10 +299,7 @@ class Page(models.Model, RenderPageMixin):
             child_page.save()
 
     def __unicode__(self):
-        return u'{domain}/{path}'.format(
-            domain=self.site.domain if self.site is not None else None,
-            path=self.path,
-        )
+        return self.title
 
     class Meta:
         verbose_name = u'sivu'
@@ -397,6 +394,9 @@ class BlogPost(models.Model, RenderPageMixin):
             self.path = self._make_path()
 
         return super(BlogPost, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        return self.title
 
     class Meta:
         verbose_name = u'blogipostaus'
