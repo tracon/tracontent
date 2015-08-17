@@ -13,9 +13,16 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         group, unused = Group.objects.get_or_create(name=settings.KOMPASSI_EDITOR_GROUP)
 
-        permissions = Permission.objects.filter(
-          content_type__app_label='content',
-          content_type__model__in=['page', 'redirect', 'blogpost'],
+        content_permissions = Permission.objects.filter(
+            content_type__app_label='content',
+            content_type__model__in=['page', 'redirect', 'blogpost'],
         )
 
-        group.permissions.add(*permissions)
+        group.permissions.add(*content_permissions)
+
+        ads_permissions = Permission.objects.filter(
+            content_type__app_label='ads',
+            content_type__model__in=['banner', 'bannerclick'],
+        )
+
+        group.permissions.add(*ads_permissions)
