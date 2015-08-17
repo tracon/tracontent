@@ -8,6 +8,12 @@ class BannerAdmin(admin.ModelAdmin):
     list_display = ('site', 'title', 'url', 'active')
     list_filter = ('site', 'active')
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'site':
+            kwargs['initial'] = request.site
+
+        return super(BannerAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
 
 class BannerClickAdmin(admin.ModelAdmin):
     model = BannerClick
@@ -17,10 +23,10 @@ class BannerClickAdmin(admin.ModelAdmin):
     fields = ('banner', 'date', 'clicks')
     readonly_fields = ('banner', 'date', 'clicks')
 
-    def has_add_permission(self, request):
+    def has_add_permission(self, *args, **kwargs):
         return False
 
-    def has_delete_permission(self, request, obj):
+    def has_delete_permission(self, *args, **kwargs):
         return False
 
 
