@@ -106,7 +106,7 @@ class BlogPostAdminForm(forms.ModelForm, CommonAdminFormMixin):
 
     class Meta:
         model = BlogPost
-        fields = ('site', 'date', 'slug', 'title', 'body', 'public_from', 'visible_from', 'path', 'author')
+        fields = ('site', 'date', 'slug', 'title', 'override_excerpt', 'body', 'public_from', 'visible_from', 'path', 'author')
 
 
 class BlogPostAdmin(admin.ModelAdmin):
@@ -118,7 +118,7 @@ class BlogPostAdmin(admin.ModelAdmin):
     view_on_site = True
     fieldsets = (
         (u'Sisältö', dict(
-            fields=('title', 'body'),
+            fields=('title', 'override_excerpt', 'body'),
         )),
         (u'Julkaisuasetukset', dict(
             fields=('date', 'public_from', 'visible_from'),
