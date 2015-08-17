@@ -52,6 +52,7 @@ INSTALLED_APPS = (
     'ads',
     #'example',
 
+    'events.traconx',
     'events.tracon11',
 )
 
