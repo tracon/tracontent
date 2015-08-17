@@ -1,11 +1,11 @@
 # encoding: utf-8
 
-from django.utils.timezone import now
+from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.utils.timezone import now
 
 
 def content_context(request):
-    from django.conf import settings
 
     site_settings = request.site.site_settings
     menu = site_settings.get_menu(t=now(), current_url=request.path)

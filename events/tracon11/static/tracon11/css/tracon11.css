@@ -15,6 +15,11 @@
   height: 45px;
 }
 
+.tracon-banners a, .tracon-banners img {
+  display: block;
+  width: 100%;
+}
+
 /* Fixed footer black magic */
 html,
 body {

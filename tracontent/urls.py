@@ -16,6 +16,11 @@ if 'kompassi_oauth2' in settings.INSTALLED_APPS:
         url(r'', include('kompassi_oauth2.urls'))
     )
 
+if 'ads' in settings.INSTALLED_APPS:
+    actual_patterns.append(
+        url(r'', include('ads.urls'))
+    )
+
 if settings.DEBUG:
     actual_patterns.extend(
         static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

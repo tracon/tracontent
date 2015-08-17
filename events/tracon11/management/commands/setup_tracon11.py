@@ -2,10 +2,16 @@
 
 from datetime import datetime, timedelta, date
 
+from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.sites.models import Site
+from django.core.files import File
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
-from django.contrib.contenttypes.models import ContentType
 from django.utils.timezone import now
+
+from content.models import Page, Redirect, SiteSettings, BlogPost
+from ads.models import Banner
 
 
 class Command(BaseCommand):
@@ -16,21 +22,27 @@ class Command(BaseCommand):
         parser.add_argument('domain', type=unicode)
 
     def handle(self, *args, **options):
-        self.setup_content(domain=options['domain'])
+        Setup(domain=options['domain']).setup()
 
-    def setup_content(self, domain):
-        from django.contrib.sites.models import Site
-        from django.contrib.auth.models import User
-        from content.models import Page, Redirect, SiteSettings, BlogPost
 
+class Setup(object):
+    def __init__(self, domain):
+        self.domain = domain
+
+    def setup(self):
+        print 'NOTE: Setting up Tracon 11 site at {domain}'.format(domain=self.domain)
+        self.setup_site()
+        self.setup_content()
+        self.setup_ads()
+
+    def setup_site(self):
+        self.site, unused = Site.objects.get_or_create(domain=self.domain)
+
+    def setup_content(self):
         t = now()
 
-        print 'NOTE: Setting up Tracon 11 site at {domain}'.format(domain=domain)
-
-        site, unused = Site.objects.get_or_create(domain=domain)
-
-        site_settings, unused = SiteSettings.objects.get_or_create(
-            site=site,
+        self.site_settings, unused = SiteSettings.objects.get_or_create(
+            site=self.site,
             defaults=dict(
                 title='Tracon 11',
                 base_template='tracon11_base.jade',
@@ -41,14 +53,14 @@ class Command(BaseCommand):
         )
 
         # v3
-        if site_settings.page_template == 'example_page.jade':
-            site_settings.page_template = 'tracon11_page.jade'
-        if site_settings.blog_index_template == 'example_blog_index.jade':
-            site_settings.blog_index_template = 'tracon11_blog_index.jade'
-        if site_settings.blog_post_template == 'example_blog_post.jade':
-            site_settings.blog_post_template = 'tracon11_blog_post.jade'
+        if self.site_settings.page_template == 'example_page.jade':
+            self.site_settings.page_template = 'tracon11_page.jade'
+        if self.site_settings.blog_index_template == 'example_blog_index.jade':
+            self.site_settings.blog_index_template = 'tracon11_blog_index.jade'
+        if self.site_settings.blog_post_template == 'example_blog_post.jade':
+            self.site_settings.blog_post_template = 'tracon11_blog_post.jade'
 
-        site_settings.save()
+        self.site_settings.save()
 
         ordering = 0
         for page_slug, page_title, child_pages in [
@@ -72,7 +84,7 @@ class Command(BaseCommand):
             ordering += 10
 
             parent_page, unused = Page.objects.get_or_create(
-                site=site,
+                site=self.site,
                 parent=None,
                 slug=page_slug,
                 defaults=dict(
@@ -94,7 +106,7 @@ class Command(BaseCommand):
                 child_ordering += 10
 
                 child_page, unused = Page.objects.get_or_create(
-                    site=site,
+                    site=self.site,
                     parent=parent_page,
                     slug=child_slug,
                     defaults=dict(
@@ -111,7 +123,7 @@ class Command(BaseCommand):
                     child_page.order = child_ordering
                     child_page.save()
 
-        front_page = Page.objects.get(site=site, slug='front-page')
+        front_page = Page.objects.get(site=self.site, slug='front-page')
         if not front_page.override_menu_text:
             front_page.override_menu_text = 'Etusivu'
             front_page.save()
@@ -120,9 +132,24 @@ class Command(BaseCommand):
             ('admin', '/admin/'),
         ]:
             redirect, unused = Redirect.objects.get_or_create(
-                site=site,
+                site=self.site,
                 path=path,
                 defaults=dict(
                     target=target
                 ),
             )
+
+    def setup_ads(self):
+        for banner_title, banner_url, banner_path in [
+            (u'Säätöyhteisö B2 ry', 'http://b2.fi', 'events/tracon11/static/tracon11/img/b2-saatoa2008-wh-200.png'),
+        ]:
+            try:
+                Banner.objects.get(site=self.site, url=banner_url)
+            except Banner.DoesNotExist:
+                with open(banner_path) as banner_file:
+                    Banner(
+                        site=self.site,
+                        title=banner_title,
+                        url=banner_url,
+                        image_file=File(banner_file),
+                    ).save()

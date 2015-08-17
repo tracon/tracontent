@@ -1,7 +1,6 @@
 extends tracon11_base.jade
 block content
-  .container
-    include content_toolbar_admin.jade
-    h1 {{ page.title }}
-    p.text-muted: small #{page.author.get_full_name} {{ page.date|date:"j.n.Y" }}
-    {{ page.body|safe }}
+  include content_toolbar_admin.jade
+  h1 {{ page.title }}
+  p.text-muted: small #{page.author.get_full_name} {{ page.date|date:"j.n.Y" }}
+  {{ page.body|safe }}

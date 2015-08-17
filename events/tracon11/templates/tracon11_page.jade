@@ -1,6 +1,5 @@
 extends tracon11_base.jade
 block content
-  .container
-    include content_toolbar_admin.jade
-    h1 {{ page.title }}
-    {{ page.body|safe }}
+  include content_toolbar_admin.jade
+  h1 {{ page.title }}
+  {{ page.body|safe }}

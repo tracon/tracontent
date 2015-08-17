@@ -49,6 +49,7 @@ INSTALLED_APPS = (
 
     'kompassi_oauth2',
     'content',
+    'ads',
     #'example',
 
     'events.tracon11',
@@ -81,6 +82,11 @@ TEMPLATE_CONTEXT_PROCESSORS = defaults.TEMPLATE_CONTEXT_PROCESSORS + (
     'django.contrib.messages.context_processors.messages',
     'content.context_processors.content_context',
 )
+
+if 'ads' in INSTALLED_APPS:
+    TEMPLATE_CONTEXT_PROCESSORS += (
+        'ads.context_processors.ads_context',
+    )
 
 ROOT_URLCONF = 'tracontent.urls'
 

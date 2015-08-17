@@ -142,6 +142,7 @@ class SiteSettings(models.Model):
                 base_template='example_base.jade',
                 page_template='example_page.jade',
                 blog_index_template='example_blog_index.jade',
+                blog_post_template='example_blog_post.jade',
             )
         )
 
