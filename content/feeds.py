@@ -40,7 +40,7 @@ class BlogFeedRSS(Feed):
         return blog_post.author.get_full_name()
 
     def item_updateddate(self, blog_post):
-        return blog_post.updated_at
+        return blog_post.public_from
 
 
 class BlogFeedAtom(BlogFeedRSS):
