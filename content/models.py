@@ -80,6 +80,16 @@ class CommonFields:
         help_text=u'Sivu on tästä hetkestä alkaen näkyvissä valikossa tai listauksessa. Jätä tyhjäksi, jos haluat jättää sivun piilotetuksi.',
     )
 
+    created_at = dict(
+        auto_now_add=True,
+        verbose_name=u'Luotu',
+    )
+
+    updated_at = dict(
+        auto_now=True,
+        verbose_name=u'Päivitetty',
+    )
+
 
 class SiteSettings(models.Model):
     site = models.OneToOneField(Site,
@@ -179,8 +189,8 @@ class MenuEntry(BaseMenuEntry):
 
 
 class RenderPageMixin(object):
-    def render(self, request):
-        vars = dict(
+    def render(self, request, **extra_vars):
+        vars = dict(extra_vars,
             page=self,
         )
 
@@ -200,8 +210,8 @@ class Page(models.Model, RenderPageMixin):
 
     slug = models.CharField(**CommonFields.slug)
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(**CommonFields.created_at)
+    updated_at = models.DateTimeField(**CommonFields.updated_at)
     public_from = models.DateTimeField(**CommonFields.public_from)
     visible_from = models.DateTimeField(**CommonFields.visible_from)
 
@@ -338,8 +348,8 @@ class BlogPost(models.Model, RenderPageMixin):
         help_text=u'Jos jätät kentän tyhjäksi, tekijäksi asetetaan automaattisesti sinut.',
     )
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(**CommonFields.created_at)
+    updated_at = models.DateTimeField(**CommonFields.updated_at)
     public_from = models.DateTimeField(**CommonFields.public_from)
     visible_from = models.DateTimeField(**CommonFields.visible_from)
 
@@ -378,6 +388,9 @@ class BlogPost(models.Model, RenderPageMixin):
     def get_absolute_url(self):
         return '/' + self.path
 
+    def get_comments(self):
+        return self.blog_comment_set.filter(removed_at__isnull=True)
+
     def _make_path(self):
         return reverse('content_blog_post_view', kwargs=dict(
             year=self.date.year,
@@ -405,3 +418,65 @@ class BlogPost(models.Model, RenderPageMixin):
 
         # Usually queries are filtered by site, so we skip it from the ordering.
         ordering = ('-date', '-public_from')
+
+
+class BlogComment(models.Model):
+    blog_post = models.ForeignKey(BlogPost, verbose_name=u'Blogipostaus', db_index=True, related_name='blog_comment_set')
+    author_name = models.CharField(
+        max_length=1023,
+        verbose_name=u'Nimi tai nimimerkki',
+        help_text=u'Näkyy muille sivun lukijoille.',
+    )
+    author_email = models.EmailField(
+        verbose_name=u'Sähköpostiosoite',
+        help_text=u'Sähköpostiosoitetta ei julkaista.',
+    )
+    author_ip_address = models.CharField(
+        max_length=17,
+        blank=True,
+    )
+
+    comment = models.TextField(
+        verbose_name=u'Kommentti',
+        help_text=u'Pidetään keskustelu ystävällisenä, asiallisena ja muita kunnioittavana. Ylläpito poistaa asiattomat kommentit.',
+    )
+
+    created_at = models.DateTimeField(**CommonFields.created_at)
+    removed_at = models.DateTimeField(null=True, blank=True)
+    removed_by = models.ForeignKey(User, null=True, blank=True)
+
+    def admin_get_site(self):
+        return self.blog_post.site
+    admin_get_site.short_description = 'Sivusto'
+    admin_get_site.admin_order_field = 'blog_post__site'
+
+    @property
+    def excerpt(self):
+        if self.comment and len(self.comment) > BlogComment.admin_get_excerpt.max_length:
+            return self.comment[:BlogComment.admin_get_excerpt.max_length] + u'…'
+        else:
+            return self.comment
+
+    # Cannot set admin metadata on property object
+    def admin_get_excerpt(self):
+        return self.excerpt
+    admin_get_excerpt.max_length = 100
+    admin_get_excerpt.short_description = u'Kommentti (lyhennetty)'
+
+    def admin_is_active(self):
+        return self.removed_at is None
+    admin_is_active.short_description = u'Näkyvissä'
+    admin_is_active.boolean = True
+    admin_is_active.admin_order_field = 'removed_at'
+
+    def get_absolute_url(self):
+        return self.blog_post.get_absolute_url() + u'#comment-{id}'.format(id=self.id)
+
+    def __unicode__(self):
+        return self.excerpt
+
+    class Meta:
+        verbose_name = u'blogikommentti'
+        verbose_name_plural = u'blogikommentit'
+        ordering = ('created_at',)
+        index_together = [('blog_post', 'removed_at')]

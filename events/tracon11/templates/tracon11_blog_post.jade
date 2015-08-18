@@ -1,6 +1,20 @@
 extends tracon11_base.jade
+- load crispy_forms_tags
 block content
-  include content_toolbar_admin.jade
-  h1 {{ page.title }}
-  p.text-muted: small #{page.author.get_full_name} {{ page.date|date:"j.n.Y" }}
-  {{ page.body|safe }}
+  include content_toolbar_admin_blog_post.jade
+  h1 {{ blog_post.title }}
+  p.text-muted: small #{blog_post.author.get_full_name} {{ blog_post.date|date:"j.n.Y" }}
+  {{ blog_post.body|safe }}
+  h2 Kommentit
+  if blog_comments
+    for comment in blog_comments
+      .tracon-blog-comment
+        a.tracon-blog-comment-anchor(id='comment-{{ comment.id }}')
+        p.text-muted: small {{ comment.author_name }} {{ comment.created_at|date:"j.n.Y G:i:s"}}
+        {{ comment.comment|linebreaks }}
+  else
+    p.text-muted Ei kommentteja.
+  h3 Lähetä kommentti
+  .row
+    .tracon-blog-comment.col-md-8
+      {% crispy blog_comment_form %}

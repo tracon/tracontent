@@ -15,7 +15,7 @@ class Command(BaseCommand):
 
         content_permissions = Permission.objects.filter(
             content_type__app_label='content',
-            content_type__model__in=['page', 'redirect', 'blogpost'],
+            content_type__model__in=['page', 'redirect', 'blogpost', 'blogcomment'],
         )
 
         group.permissions.add(*content_permissions)

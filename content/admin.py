@@ -8,6 +8,7 @@ from ckeditor.widgets import CKEditorWidget
 
 from .models import (
     BlogPost,
+    BlogComment,
     CommonFields,
     Page,
     Redirect,
@@ -67,7 +68,7 @@ class PageAdmin(admin.ModelAdmin):
     form = PageAdminForm
     list_display = ('site', 'path', 'title')
     list_filter = ('site',)
-    readonly_fields = ('path',)
+    readonly_fields = ('path', 'created_at', 'updated_at')
     view_on_site = True
     ordering = ('site', 'parent', 'order')
     search_fields = ('path', 'title')
@@ -80,7 +81,7 @@ class PageAdmin(admin.ModelAdmin):
             fields=('parent', 'public_from', 'visible_from')
         )),
         (u'Lisäasetukset', dict(
-            fields=('site', 'slug', 'order', 'path'),
+            fields=('site', 'order', 'slug', 'path', 'created_at', 'updated_at'),
             classes=('collapse',),
         ))
     )
@@ -114,7 +115,7 @@ class BlogPostAdmin(admin.ModelAdmin):
     form = BlogPostAdminForm
     list_display = ('site', 'path', 'title')
     list_filter = ('site',)
-    readonly_fields = ('path',)
+    readonly_fields = ('path', 'created_at', 'updated_at')
     view_on_site = True
     fieldsets = (
         (u'Sisältö', dict(
@@ -124,7 +125,7 @@ class BlogPostAdmin(admin.ModelAdmin):
             fields=('date', 'public_from', 'visible_from'),
         )),
         (u'Lisäasetukset', dict(
-            fields=('site', 'slug', 'author', 'path'),
+            fields=('site', 'slug', 'author', 'path', 'created_at', 'updated_at'),
             classes=('collapse',),
         ))
     )
@@ -138,7 +139,54 @@ class BlogPostAdmin(admin.ModelAdmin):
         return super(BlogPostAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
+
+class ActiveListFilter(admin.SimpleListFilter):
+    title = u'Näkyvissä'
+    parameter_name = 'removed_at__isnull'
+
+    def lookups(self, request, model_admin):
+        return (
+            (1, u'Kyllä'),
+            (0, u'Ei'),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() is not None:
+            return queryset.filter(removed_at__isnull=bool(int(self.value())))
+
+
+def hide_selected_blog_posts(modeladmin, request, queryset):
+    t = now()
+    queryset.update(removed_at=t, removed_by=request.user)
+hide_selected_blog_posts.short_description = u'Piilota valitut blogikommentit'
+
+def restore_selected_blog_posts(modeladmin, request, queryset):
+    queryset.update(removed_at=None, removed_by=None)
+restore_selected_blog_posts.short_description = u'Palauta valitut blogikommentit'
+
+
+class BlogCommentAdmin(admin.ModelAdmin):
+    model = BlogComment
+    list_display = ('admin_get_site', 'blog_post', 'created_at', 'admin_get_excerpt', 'author_name', 'admin_is_active')
+    list_filter = ('blog_post__site', ActiveListFilter)
+    fields = ('blog_post', 'author_name', 'author_email', 'author_ip_address', 'comment', 'removed_at', 'removed_by')
+    readonly_fields = fields
+    actions = [hide_selected_blog_posts, restore_selected_blog_posts]
+
+    def has_add_permission(self, *args, **kwargs):
+        return False
+
+    def has_delete_permission(self, *args, **kwargs):
+        return False
+
+    def get_actions(self, request):
+        actions = super(BlogCommentAdmin, self).get_actions(request)
+        del actions['delete_selected']
+        return actions
+
+
 admin.site.register(Page, PageAdmin)
 admin.site.register(Redirect)
 admin.site.register(BlogPost, BlogPostAdmin)
 admin.site.register(SiteSettings)
+admin.site.register(BlogComment, BlogCommentAdmin)

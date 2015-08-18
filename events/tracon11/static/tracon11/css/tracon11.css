@@ -20,6 +20,17 @@
   width: 100%;
 }
 
+.tracon-blog-comment {
+  margin-bottom: 25px;
+  position: relative;
+}
+
+/* Ugly hack to fix anchored content being hidden under the fixed nav bar */
+.tracon-blog-comment-anchor {
+  position: absolute;
+  top: -60px;
+}
+
 /* Fixed footer black magic */
 html,
 body {
