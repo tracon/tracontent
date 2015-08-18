@@ -57,3 +57,4 @@ def content_blog_post_view(request, year, month, day, slug):
 
     blog_post = get_object_or_404(BlogPost, **criteria)
     return blog_post.render(request)
+
