@@ -42,7 +42,16 @@ def content_page_view(request, path):
 def content_blog_index_view(request):
     site_settings = request.site.site_settings
 
+    criteria = dict(site=request.site, path='blog')
+
+    if not request.user.is_staff:
+        # Only show published pages
+        criteria.update(public_from__lte=now())
+
+    page = get_object_or_404(Page, **criteria)
+
     vars = dict(
+        page=page,
         blog_posts=site_settings.get_visible_blog_posts(),
     )
 
