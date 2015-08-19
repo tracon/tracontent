@@ -99,12 +99,6 @@ class SiteSettings(models.Model):
         related_name='site_settings',
     )
 
-    title = models.CharField(
-        max_length=1023,
-        verbose_name=u'Sivuston otsikko',
-        help_text=u'Sivuston otsikko näkyy mm. selaimen välilehden otsikossa.',
-    )
-
     description = models.TextField(
         verbose_name=u'Sivuston kuvaus',
         help_text=u'Näkyy mm. hakukoneille sekä RSS-asiakasohjelmille.',
@@ -157,6 +151,10 @@ class SiteSettings(models.Model):
                 blog_post_template='example_blog_post.jade',
             )
         )
+
+    @property
+    def title(self):
+        return self.site.name if self.site else None
 
     def get_menu(self, t=None, current_url=None):
         if t is None:

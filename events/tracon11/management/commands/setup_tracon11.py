@@ -36,7 +36,7 @@ class Setup(object):
         self.setup_ads()
 
     def setup_site(self):
-        self.site, unused = Site.objects.get_or_create(domain=self.domain)
+        self.site, unused = Site.objects.get_or_create(domain=self.domain, name=u'Tracon 11')
 
     def setup_content(self):
         t = now()
@@ -44,7 +44,6 @@ class Setup(object):
         self.site_settings, unused = SiteSettings.objects.get_or_create(
             site=self.site,
             defaults=dict(
-                title='Tracon 11',
                 base_template='tracon11_base.jade',
                 page_template='tracon11_page.jade',
                 blog_index_template='tracon11_blog_index.jade',
