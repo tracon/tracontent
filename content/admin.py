@@ -48,7 +48,7 @@ class PageAdminForm(forms.ModelForm, CommonAdminFormMixin):
 
     class Meta:
         model = Page
-        fields = ('site', 'parent', 'slug', 'title', 'body', 'public_from', 'visible_from', 'path', 'order')
+        fields = ('site', 'parent', 'slug', 'title', 'body', 'public_from', 'visible_from', 'path', 'order', 'override_menu_text')
 
 
 class PageAdminTabularInline(admin.TabularInline):
@@ -81,7 +81,7 @@ class PageAdmin(admin.ModelAdmin):
             fields=('parent', 'public_from', 'visible_from')
         )),
         (u'Lisäasetukset', dict(
-            fields=('site', 'order', 'slug', 'path', 'created_at', 'updated_at'),
+            fields=('site', 'order', 'slug', 'path', 'override_menu_text', 'created_at', 'updated_at'),
             classes=('collapse',),
         ))
     )
