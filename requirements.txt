@@ -7,4 +7,4 @@ Pillow==2.9.0
 bleach==1.4.1
 django-crispy-forms=1.5.0
 django-ipware==1.1.0
-ipython=4.0.0
+ipython==4.0.0
