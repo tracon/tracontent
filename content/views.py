@@ -74,6 +74,8 @@ def content_blog_post_view(request, year, month, day, slug):
         blog_comment.author_ip_address = get_ip(request)
         blog_comment.save()
 
+        blog_comment.send_mail_to_moderators(request)
+
         return redirect(blog_post.get_absolute_url())
 
     return blog_post.render(request,

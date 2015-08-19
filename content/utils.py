@@ -56,3 +56,10 @@ def pick_attrs(obj, *attr_names, **extra_attrs):
       ((attr_name, getattr(obj, attr_name)) for attr_name in attr_names),
       **extra_attrs
     )
+
+
+def format_emails(names_and_addresses):
+    return [
+      u"{name} <{address}>".format(name=name, address=address)
+      for (name, address) in names_and_addresses
+    ]

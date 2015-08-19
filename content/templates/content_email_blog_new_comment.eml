@@ -1,0 +1,15 @@
+Uusi blogikommentti sivustolla {{ site_settings.title }}:
+
+Kirjoittaja: {{ blog_comment.author_name }}
+Sähköpostiosoite: {{ blog_comment.author_email }}
+IP-osoite: {{ blog_comment.author_ip_address }}
+
+Kommentti sivustolla: {{ comment_url }}
+Moderoi: {{ moderation_url }}
+
+Kommentti:
+
+{{ blog_comment.comment }}
+
+--
+{{ site_settings.title }} <{{ settings.DEFAULT_FROM_EMAIL }}>

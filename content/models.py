@@ -10,10 +10,11 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.shortcuts import render
 from django.utils.timezone import now
+from django.template.loader import get_template
 
 import bleach
 
-from .utils import slugify, pick_attrs
+from .utils import slugify, pick_attrs, format_emails
 
 
 validate_slug = RegexValidator(
@@ -484,6 +485,31 @@ class BlogComment(models.Model):
 
     def get_absolute_url(self):
         return self.blog_post.get_absolute_url() + u'#comment-{id}'.format(id=self.id)
+
+    @property
+    def edit_link(self):
+        return reverse('admin:content_blogcomment_change', args=(self.id,))
+
+    def send_mail_to_moderators(self, request):
+        subject = "{site_title}: Uusi blogikommentti".format(site_title=request.site.site_settings.title)
+        body = get_template('content_email_blog_new_comment.eml').render(dict(
+            site_settings=request.site.site_settings,
+            blog_comment=self,
+            settings=settings,
+            comment_url=request.build_absolute_uri(self.get_absolute_url()),
+            moderation_url=request.build_absolute_uri(self.edit_link),
+        ), request)
+
+        if settings.DEBUG:
+            print body
+
+        if settings.TRACONTENT_BLOG_COMMENT_MODERATORS:
+            send_mail(
+                subject=subject,
+                message=body,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=format_emails(settings.TRACONTENT_BLOG_COMMENT_MODERATORS),
+            )
 
     def __unicode__(self):
         return self.excerpt
