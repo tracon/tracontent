@@ -49,3 +49,10 @@ def initialize_form(FormClass, request, **kwargs):
         form = FormClass(**kwargs)
 
     return form
+
+
+def pick_attrs(obj, *attr_names, **extra_attrs):
+    return dict(
+      ((attr_name, getattr(obj, attr_name)) for attr_name in attr_names),
+      **extra_attrs
+    )

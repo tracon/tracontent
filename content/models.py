@@ -13,7 +13,7 @@ from django.utils.timezone import now
 
 import bleach
 
-from .utils import slugify
+from .utils import slugify, pick_attrs
 
 
 validate_slug = RegexValidator(
@@ -286,6 +286,19 @@ class Page(models.Model, RenderPageMixin):
             href=href,
             text=self.menu_text,
             children=children,
+        )
+
+    def as_dict(self):
+        return pick_attrs(self,
+            'path',
+            'title',
+            'override_menu_text',
+            'body',
+            'order',
+            public_from=self.public_from.isoformat() if self.public_from else None,
+            visible_from=self.visible_from.isoformat() if self.visible_from else None,
+            created_at=self.created_at.isoformat() if self.created_at else None,
+            updated_at=self.updated_at.isoformat() if self.updated_at else None,
         )
 
     def _make_path(self):
