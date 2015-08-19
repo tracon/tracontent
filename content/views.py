@@ -26,7 +26,7 @@ def content_page_view(request, path):
     else:
         return redirect(current_url_redirect.target)
 
-    criteria = dict(path=path)
+    criteria = dict(site=request.site, path=path)
 
     if not request.user.is_staff:
         # Only show published pages
