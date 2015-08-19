@@ -93,6 +93,11 @@ class PageAdmin(admin.ModelAdmin):
         return super(PageAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
+class RedirectAdmin(admin.ModelAdmin):
+    model = Redirect
+    list_display = ('site', 'path', 'target')
+
+
 class BlogPostAdminForm(forms.ModelForm, CommonAdminFormMixin):
     body = forms.CharField(
         widget=CKEditorWidget(),
@@ -224,7 +229,7 @@ class BlogCommentAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Page, PageAdmin)
-admin.site.register(Redirect)
+admin.site.register(Redirect, RedirectAdmin)
 admin.site.register(BlogPost, BlogPostAdmin)
 admin.site.register(SiteSettings)
 admin.site.register(BlogComment, BlogCommentAdmin)

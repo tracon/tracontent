@@ -338,6 +338,9 @@ class Redirect(models.Model):
     path = models.CharField(**CommonFields.path)
     target = models.CharField(max_length=1023)
 
+    def __unicode__(self):
+        return self.path
+
     class Meta:
         unique_together = [('site', 'path')]
         verbose_name = u'uudelleenohjaus'
