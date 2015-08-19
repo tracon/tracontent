@@ -449,6 +449,8 @@ class BlogComment(models.Model):
     author_ip_address = models.CharField(
         max_length=17,
         blank=True,
+        verbose_name=u'IP-osoite',
+        help_text=u'IP-osoite näkyy vain ylläpitokäyttöliittymässä.',
     )
 
     comment = models.TextField(
@@ -457,8 +459,16 @@ class BlogComment(models.Model):
     )
 
     created_at = models.DateTimeField(**CommonFields.created_at)
-    removed_at = models.DateTimeField(null=True, blank=True)
-    removed_by = models.ForeignKey(User, null=True, blank=True)
+    removed_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name=u'Piilottamisaika',
+    )
+    removed_by = models.ForeignKey(User,
+        null=True,
+        blank=True,
+        verbose_name=u'Piilottaja',
+    )
 
     def admin_get_site(self):
         return self.blog_post.site
@@ -478,8 +488,12 @@ class BlogComment(models.Model):
     admin_get_excerpt.max_length = 100
     admin_get_excerpt.short_description = u'Kommentti (lyhennetty)'
 
-    def admin_is_active(self):
+    @property
+    def is_active(self):
         return self.removed_at is None
+
+    def admin_is_active(self):
+        return self.is_active
     admin_is_active.short_description = u'Näkyvissä'
     admin_is_active.boolean = True
     admin_is_active.admin_order_field = 'removed_at'

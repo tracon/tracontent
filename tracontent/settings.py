@@ -79,6 +79,10 @@ TEMPLATE_LOADERS = (
     )),
 )
 
+TEMPLATE_DIRS = (
+    mkpath('tracontent','templates'),
+)
+
 TEMPLATE_CONTEXT_PROCESSORS = defaults.TEMPLATE_CONTEXT_PROCESSORS + (
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',

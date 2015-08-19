@@ -1,0 +1,10 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block title %}{{ site_settings.title }}: {{ title }} – {{ tracontent_app_name }}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">{{ site_settings.title }} – {{ tracontent_app_name }}</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

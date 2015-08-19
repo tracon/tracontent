@@ -165,13 +165,38 @@ def restore_selected_blog_posts(modeladmin, request, queryset):
 restore_selected_blog_posts.short_description = u'Palauta valitut blogikommentit'
 
 
+class BlogCommentAdminForm(forms.ModelForm):
+    is_active = forms.BooleanField(label=u'Näkyvissä', help_text=u'Poistamalla ruksin tästä voit piilottaa asiattoman kommentin sivustolta.', required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(BlogCommentAdminForm, self).__init__(*args, **kwargs)
+
+        self.fields['is_active'].initial = self.instance.removed_at is None
+
+    class Meta:
+        model = BlogComment
+        fields = ()
+
+
 class BlogCommentAdmin(admin.ModelAdmin):
     model = BlogComment
+    form = BlogCommentAdminForm
     list_display = ('admin_get_site', 'blog_post', 'created_at', 'admin_get_excerpt', 'author_name', 'admin_is_active')
     list_filter = ('blog_post__site', ActiveListFilter)
-    fields = ('blog_post', 'author_name', 'author_email', 'author_ip_address', 'comment', 'removed_at', 'removed_by')
-    readonly_fields = fields
+    readonly_fields = ('blog_post', 'created_at', 'author_name', 'author_email', 'author_ip_address', 'comment', 'removed_at', 'removed_by')
     actions = [hide_selected_blog_posts, restore_selected_blog_posts]
+
+    fieldsets = (
+        (u'Kommentti', dict(
+            fields=('blog_post', 'created_at', 'comment'),
+        )),
+        (u'Kirjoittaja', dict(
+            fields=('author_name', 'author_email', 'author_ip_address'),
+        )),
+        (u'Moderointi', dict(
+            fields=('is_active', 'removed_at', 'removed_by'),
+        ))
+    )
 
     def has_add_permission(self, *args, **kwargs):
         return False
@@ -183,6 +208,19 @@ class BlogCommentAdmin(admin.ModelAdmin):
         actions = super(BlogCommentAdmin, self).get_actions(request)
         del actions['delete_selected']
         return actions
+
+    def save_model(self, request, obj, form, change):
+        blog_comment = obj
+        is_active = form.cleaned_data['is_active']
+
+        if is_active and not blog_comment.is_active:
+            blog_comment.removed_at = None
+            blog_comment.removed_by = None
+            blog_comment.save()
+        elif not is_active and blog_comment.is_active:
+            blog_comment.removed_at = now()
+            blog_comment.removed_by = request.user
+            blog_comment.save()
 
 
 admin.site.register(Page, PageAdmin)
