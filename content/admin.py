@@ -96,6 +96,7 @@ class PageAdmin(admin.ModelAdmin):
 class RedirectAdmin(admin.ModelAdmin):
     model = Redirect
     list_display = ('site', 'path', 'target')
+    list_filter = ('site',)
 
 
 class BlogPostAdminForm(forms.ModelForm, CommonAdminFormMixin):
