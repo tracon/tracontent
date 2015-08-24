@@ -42,6 +42,14 @@ def content_page_view(request, path):
 def content_blog_index_view(request):
     site_settings = request.site.site_settings
 
+    # Look for redirect at the current path
+    try:
+        current_url_redirect = Redirect.objects.get(site=request.site, path=path)
+    except Redirect.DoesNotExist:
+        pass
+    else:
+        return redirect(current_url_redirect.target)
+
     criteria = dict(site=request.site, path='blog')
 
     if not request.user.is_staff:
@@ -61,6 +69,14 @@ def content_blog_index_view(request):
 @require_http_methods(['GET', 'HEAD', 'POST'])
 def content_blog_post_view(request, year, month, day, slug):
     site_settings = request.site.site_settings
+
+    # Look for redirect at the current path
+    try:
+        current_url_redirect = Redirect.objects.get(site=request.site, path=path)
+    except Redirect.DoesNotExist:
+        pass
+    else:
+        return redirect(current_url_redirect.target)
 
     try:
         post_date = date(int(year), int(month), int(day))
