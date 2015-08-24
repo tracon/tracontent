@@ -44,7 +44,7 @@ def content_blog_index_view(request):
 
     # Look for redirect at the current path
     try:
-        current_url_redirect = Redirect.objects.get(site=request.site, path=path)
+        current_url_redirect = Redirect.objects.get(site=request.site, path=request.path[1:])
     except Redirect.DoesNotExist:
         pass
     else:
