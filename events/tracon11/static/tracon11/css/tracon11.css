@@ -53,3 +53,11 @@ footer {
 footer .tracon-credit {
   padding-top: 10px;
 }
+
+figure {
+  margin: 0.5em;
+}
+
+figcaption {
+  margin-top: 0.2em;
+}
