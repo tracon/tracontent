@@ -179,6 +179,7 @@ CKEDITOR_CONFIGS = {
             ['Source'],
             ['Maximize']
         ],
+        'extraPlugins': 'image2',
     },
 }
 
