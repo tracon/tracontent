@@ -83,13 +83,22 @@ def content_blog_post_view(request, year, month, day, slug):
     except ValueError:
         raise Http404(u'Invalid date')
 
-    criteria = dict(site=request.site, date=post_date, slug=slug)
+    base_criteria = dict(site=request.site, slug=slug)
 
     if not request.user.is_staff:
         # Only show published blog posts
-        criteria.update(public_from__lte=now())
+        base_criteria.update(public_from__lte=now())
 
-    blog_post = get_object_or_404(BlogPost, **criteria)
+    try:
+        blog_post = BlogPost.objects.get(date=post_date, **base_criteria)
+    except BlogPost.DoesNotExist:
+        # The date may have been changed. If the slug is still unique, redirect to the new path.
+        try:
+            blog_post = get_object_or_404(BlogPost, **base_criteria)
+        except BlogPost.MultipleObjectsReturned:
+            raise Http404(u'Duplicate slug and wrong date')
+
+        return redirect(blog_post.get_absolute_url())
 
     blog_comment_form = initialize_form(BlogCommentForm, request)
 
