@@ -26,7 +26,7 @@ def content_context(request):
         ),
         tracontent_app_name=app_name,
         tracontent_footer=u"<a href='https://github.com/tracon/tracontent' target='_blank'>{app_name}"
-            u"</a> © 2015 <a href='https://github.com/tracon/tracontent/blob/master/LICENSE'>"
+            u"</a> © 2015–2016 <a href='https://github.com/tracon/tracontent/blob/master/LICENSE'>"
             "Santtu Pajukanta</a>.".format(app_name=app_name)
     )
 
