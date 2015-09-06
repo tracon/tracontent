@@ -197,7 +197,21 @@ class RenderPageMixin(object):
         return render(request, self.template, vars)
 
 
-class Page(models.Model, RenderPageMixin):
+class PageAdminMixin(object):
+    def admin_is_published(self):
+        return self.public_from is not None
+    admin_is_published.short_description = u'Julkinen'
+    admin_is_published.boolean = True
+    admin_is_published.admin_order_field = 'public_from'
+
+    def admin_is_visible(self):
+        return self.visible_from is not None
+    admin_is_visible.short_description = u'Näkyvissä'
+    admin_is_visible.boolean = True
+    admin_is_visible.admin_order_field = 'visible_from'
+
+
+class Page(models.Model, RenderPageMixin, PageAdminMixin):
     site = models.ForeignKey(Site, **CommonFields.site)
     path = models.CharField(**CommonFields.path)
     parent = models.ForeignKey('Page',
@@ -347,7 +361,7 @@ class Redirect(models.Model):
         verbose_name_plural = u'uudelleenohjaukset'
 
 
-class BlogPost(models.Model, RenderPageMixin):
+class BlogPost(models.Model, RenderPageMixin, PageAdminMixin):
     site = models.ForeignKey(Site, related_name='blog_post_set', **CommonFields.site)
     path = models.CharField(**CommonFields.path)
     date = models.DateField(

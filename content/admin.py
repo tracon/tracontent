@@ -30,6 +30,36 @@ class CommonAdminFormMixin(object):
         return visible_from
 
 
+def make_is_null_list_filter(field_name, title, yes_is_null=False):
+    _title = title
+    _parameter_name = "{field_name}__isnull".format(field_name=field_name)
+
+    class _IsNullListFilter(admin.SimpleListFilter):
+        title = _title
+        parameter_name = _parameter_name
+
+        def lookups(self, request, model_admin):
+            return (
+                (1, u'Kyllä'),
+                (0, u'Ei'),
+            )
+
+        def queryset(self, request, queryset):
+            if self.value() is not None:
+                if yes_is_null:
+                    return queryset.filter(**{_parameter_name: bool(int(self.value()))})
+                else:
+                    return queryset.filter(**{_parameter_name: not bool(int(self.value()))})
+
+
+    return _IsNullListFilter
+
+
+ActiveListFilter = make_is_null_list_filter('removed_at', u'Näkyvissä', yes_is_null=True)
+PublishedListFilter = make_is_null_list_filter('public_from', u'Julkinen')
+VisibleListFilter = make_is_null_list_filter('visible_from', u'Näkyvissä')
+
+
 class PageAdminForm(forms.ModelForm, CommonAdminFormMixin):
     body = forms.CharField(
         widget=CKEditorWidget(),
@@ -66,8 +96,8 @@ class PageAdminTabularInline(admin.TabularInline):
 class PageAdmin(admin.ModelAdmin):
     model = Page
     form = PageAdminForm
-    list_display = ('site', 'path', 'title')
-    list_filter = ('site',)
+    list_display = ('site', 'path', 'title', 'admin_is_published', 'admin_is_visible')
+    list_filter = ('site', PublishedListFilter, VisibleListFilter)
     readonly_fields = ('path', 'created_at', 'updated_at')
     view_on_site = True
     ordering = ('site', 'parent', 'order')
@@ -119,8 +149,8 @@ class BlogPostAdminForm(forms.ModelForm, CommonAdminFormMixin):
 class BlogPostAdmin(admin.ModelAdmin):
     model = BlogPost
     form = BlogPostAdminForm
-    list_display = ('site', 'path', 'title')
-    list_filter = ('site',)
+    list_display = ('site', 'path', 'title', 'admin_is_published', 'admin_is_visible')
+    list_filter = ('site', PublishedListFilter, VisibleListFilter)
     readonly_fields = ('path', 'created_at', 'updated_at')
     view_on_site = True
     fieldsets = (
@@ -143,22 +173,6 @@ class BlogPostAdmin(admin.ModelAdmin):
             kwargs['initial'] = request.user
 
         return super(BlogPostAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
-
-
-
-class ActiveListFilter(admin.SimpleListFilter):
-    title = u'Näkyvissä'
-    parameter_name = 'removed_at__isnull'
-
-    def lookups(self, request, model_admin):
-        return (
-            (1, u'Kyllä'),
-            (0, u'Ei'),
-        )
-
-    def queryset(self, request, queryset):
-        if self.value() is not None:
-            return queryset.filter(removed_at__isnull=bool(int(self.value())))
 
 
 def hide_selected_blog_posts(modeladmin, request, queryset):
