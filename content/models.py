@@ -338,6 +338,15 @@ class Page(models.Model, RenderPageMixin, PageAdminMixin):
         page_copy_attrs.update((key, getattr(self, key)) for key in Page.copy_to_site.fields_to_set)
         page_copy_attrs.update(extra_keys)
 
+        original_slug = page_copy_attrs['slug']
+        if Page.objects.filter(site=site, parent=parent, slug=page_copy_attrs['slug']).exists():
+            counter = 0
+            while True:
+                counter += 1
+                page_copy_attrs['slug'] = "{original_slug}-copy-{counter}".format(original_slug=original_slug, counter=counter)
+                if not Page.objects.filter(site=site, parent=parent, slug=page_copy_attrs['slug']).exists():
+                    break
+
         page_copy = Page(**page_copy_attrs)
         page_copy.save()
 
