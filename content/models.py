@@ -137,6 +137,13 @@ class SiteSettings(models.Model):
         help_text=u'Blogipostaukset näytetään käyttäen tätä sivupohjaa. Tämännimisen sivupohjan tulee löytyä lähdekoodista.',
     )
 
+    google_analytics_token = models.CharField(
+        max_length=63,
+        blank=True,
+        verbose_name=u'Google Analytics -avain',
+        help_text=u'Jos täytät tähän Google Analytics -sivustoavaimen, ei-kirjautuneiden käyttäjien visiitit raportoidaan Google Analyticsiin.',
+    )
+
     @classmethod
     def get_or_create_dummy(cls):
         site, unused = Site.objects.get_or_create(domain='example.com')
