@@ -8,7 +8,7 @@ class BannerAdmin(admin.ModelAdmin):
     list_display = ('admin_get_sites', 'title', 'url', 'active')
     list_filter = ('sites', 'active')
 
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
         if db_field.name == 'sites':
             kwargs['initial'] = [request.site]
 
