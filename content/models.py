@@ -327,7 +327,6 @@ class Page(models.Model, RenderPageMixin, PageAdminMixin):
         return u'/'.join(self.path.split('/')[:-1])
 
     def copy_to_site(self, site, **extra_keys):
-        print 'copy_to_site', site
         parent_path = self.get_parent_path()
         if parent_path:
             parent = Page.objects.get(site=site, path=parent_path)
