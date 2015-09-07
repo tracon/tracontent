@@ -55,6 +55,24 @@ def make_is_null_list_filter(field_name, title, yes_is_null=False):
     return _IsNullListFilter
 
 
+
+def make_selected_pages_private(modeladmin, request, queryset):
+    queryset.update(public_from=None, visible_from=None)
+make_selected_pages_private.short_description = u'Aseta valittujen sivujen tila: ei julkinen, ei näkyvissä'
+
+
+def make_selected_pages_public(modeladmin, request, queryset):
+    t = now()
+    queryset.update(public_from=t, visible_from=None)
+make_selected_pages_public.short_description = u'Aseta valittujen sivujen tila: julkinen, ei näkyvissä'
+
+
+def make_selected_pages_visible(modeladmin, request, queryset):
+    t = now()
+    queryset.update(public_from=t, visible_from=t)
+make_selected_pages_visible.short_description = u'Aseta valittujen sivujen tila: julkinen, näkyvissä'
+
+
 ActiveListFilter = make_is_null_list_filter('removed_at', u'Näkyvissä', yes_is_null=True)
 PublishedListFilter = make_is_null_list_filter('public_from', u'Julkinen')
 VisibleListFilter = make_is_null_list_filter('visible_from', u'Näkyvissä')
@@ -115,6 +133,7 @@ class PageAdmin(admin.ModelAdmin):
             classes=('collapse',),
         ))
     )
+    actions = [make_selected_pages_private, make_selected_pages_public, make_selected_pages_visible]
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'site':
@@ -165,6 +184,7 @@ class BlogPostAdmin(admin.ModelAdmin):
             classes=('collapse',),
         ))
     )
+    actions = [make_selected_pages_private, make_selected_pages_public, make_selected_pages_visible]
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'site':
@@ -175,14 +195,14 @@ class BlogPostAdmin(admin.ModelAdmin):
         return super(BlogPostAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
-def hide_selected_blog_posts(modeladmin, request, queryset):
+def hide_selected_blog_comments(modeladmin, request, queryset):
     t = now()
     queryset.update(removed_at=t, removed_by=request.user)
-hide_selected_blog_posts.short_description = u'Piilota valitut blogikommentit'
+hide_selected_blog_comments.short_description = u'Piilota valitut blogikommentit'
 
-def restore_selected_blog_posts(modeladmin, request, queryset):
+def restore_selected_blog_comments(modeladmin, request, queryset):
     queryset.update(removed_at=None, removed_by=None)
-restore_selected_blog_posts.short_description = u'Palauta valitut blogikommentit'
+restore_selected_blog_comments.short_description = u'Palauta valitut blogikommentit'
 
 
 class BlogCommentAdminForm(forms.ModelForm):
@@ -204,7 +224,7 @@ class BlogCommentAdmin(admin.ModelAdmin):
     list_display = ('admin_get_site', 'blog_post', 'created_at', 'admin_get_excerpt', 'author_name', 'admin_is_active')
     list_filter = ('blog_post__site', ActiveListFilter)
     readonly_fields = ('blog_post', 'created_at', 'author_name', 'author_email', 'author_ip_address', 'comment', 'removed_at', 'removed_by')
-    actions = [hide_selected_blog_posts, restore_selected_blog_posts]
+    actions = [hide_selected_blog_comments, restore_selected_blog_comments]
 
     fieldsets = (
         (u'Kommentti', dict(
