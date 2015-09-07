@@ -20,6 +20,10 @@
   width: 100%;
 }
 
+.tracon-banners a {
+  margin-bottom: 5px;
+}
+
 .tracon-blog-comment {
   margin-bottom: 25px;
   position: relative;
