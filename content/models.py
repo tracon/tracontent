@@ -322,6 +322,34 @@ class Page(models.Model, RenderPageMixin, PageAdminMixin):
             updated_at=self.updated_at.isoformat() if self.updated_at else None,
         )
 
+    def get_parent_path(self):
+        assert self.path
+        return u'/'.join(self.path.split('/')[:-1])
+
+    def copy_to_site(self, site, **extra_keys):
+        print 'copy_to_site', site
+        parent_path = self.get_parent_path()
+        if parent_path:
+            parent = Page.objects.get(site=site, path=parent_path)
+        else:
+            parent = None
+
+        page_copy_attrs = dict(site=site, parent=parent)
+        page_copy_attrs.update((key, getattr(self, key)) for key in Page.copy_to_site.fields_to_set)
+        page_copy_attrs.update(extra_keys)
+
+        page_copy = Page(**page_copy_attrs)
+        page_copy.save()
+
+        return page_copy
+    copy_to_site.fields_to_set = [
+        'slug',
+        'title',
+        'override_menu_text',
+        'body',
+        'order',
+    ]
+
     def _make_path(self):
         if self.parent is None:
             return self.slug

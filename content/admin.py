@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 from django.contrib import admin
+from django.contrib.sites.models import Site
 from django.utils.timezone import now
 from django import forms
 
@@ -111,6 +112,21 @@ class PageAdminTabularInline(admin.TabularInline):
     max_num = 0
 
 
+def make_page_actions():
+    actions = [make_selected_pages_private, make_selected_pages_public, make_selected_pages_visible]
+
+    for site in Site.objects.all():
+        def _copy_to_site(modeladmin, request, queryset, _site=site):
+            for page in queryset.all():
+                page.copy_to_site(_site)
+        _copy_to_site.__name__ = "copy_to_site_{id}".format(id=site.id)
+        _copy_to_site.short_description = "Kopioi valitut sivut luonnoksiksi sivustoon: {domain}".format(domain=site.domain)
+
+        actions.append(_copy_to_site)
+
+    return actions
+
+
 class PageAdmin(admin.ModelAdmin):
     model = Page
     form = PageAdminForm
@@ -133,14 +149,13 @@ class PageAdmin(admin.ModelAdmin):
             classes=('collapse',),
         ))
     )
-    actions = [make_selected_pages_private, make_selected_pages_public, make_selected_pages_visible]
+    actions = make_page_actions()
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'site':
             kwargs['initial'] = request.site
 
         return super(PageAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
-
 
 class RedirectAdmin(admin.ModelAdmin):
     model = Redirect
