@@ -8,7 +8,7 @@ from django.utils.timezone import now
 
 
 class Banner(models.Model):
-    site = models.ForeignKey(Site, verbose_name=u'Sivusto')
+    sites = models.ManyToManyField(Site, verbose_name=u'Sivustot')
 
     title = models.CharField(
         max_length=1023,
@@ -33,17 +33,27 @@ class Banner(models.Model):
         help_text=u'Voit piilottaa bannerin poistamatta sitä ottamalla tästä ruksin pois.'
     )
 
+    def admin_get_sites(self):
+        return u', '.join(site.domain for site in self.sites.all())
+    admin_get_sites.short_description = u'Sivustot'
+    admin_get_sites.admin_order_field = 'sites'
+
     @classmethod
     def get_or_create_dummy(cls):
         from content.models import SiteSettings
         site_settings, unused = SiteSettings.get_or_create_dummy()
 
-        return cls.objects.get_or_create(
-            site=site_settings.site,
+        obj, created = cls.objects.get_or_create(
             title='Dummy banner',
             url='http://example.com',
             image_file='dummy.jpg',
         )
+
+        if created:
+            obj.sites = [site_settings.site,]
+            obj.save()
+
+        return obj, created
 
     def get_absolute_url(self):
         return reverse('ads_banner_redirect_view', args=(self.pk,))
@@ -57,6 +67,7 @@ class Banner(models.Model):
 
 
 class BannerClick(models.Model):
+    site = models.ForeignKey(Site, verbose_name=u'Sivusto', null=True)
     banner = models.ForeignKey(Banner,
         verbose_name=u'Banneri',
         related_name='banner_click_set'
@@ -66,12 +77,13 @@ class BannerClick(models.Model):
     clicks = models.IntegerField(verbose_name=u'Klikkauksia')
 
     @classmethod
-    def click(cls, banner, d=None):
+    def click(cls, site, banner, d=None):
         if d is None:
             d = now().date()
 
         with transaction.atomic():
             banner_click, created = BannerClick.objects.select_for_update().get_or_create(
+                site=site,
                 banner=banner,
                 date=d,
                 defaults=dict(
@@ -81,10 +93,6 @@ class BannerClick(models.Model):
             if not created:
                 banner_click.clicks = F('clicks') + 1
                 banner_click.save()
-
-    @property
-    def site(self):
-        return self.banner.site
 
     def __unicode__(self):
         return u"{banner_title} ({date})".format(

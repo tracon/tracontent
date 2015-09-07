@@ -5,12 +5,12 @@ from .models import Banner, BannerClick
 
 class BannerAdmin(admin.ModelAdmin):
     model = Banner
-    list_display = ('site', 'title', 'url', 'active')
-    list_filter = ('site', 'active')
+    list_display = ('admin_get_sites', 'title', 'url', 'active')
+    list_filter = ('sites', 'active')
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == 'site':
-            kwargs['initial'] = request.site
+        if db_field.name == 'sites':
+            kwargs['initial'] = [request.site]
 
         return super(BannerAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
@@ -18,7 +18,7 @@ class BannerAdmin(admin.ModelAdmin):
 class BannerClickAdmin(admin.ModelAdmin):
     model = BannerClick
     list_display = ('site', 'banner', 'date', 'clicks')
-    list_filter = ('banner__site',)
+    list_filter = ('site',)
 
     fields = ('banner', 'date', 'clicks')
     readonly_fields = ('banner', 'date', 'clicks')

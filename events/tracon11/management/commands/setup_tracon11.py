@@ -143,12 +143,16 @@ class Setup(object):
             (u'Säätöyhteisö B2 ry', 'http://b2.fi', 'events/tracon11/static/tracon11/img/b2-saatoa2008-wh-200.png'),
         ]:
             try:
-                Banner.objects.get(site=self.site, url=banner_url)
+                Banner.objects.get(sites=self.site, url=banner_url)
             except Banner.DoesNotExist:
                 with open(banner_path) as banner_file:
-                    Banner(
-                        site=self.site,
+                    banner = Banner(
                         title=banner_title,
                         url=banner_url,
                         image_file=File(banner_file),
-                    ).save()
+                    )
+
+                    banner.save()
+
+                    banner.sites = [self.site,]
+                    banner.save()
