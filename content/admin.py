@@ -112,19 +112,11 @@ class PageAdminTabularInline(admin.TabularInline):
     max_num = 0
 
 
-def make_page_actions():
-    actions = [make_selected_pages_private, make_selected_pages_public, make_selected_pages_visible]
-
-    for site in Site.objects.all():
-        def _copy_to_site(modeladmin, request, queryset, _site=site):
-            for page in queryset.all():
-                page.copy_to_site(_site)
-        _copy_to_site.__name__ = "copy_to_site_{id}".format(id=site.id)
-        _copy_to_site.short_description = "Kopioi valitut sivut luonnoksiksi sivustoon: {domain}".format(domain=site.domain)
-
-        actions.append(_copy_to_site)
-
-    return actions
+class classproperty(object):
+    def __init__(self, f):
+        self.f = f
+    def __get__(self, obj, owner):
+        return self.f(owner)
 
 
 class PageAdmin(admin.ModelAdmin):
@@ -149,7 +141,21 @@ class PageAdmin(admin.ModelAdmin):
             classes=('collapse',),
         ))
     )
-    actions = make_page_actions()
+
+    @classproperty
+    def actions(cls):
+        _actions = [make_selected_pages_private, make_selected_pages_public, make_selected_pages_visible]
+
+        for site in Site.objects.all():
+            def _copy_to_site(modeladmin, request, queryset, _site=site):
+                for page in queryset.all():
+                    page.copy_to_site(_site)
+            _copy_to_site.__name__ = "copy_to_site_{id}".format(id=site.id)
+            _copy_to_site.short_description = "Kopioi valitut sivut luonnoksiksi sivustoon: {domain}".format(domain=site.domain)
+
+            _actions.append(_copy_to_site)
+
+        return _actions
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'site':
