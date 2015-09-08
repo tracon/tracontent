@@ -280,10 +280,12 @@ class Page(models.Model, RenderPageMixin, PageAdminMixin):
         return self.parent is None and self.slug == 'front-page'
 
     def get_absolute_url(self):
-        if self.is_front_page:
-            return '/'
-        else:
-            return '/' + self.path
+        return u'//{domain}/{path}'.format(
+            domain=self.site.domain,
+            path=u'' if self.is_front_page else self.path,
+
+        )
+
 
     def get_menu_entry(self, child_levels=1, t=None, current_url=None):
         # Guard against infinite recursion on parent loop and prevent lots of queries on default 2-level menu structure
@@ -475,7 +477,10 @@ class BlogPost(models.Model, RenderPageMixin, PageAdminMixin):
         return self.site.site_settings.blog_post_template
 
     def get_absolute_url(self):
-        return '/' + self.path
+        return u'//{domain}/{path}'.format(
+            domain=self.site.domain,
+            path=self.path,
+        )
 
     def get_comments(self):
         return self.blog_comment_set.filter(removed_at__isnull=True)
