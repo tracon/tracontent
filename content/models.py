@@ -171,7 +171,13 @@ class SiteSettings(models.Model):
         ]
 
     def get_absolute_url(self):
-        return 'http://{domain}'.format(domain=self.site.domain)
+        return '//{domain}'.format(domain=self.site.domain)
+
+    def get_protocol_relative_uri(self, view_name, *args, **kwargs):
+        return '//{domain}{path}'.format(
+            domain=self.site.domain,
+            path=reverse(view_name, args=args, kwargs=kwargs),
+        )
 
     def get_visible_blog_posts(self):
         t = now()
