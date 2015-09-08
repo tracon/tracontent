@@ -34,6 +34,7 @@ class Setup(object):
         self.setup_site()
         self.setup_content()
         self.setup_ads()
+        self.setup_blog()
 
     def setup_site(self):
         self.site, unused = Site.objects.get_or_create(domain=self.domain, name=u'Tracon 11')
@@ -161,3 +162,17 @@ class Setup(object):
 
                     banner.sites = [self.site,]
                     banner.save()
+
+    def setup_blog(self):
+        """
+        Set up a stub of the blog.tracon.fi site required by the front page blog box.
+        """
+        blog_site, unused = Site.objects.get_or_create(domain='blog.tracon.fi', defaults=dict(
+            name='Traconin blogi'
+        ))
+        blog_site_settings, unused = SiteSettings.objects.get_or_create(site=blog_site, defaults=dict(
+            base_template='tracon11_base.jade',
+            page_template='tracon11_page.jade',
+            blog_index_template='tracon11_blog_index.jade',
+            blog_post_template='tracon11_blog_post.jade',
+        ))

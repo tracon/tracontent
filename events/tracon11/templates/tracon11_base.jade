@@ -32,14 +32,15 @@ html
           include content_navbar_user.jade
 
     .tracon-content-wrap
-      .container
-        .row
-          .col-md-10
-            block content
-              p Content goes here.
-          .col-md-2
-            .tracon-banners
-              include ads_sidebar_banners.jade
+      block full_width_content
+        .container
+          .row
+            .col-md-10
+              block content
+                p Content goes here.
+            .col-md-2
+              .tracon-banners
+                include ads_sidebar_banners.jade
 
       .tracon-footer-push
 
