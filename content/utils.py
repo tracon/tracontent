@@ -63,3 +63,14 @@ def format_emails(names_and_addresses):
       u"{name} <{address}>".format(name=name, address=address)
       for (name, address) in names_and_addresses
     ]
+
+
+def get_code(path):
+    """
+    Given "core.utils:get_code", imports the module "core.utils" and returns
+    "get_code" from it.
+    """
+    from importlib import import_module
+    module_name, member_name = path.split(':')
+    module = import_module(module_name)
+    return getattr(module, member_name)

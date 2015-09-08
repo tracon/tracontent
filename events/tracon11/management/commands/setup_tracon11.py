@@ -125,7 +125,12 @@ class Setup(object):
         front_page = Page.objects.get(site=self.site, slug='front-page')
         if not front_page.override_menu_text:
             front_page.override_menu_text = 'Etusivu'
-            front_page.save()
+        # v11
+        if not front_page.override_page_template:
+            front_page.override_page_template = 'tracon11_front_page.jade'
+        if not front_page.page_controller_code:
+            front_page.page_controller_code = 'events.tracommon.views:front_page_controller'
+        front_page.save()
 
         for path, target in [
             ('admin', '/admin/'),

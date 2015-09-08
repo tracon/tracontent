@@ -15,7 +15,7 @@ from django.template.loader import get_template
 
 import bleach
 
-from .utils import slugify, pick_attrs, format_emails
+from .utils import slugify, pick_attrs, format_emails, get_code
 
 
 validate_slug = RegexValidator(
@@ -59,8 +59,10 @@ class CommonFields:
         verbose_name=u'Leipäteksti',
     )
 
-    template = dict(
-
+    page_template = dict(
+        max_length=127,
+        verbose_name=u'Sivupohja',
+        help_text=u'Sivut näytetään käyttäen tätä sivupohjaa. Tämännimisen sivupohjan tulee löytyä lähdekoodista.',
     )
 
     site = dict(
@@ -119,11 +121,7 @@ class SiteSettings(models.Model):
         help_text=u'Asettelupohja määrittelee sivuston perusasettelun. Tämännimisen asettelupohjan tulee löytyä lähdekoodista.',
     )
 
-    page_template = models.CharField(
-        max_length=127,
-        verbose_name=u'Sivupohja',
-        help_text=u'Sivut näytetään käyttäen tätä sivupohjaa. Tämännimisen sivupohjan tulee löytyä lähdekoodista.',
-    )
+    page_template = models.CharField(**CommonFields.page_template)
 
     blog_index_template = models.CharField(
         max_length=127,
@@ -243,6 +241,14 @@ class Page(models.Model, RenderPageMixin, PageAdminMixin):
         verbose_name=u'Valikkoteksti',
         help_text=u'Sivu näkyy tällä nimellä valikossa. Jos jätät tämän tyhjäksi, käytetään otsikkoa.',
     )
+    override_page_template = models.CharField(blank=True, default=u'', **CommonFields.page_template)
+    page_controller_code = models.CharField(
+        max_length=255,
+        blank=True,
+        default=u'',
+        verbose_name=u'Sivukontrolleri',
+        help_text=u'Polku funktioon, joka suoritetaan joka sivulatauksella ja joka voi määritellä lisää muuttujia sivupohjan nimiavaruuteen.',
+    )
     order = models.IntegerField(
         default=0,
         verbose_name=u'Järjestys',
@@ -264,7 +270,10 @@ class Page(models.Model, RenderPageMixin, PageAdminMixin):
 
     @property
     def template(self):
-        return self.site.site_settings.page_template
+        if self.override_page_template:
+            return self.override_page_template
+        else:
+            return self.site.site_settings.page_template
 
     @property
     def is_front_page(self):
@@ -357,6 +366,13 @@ class Page(models.Model, RenderPageMixin, PageAdminMixin):
         'body',
         'order',
     ]
+
+    def render(self, request, **extra_vars):
+        if self.page_controller_code:
+            page_controller_func = get_code(self.page_controller_code)
+            extra_vars.update(page_controller_func(request, self))
+
+        return super(Page, self).render(request, **extra_vars)
 
     def _make_path(self):
         if self.parent is None:
