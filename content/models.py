@@ -452,6 +452,13 @@ class BlogCategory(models.Model):
         unique_together = [('site', 'slug')]
 
 
+STATE_CHOICES = [
+    ('draft', u'Luonnos'),
+    ('review', u'Odottaa tarkistusta'),
+    ('ready', u'Valmis julkaistavaksi'),
+]
+
+
 class BlogPost(models.Model, RenderPageMixin, PageAdminMixin):
     site = models.ForeignKey(Site, related_name='blog_post_set', **CommonFields.site)
     path = models.CharField(**CommonFields.path)
@@ -469,15 +476,15 @@ class BlogPost(models.Model, RenderPageMixin, PageAdminMixin):
         help_text=u'Jos jätät kentän tyhjäksi, tekijäksi asetetaan automaattisesti sinut.',
     )
 
-    ready_for_publishing = models.BooleanField(
-        default=False,
-        verbose_name=u'Valmis julkaistavaksi',
+    state = models.CharField(
+        max_length=7,
+        default='draft',
+        choices=STATE_CHOICES,
+        verbose_name=u'Luonnoksen tila',
         help_text=u'Tämä kenttä kommunikoi muille julkaisujärjestelmän käyttäjille, onko sivu '
             u'kirjoittajan mielestä valmis julkaistavaksi. Jos et itse julkaise kirjoitustasi, '
-            u'ruksaa tämä kenttä kun luonnos on mielestäsi valmis. Tämän kentän ruksaaminen ei '
-            u'yksin vielä julkaise kirjoitusta, vaan julkaisua kontrolloivat alla olevat julkaisu- '
-            u'ja näkyvyyskentät, eikä tämän kentän tarvitse olla ruksattuna jotta kirjoituksen voisi '
-            u'teknisesti julkaista niiden avulla.',
+            u'jätä kirjoituksesi tilaan "Odottaa tarkistusta" kun se on mielestäsi valmis. Tämä '
+            u'kenttä ei vaikuta teknisesti kirjoituksen julkaisuun millään tavalla.'
     )
     internal_notes = models.TextField(
         blank=True,

@@ -189,8 +189,8 @@ class BlogPostAdminForm(forms.ModelForm, CommonAdminFormMixin):
 class BlogPostAdmin(admin.ModelAdmin):
     model = BlogPost
     form = BlogPostAdminForm
-    list_display = ('site', 'path', 'title', 'ready_for_publishing', 'admin_is_published', 'admin_is_visible')
-    list_filter = ('site', 'ready_for_publishing', PublishedListFilter, VisibleListFilter)
+    list_display = ('site', 'path', 'title', 'state', 'admin_is_published', 'admin_is_visible')
+    list_filter = ('site', 'state', PublishedListFilter, VisibleListFilter)
     readonly_fields = ('path', 'created_at', 'updated_at')
     view_on_site = True
     fieldsets = (
@@ -198,7 +198,7 @@ class BlogPostAdmin(admin.ModelAdmin):
             fields=('title', 'override_excerpt', 'body'),
         )),
         (u'Sisäiset muistiinpanot', dict(
-            fields=('ready_for_publishing', 'internal_notes'),
+            fields=('state', 'internal_notes'),
         )),
         (u'Julkaisuasetukset', dict(
             fields=('date', 'public_from', 'visible_from', 'categories'),
