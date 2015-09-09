@@ -428,6 +428,30 @@ class Redirect(models.Model):
         verbose_name_plural = u'uudelleenohjaukset'
 
 
+class BlogCategory(models.Model):
+    site = models.ForeignKey(Site, verbose_name=u'Sivusto')
+    slug = models.CharField(**CommonFields.slug)
+    title = models.CharField(**CommonFields.title)
+
+    def get_visible_blog_posts(self):
+        return self.blog_posts.filter(visible_from__lte=now())
+
+    def __unicode__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        if self.title and not self.slug:
+            self.slug = slugify(self.title)
+
+        return super(BlogCategory, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = u'Blogin kategoria'
+        verbose_name_plural = u'Blogin kategoriat'
+
+        unique_together = [('site', 'slug')]
+
+
 class BlogPost(models.Model, RenderPageMixin, PageAdminMixin):
     site = models.ForeignKey(Site, related_name='blog_post_set', **CommonFields.site)
     path = models.CharField(**CommonFields.path)
@@ -459,6 +483,12 @@ class BlogPost(models.Model, RenderPageMixin, PageAdminMixin):
         help_text=u'Kirjoita muutaman lauseen mittainen lyhennelmä kirjoituksesta. Lyhennelmä näkyy '
             u'blogilistauksessa. Mikäli lyhennelmää ei ole annettu, leikataan lyhennelmäksi sopivan '
             u'mittainen pätkä itse kirjoituksesta.',
+    )
+
+    categories = models.ManyToManyField(BlogCategory,
+        verbose_name=u'Kategoriat',
+        blank=True,
+        related_name='blog_posts',
     )
 
     @property
