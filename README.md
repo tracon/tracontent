@@ -11,6 +11,7 @@ Here's a cool feature matrix:
 | License | MIT | MIT |
 | Price | Free | Free |
 | Support | Purchased separately | Purchased separately |
+| Multisite support | Yes (always on) | Yes (always on) |
 | OAuth2 authentication | No | Yes |
 
 ### No, really, what's the difference?
