@@ -197,8 +197,11 @@ class BlogPostAdmin(admin.ModelAdmin):
         (u'Sisältö', dict(
             fields=('title', 'override_excerpt', 'body'),
         )),
+        (u'Sisäiset muistiinpanot', dict(
+            fields=('ready_for_publishing', 'internal_notes'),
+        )),
         (u'Julkaisuasetukset', dict(
-            fields=('date', 'public_from', 'visible_from'),
+            fields=('date', 'public_from', 'visible_from', 'categories'),
         )),
         (u'Lisäasetukset', dict(
             fields=('site', 'slug', 'author', 'path', 'created_at', 'updated_at'),

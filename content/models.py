@@ -469,6 +469,25 @@ class BlogPost(models.Model, RenderPageMixin, PageAdminMixin):
         help_text=u'Jos jätät kentän tyhjäksi, tekijäksi asetetaan automaattisesti sinut.',
     )
 
+    ready_for_publishing = models.BooleanField(
+        default=False,
+        verbose_name=u'Valmis julkaistavaksi',
+        help_text=u'Tämä kenttä kommunikoi muille julkaisujärjestelmän käyttäjille, onko sivu '
+            u'kirjoittajan mielestä valmis julkaistavaksi. Jos et itse julkaise kirjoitustasi, '
+            u'ruksaa tämä kenttä kun luonnos on mielestäsi valmis. Tämän kentän ruksaaminen ei '
+            u'yksin vielä julkaise kirjoitusta, vaan julkaisua kontrolloivat alla olevat julkaisu- '
+            u'ja näkyvyyskentät, eikä tämän kentän tarvitse olla ruksattuna jotta kirjoituksen voisi '
+            u'teknisesti julkaista niiden avulla.',
+    )
+    internal_notes = models.TextField(
+        blank=True,
+        verbose_name=u'Sisäiset muistiinpanot',
+        help_text=u'Tähän kenttään voit jättää muistiinpanoja itsellesi ja muille julkaisujärjestelmän '
+            u'käyttäjille esimerkiksi suunnittelemastasi sisällöstä tai kirjoituksen julkaisuaikataulusta. '
+            u'Nämä muistiinpanot eivät näy ulospäin, vaan ne on tarkoitettu puhtaasti julkaisujärjestelmän '
+            u'toimittaja- ja ylläpitokäyttäjien tiedoksi.'
+    )
+
     created_at = models.DateTimeField(**CommonFields.created_at)
     updated_at = models.DateTimeField(**CommonFields.updated_at)
     public_from = models.DateTimeField(**CommonFields.public_from)
