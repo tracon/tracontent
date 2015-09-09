@@ -189,8 +189,8 @@ class BlogPostAdminForm(forms.ModelForm, CommonAdminFormMixin):
 class BlogPostAdmin(admin.ModelAdmin):
     model = BlogPost
     form = BlogPostAdminForm
-    list_display = ('site', 'path', 'title', 'admin_is_published', 'admin_is_visible')
-    list_filter = ('site', PublishedListFilter, VisibleListFilter)
+    list_display = ('site', 'path', 'title', 'ready_for_publishing', 'admin_is_published', 'admin_is_visible')
+    list_filter = ('site', 'ready_for_publishing', PublishedListFilter, VisibleListFilter)
     readonly_fields = ('path', 'created_at', 'updated_at')
     view_on_site = True
     fieldsets = (
