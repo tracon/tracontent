@@ -292,6 +292,8 @@ class Page(models.Model, RenderPageMixin, PageAdminMixin):
 
         )
 
+    def get_local_url(self):
+        return u'/' + self.path
 
     def get_menu_entry(self, child_levels=1, t=None, current_url=None):
         # Guard against infinite recursion on parent loop and prevent lots of queries on default 2-level menu structure
@@ -309,7 +311,7 @@ class Page(models.Model, RenderPageMixin, PageAdminMixin):
         else:
             children = []
 
-        href = self.get_absolute_url()
+        href = self.get_local_url()
 
         if current_url:
             if children:
