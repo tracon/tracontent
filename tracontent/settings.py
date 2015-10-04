@@ -51,10 +51,11 @@ INSTALLED_APPS = (
     'kompassi_oauth2',
     'content',
     'ads',
-    #'example',
 
     'events.traconx',
     'events.tracon11',
+
+    'events.japsufi',
 )
 
 MIDDLEWARE_CLASSES = (
