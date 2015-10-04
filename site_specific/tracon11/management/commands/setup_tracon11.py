@@ -129,8 +129,8 @@ class Setup(object):
         # v11
         if not front_page.override_page_template:
             front_page.override_page_template = 'tracon11_front_page.jade'
-        if not front_page.page_controller_code:
-            front_page.page_controller_code = 'events.tracommon.views:front_page_controller'
+        if not front_page.page_controller_code or front_page.page_controller_code == 'events.tracommon.views:front_page_controller':
+            front_page.page_controller_code = 'site_specific.tracommon.views:front_page_controller'
         front_page.save()
 
         for path, target in [
@@ -146,7 +146,7 @@ class Setup(object):
 
     def setup_ads(self):
         for banner_title, banner_url, banner_path in [
-            (u'Säätöyhteisö B2 ry', 'http://b2.fi', 'events/tracon11/static/tracon11/img/b2-saatoa2008-wh-200.png'),
+            (u'Säätöyhteisö B2 ry', 'http://b2.fi', 'site_specific/tracon11/static/tracon11/img/b2-saatoa2008-wh-200.png'),
         ]:
             try:
                 Banner.objects.get(sites=self.site, url=banner_url)

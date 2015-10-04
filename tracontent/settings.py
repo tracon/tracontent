@@ -52,10 +52,10 @@ INSTALLED_APPS = (
     'content',
     'ads',
 
-    'events.traconx',
-    'events.tracon11',
+    'site_specific.traconx',
+    'site_specific.tracon11',
 
-    'events.japsufi',
+    'site_specific.japsufi',
 )
 
 MIDDLEWARE_CLASSES = (
