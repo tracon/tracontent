@@ -293,7 +293,7 @@ class Page(models.Model, RenderPageMixin, PageAdminMixin):
         )
 
     def get_local_url(self):
-        return u'/' + self.path
+        return u'/' if self.is_front_page else u'/' + self.path
 
     def get_menu_entry(self, child_levels=1, t=None, current_url=None):
         # Guard against infinite recursion on parent loop and prevent lots of queries on default 2-level menu structure
