@@ -19,13 +19,15 @@ html
     .japsufi-content-wrap
       block full_width_content
         .container
+          block title
+            h1 {{ site_settings.title }}
           .row
             .col-md-2
               nav
                 ul.nav.nav-pills.nav-stacked
                   for menu_entry in menu
                     if menu_entry.active
-                      li.active: a(href="#")= menu_entry.text
+                      li.active: a(href="#{menu_entry.href}")= menu_entry.text
                     else
                       li: a(href="#{menu_entry.href}")= menu_entry.text
             .col-md-10

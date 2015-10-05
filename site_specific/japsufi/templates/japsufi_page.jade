@@ -1,6 +1,10 @@
 extends japsufi_base.jade
+block title
+  if page.is_front_page
+    h1 {{ site_settings.title }}
+  else
+    h1 {{ site_settings.title }} &raquo; {{ page.title }}
 block content
   include content_toolbar_admin_page.jade
   article.clearfix
-    h1 {{ page.title }}
     {{ page.body|safe }}
