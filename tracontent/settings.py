@@ -54,6 +54,7 @@ INSTALLED_APPS = (
 
     'site_specific.traconx',
     'site_specific.tracon11',
+    'site_specific.aicon',
 
     'site_specific.japsufi',
 )

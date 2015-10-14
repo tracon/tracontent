@@ -1,0 +1,67 @@
+.aicon-navbar {
+  background-color: #eec1c9;
+  border-bottom: 1px solid #669;
+}
+
+.aicon-navbar .navbar-brand, .aicon-navbar .navbar-nav>li>a {
+  color: #f8f8f8;
+}
+
+.aicon-navbar-push {
+  margin-top: 60px;
+}
+
+.aicon-footer-push, footer {
+  height: 45px;
+}
+
+.aicon-banners a, .aicon-banners img {
+  display: block;
+  width: 100%;
+}
+
+.aicon-banners a {
+  margin-bottom: 5px;
+}
+
+.aicon-blog-comment {
+  margin-bottom: 25px;
+  position: relative;
+}
+
+/* Ugly hack to fix anchored content being hidden under the fixed nav bar */
+.aicon-blog-comment-anchor {
+  position: absolute;
+  top: -60px;
+}
+
+/* Fixed footer black magic */
+html,
+body {
+  height: 100%;
+}
+.aicon-content-wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -45px;
+  padding-top: 60px;
+}
+.aicon-footer-push, footer {
+  height: 45px;
+}
+footer {
+  background-color: #f8f8f8;
+  border-top: 1px solid #e7e7e7;
+}
+footer .aicon-credit {
+  padding-top: 10px;
+}
+
+figure {
+  margin: 0.5em;
+}
+
+figcaption {
+  margin-top: 0.2em;
+}
