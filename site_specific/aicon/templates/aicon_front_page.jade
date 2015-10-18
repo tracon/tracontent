@@ -1,17 +1,13 @@
 extends aicon_base.jade
-block content
+block full_width_content
   include content_toolbar_admin_page.jade
-  article.clearfix
-    h1 {{ page.title }}
-    {{ page.body|safe }}
-  .row
-    .col-md-6
-      h3 Ajankohtaista
-      for blog_post in news_posts
-        include aicon_front_page_blog_link.html
-      a(href='{% url "content_blog_index_view" %}') Lisää uutisia...
-    .col-md-6
-      h3 aiconin blogissa
-      for blog_post in blog_posts
-        include aicon_front_page_blog_link.html
-      a(href='{{ blog_index_url }}') Lisää blogikirjoituksia...
+
+  h1 {{ page.title }}
+  table(width='100%')
+    tr
+      td(width='50%', valign='top', style='text-align: justify; padding-right: 20px;')
+        {{ page.body|safe }}
+      td(valign='top')
+        h3 Uutiset
+        for blog_post in news_posts
+          include aicon_blog_link.jade

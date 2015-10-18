@@ -2,6 +2,7 @@
 
 from datetime import datetime, timedelta, date
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
@@ -10,8 +11,18 @@ from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from django.utils.timezone import now
 
+import loremipsum
+
 from content.models import Page, Redirect, SiteSettings, BlogPost
+from content.utils import slugify
 from ads.models import Banner
+
+
+def lorem():
+    return u'\n\n'.join(
+        u'<p>{}</p>'.format(par)
+        for par in loremipsum.get_paragraphs(5, start_with_lorem=True)
+    )
 
 
 class Command(BaseCommand):
@@ -62,7 +73,7 @@ class Setup(object):
 
         ordering = 0
         for page_slug, page_title, child_pages in [
-            ('front-page', u'Aicon', []),
+            ('front-page', u'Verkatehdas, Hämeenlinna, 8.–9.10.2016', []),
             ('blog', u'Ajankohtaista', []), # pseudo page for menu, actually taken over by blog
             ('tapahtuma', u'Tapahtuma', []),
             ('ohjelma', u'Ohjelma', []),
@@ -76,7 +87,7 @@ class Setup(object):
                 slug=page_slug,
                 defaults=dict(
                     title=page_title,
-                    body=u'Placeholder for {slug}'.format(slug=page_slug),
+                    body=lorem(),
                     public_from=t,
                     visible_from=t,
                     order=ordering,
@@ -93,7 +104,7 @@ class Setup(object):
                     slug=child_slug,
                     defaults=dict(
                         title=child_title,
-                        body=u'Placeholder for {slug}'.format(slug=child_slug),
+                        body=lorem(),
                         public_from=t,
                         visible_from=t,
                         order=child_ordering,
@@ -101,8 +112,17 @@ class Setup(object):
                 )
 
         front_page = Page.objects.get(slug='front-page')
+        if front_page.title == u'Aicon':
+            front_page.title = u'Verkatehdas, Hämeenlinna, 8.–9.10.2016'
         if not front_page.override_menu_text:
             front_page.override_menu_text = u'Etusivu'
+        if not front_page.override_page_template:
+            front_page.override_page_template = 'aicon_front_page.jade'
+        if not front_page.page_controller_code:
+            front_page.page_controller_code = 'site_specific.aicon.views:front_page_controller'
+        if 'Placeholder for front-page' in front_page.body or 'Lorem ipsum' in front_page.body:
+            front_page.body = u'Aicon on aasialaiseen musiikkiin ja muotiin keskittyvä kaksipäiväinen tapahtuma, joka järjestään ensimmäistä kertaa syksyllä 2016. Aicon tarjoaa kävijöilleen monipuolista ohjelmaa ja tekemistä täysin omannäköisellään vivahteella, ja toivottaa kaikki aiheesta kiinnostuneet tervetulleiksi tapahtumaan!'
+        front_page.save()
 
         for path, target in [
             ('admin', '/admin/'),
@@ -114,3 +134,24 @@ class Setup(object):
                     target=target
                 ),
             )
+
+        if settings.DEBUG:
+            d = date.today()
+
+            for blog_title in [
+                u'Japan-poppia, minun conissani!?!',
+                u'Aiconin kävijäkysely',
+                u'Seuraa Aiconia Twitterissä ja Facebookissa!',
+            ]:
+                blog_post, unused = BlogPost.objects.get_or_create(
+                    site=self.site,
+                    slug=slugify(blog_title),
+                    defaults=dict(
+                        date=d,
+                        override_excerpt='blaa blaa blaa',
+                        title=blog_title,
+                        body='Dummy blog post',
+                        public_from=t,
+                        visible_from=t,
+                    )
+                )

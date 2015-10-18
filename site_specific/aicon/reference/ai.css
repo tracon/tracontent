@@ -1,7 +1,7 @@
 /* Main stuff */
 
 body{
-	background: url('../img/music-2.jpg') no-repeat #3C1149;
+	background: url('music-2.jpg') no-repeat #3C1149;
 	font-family: Arial, Sans-serif;
 	font-size: 14px;
 	margin:0;
@@ -17,7 +17,7 @@ table {
 }
 
 table .news {
-	background: url('../img/lilabg.png');
+	background: url('lilabg.png');
 	padding: 10px;
 	color: white;
 	margin-bottom: 5px;
@@ -113,7 +113,7 @@ a:link.sivunavi, a:visited.sivunavi {
 
 #ai {
 	z-index: -1;
-	background: url('../img/aichan5.png') no-repeat;
+	background: url('aichan5.png') no-repeat;
 	width: 966px;
 	height: 1121px;
 	position: absolute;
@@ -123,7 +123,7 @@ a:link.sivunavi, a:visited.sivunavi {
 
 #ai2 {
 	z-index: -1;
-	background: url('../img/aichan.png') no-repeat;
+	background: url('aichan.png') no-repeat;
 	width: 966px;
 	height: 1121px;
 	position: absolute;
@@ -139,7 +139,7 @@ a:link.sivunavi, a:visited.sivunavi {
 #topsection .top1 {
 	width: 100%;
 	height: 20px;
-	background: url('../img/lilabg.png');
+	background: url('lilabg.png');
 }
 
 #topsection .top1tumma {
@@ -154,19 +154,19 @@ a:link.sivunavi, a:visited.sivunavi {
 }
 
 #topsection .content {
-	padding-top: 160px;
+	padding-top: 160px;	
 	padding-left: 800px;
 	text-align: left;
-	background: url('../img/aicontesti2.png') no-repeat bottom right;
+	background: url('aicontesti2.png') no-repeat bottom right;
 	width: 500px;
 	height: 140px;
 }
 
 #topsection .content2 {
 	text-align: left;
-	padding-top: 134px;
+	padding-top: 134px;	
 	padding-left: 800px;
-	background: url('../img/aicontesti2.png') no-repeat bottom right;
+	background: url('aicontesti2.png') no-repeat bottom right;
 	width: 500px;
 	height: 140px;
 }
@@ -177,7 +177,7 @@ a:link.sivunavi, a:visited.sivunavi {
 }
 
 #topsection .navigaatio {
-	background: url('../img/lilabg.png');
+	background: url('lilabg.png');
 	width: 100%;
 	text-align: center;
 	height: 60px;
@@ -208,7 +208,7 @@ a:link.sivunavi, a:visited.sivunavi {
 	margin: auto;
 	padding: 20px 0 30px 0;
 	width: 100%;
-	background: url('../img/whitebg.png');
+	background: url('whitebg.png');
 }
 
 #contentwrapper a, a:visited {
@@ -259,7 +259,7 @@ a:link.sivunavi, a:visited.sivunavi {
 	font-family: 'Open Sans Condensed', sans-serif;
 	text-transform: uppercase;
 	width: 100%;
-	background: url('../img/lilabg.png') repeat;
+	background: url('lilabg.png') repeat;
 	color: #FFF;
 	text-align: center;
 	padding: 14px 0;

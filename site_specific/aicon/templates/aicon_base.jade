@@ -1,53 +1,36 @@
-doctype 5
+doctype html
 - load static from staticfiles
 html
   head
-    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1')
     title
       block full_title
-        {% if page.title %}{{ page.title }} – {{ site_settings.title }}{% else %}{{ site_settings.title }}{% endif %}
-    meta(name='description', content='{{ site_settings.description }}')
-    meta(name='keywords', content='{{ site_settings.keywords }}')
-    link(rel='stylesheet', type='text/css', href='{% static "common/css/bootstrap.min.css" %}')
-    link(rel='stylesheet', type='text/css', href='{% static "aicon/css/aicon.css" %}')
-    link(rel='alternate', type='application/rss+xml', title='Blog', href='{{ feeds.rss }}')
-    link(rel='alternate', type='application/atom+xml', title='Blog', href='{{ feeds.atom }}')
-    script(src='{% static "common/js/jquery.min.js" %}', defer)
-    script(src='{% static "common/js/bootstrap.min.js" %}', defer)
+        |{% if page.title %}{{ page.title }} – {{ site_settings.title }}{% else %}{{ site_settings.title }}{% endif %}
+    link(href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300', rel='stylesheet', type='text/css')
+    link(href='{% static "aicon/css/aicon.css" %}', rel='stylesheet', type='text/css')
+    link(rel='icon', type='image/x-icon', href='favicon.ico')
   body
-    .navbar.navbar-inverse.navbar-fixed-top.aicon-navbar
-      .container
-        .navbar-header
-          button(type="button", class="navbar-toggle", data-toggle="collapse", data-target="#aicon-navbar-collapse")
-            span(class="sr-only") Avaa valikko
-            span(class="icon-bar")
-            span(class="icon-bar")
-            span(class="icon-bar")
+    #ai
+    #topsection
+      .top1
+      .top2
+        .content
+      .navigaatio
+        for entry in menu
+          a.navi(href='#{entry.href}')= entry.text
 
-          a.navbar-brand(href='/') {{ site_settings.title }}
-
-        .collapse.navbar-collapse#aicon-navbar-collapse
-          include content_navbar_menu.jade
-          include content_navbar_user.jade
-
-    .aicon-content-wrap
-      block full_width_content
-        .container
-          .row
-            .col-md-10
-              block content
-                p Content goes here.
-            .col-md-2
-              .aicon-banners
-                include ads_sidebar_banners.jade
-
-      .aicon-footer-push
-
-    footer
-      .container
-        p.aicon-credit
-          small.text-muted Aicon-tapahtuman järjestää <a href='http://aicon.fi/ry'>Aicon ry</a>. Sivustoa pyörittää {{ tracontent_footer|safe }}
+    #contentwrapper
+      .pad
+        block full_width_content
+          block content
+            p Sisältö tulee tähän.
+    #footer
+      p
+        a(href='https://twitter.com/Aicon_FI') Twitter
+        |
+        a(href='#') Facebook
+      p © Aicon 2015
 
     if site_settings.google_analytics_token
       if not request.user.is_staff
