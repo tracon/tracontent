@@ -1,0 +1,39 @@
+%footer
+  .container
+    .row
+      .col-lg-10.col-lg-offset-1.text-center
+        %hr
+        %p<
+          © Hitpoint 2015 · hitpoint ät tracon.fi
+        %p
+          %a{ :href => "http://www.facebook.com/Tracon.fi" }<
+            facebook.com/Tracon.fi |
+          %a{ :href => "https://twitter.com/Tracon_FI" }<
+            Twitter @Tracon_FI |
+          %a{ :href => "mailto:hitpoint@tracon.fi" }<
+            hitpoint@tracon.fi
+
+%script{ :src => "../jquery/jquery.min.js" }
+%script{ :src => "../bootstrap/js/bootstrap.min.js" }
+%script{ :src => "https://maps.googleapis.com/maps/api/js?sensor=false", :type => "text/javascript" }
+
+%script
+  ="google.maps.event.addDomListener(window, 'load', initialize);"
+  ="function initialize() {"
+  ="  var latlng = new google.maps.LatLng(61.503312,23.769893);"
+  ="  var mapOptions = {"
+  ="      center: latlng,"
+  ="      scrollwheel: false,"
+  ="      zoom: 14"
+  ="  };"
+  ="  var marker = new google.maps.Marker({"
+  ="      position: latlng,"
+  ="      url: '/',"
+  ="      animation: google.maps.Animation.DROP"
+  ="  });"
+  ="  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);"
+  ="  marker.setMap(map);"
+  ="};"
+
+
+

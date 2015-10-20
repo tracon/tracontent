@@ -1,0 +1,31 @@
+%nav
+  .container
+    .navbar-header
+      %button{ :type => "button", "data-toggle" => "collapse", "data-target" => "#navbar", "aria-expanded" => "false", "aria-controls" => "navbar" }
+        %span.sr-only<
+          Toggle navigation
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      %a.navbar-brand{ :href => "./index.html" }<= "Hitpoint"
+    #navbar
+      %ul
+        %li
+          <!-- TODO: add javascript to mark current selection with .active -->
+          %a{ :href => "./index.html#anchor" }<= "Tietoa"
+        %li
+          %a{ :href => "https://kompassi.tracon.fi/events/hitpoint2015/tickets", :target => "_blank" }= "Lipunmyynti"
+        %li
+          %a{ :href => "./goh.html#anchor" }<= "Kunniavieraat"
+        %li
+          %a{ :href => "./ohjelmahaku.html#anchor" }<= "Ohjelmahaku"
+        %li
+          %a{ :href => "./tyovoimahaku.html#anchor" }<= "Työvoimahaku"
+      %ul.navbar-right
+        %li<
+          %a{ :href => "#"}<
+            %img.flag.flag-fi{ :src => "../images/blank.gif"}
+        %li<
+          %a{ :href => "../en/index.html"}<
+            %img.flag.flag-gb{ :src => "../images/blank.gif"}
+
