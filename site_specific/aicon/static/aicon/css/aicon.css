@@ -9,6 +9,35 @@ body{
 	line-height: 1.5em;
 }
 
+#usermenu {
+	position: absolute;
+	top: 0;
+	right: 30px;
+	background-color: black;
+	margin: 0;
+	padding: 0 1em 0 1em;
+}
+
+#usermenu a:link {
+	color: white;
+}
+
+#usermenu a:visited {
+	color: white;
+}
+
+.list-horizontal {
+  list-style-type: none;
+}
+
+.list-horizontal li {
+	display: inline;
+}
+
+.list-horizontal li + li {
+	margin-left: 1em;
+}
+
 table {
 	font-family: Arial, Sans-serif;
 	font-size: 14px;
