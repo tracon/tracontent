@@ -1,15 +1,10 @@
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.conf import settings
+from django.contrib.auth import logout
 from django.shortcuts import redirect
 
 
-def index_view(request):
-    return HttpResponse('''
-      <h1>Public page</h1>
-      <p><a href='/protected'>Go to protected page</a></p>
-    ''')
+def logout_view(request):
+    logout(request)
 
-
-@login_required
-def protected_view(request):
-    return HttpResponse('<h1>Hello, {user.username}!</h1>'.format(user=request.user))
+    next_url = request.GET.get('next', settings.LOGOUT_REDIRECT_URL)
+    return redirect(next_url)

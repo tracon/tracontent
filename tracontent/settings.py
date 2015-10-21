@@ -199,7 +199,8 @@ KOMPASSI_ADMIN_GROUP = 'admins'
 KOMPASSI_EDITOR_GROUP = 'tracontent-staff'
 
 LOGIN_URL = '/oauth2/login' if 'kompassi_oauth2' in INSTALLED_APPS else '/admin/login/'
-LOGOUT_URL = '/admin/logout/'
+LOGOUT_URL = '/logout/'
+LOGOUT_REDIRECT_URL = '{KOMPASSI_HOST}/logout'.format(**locals())
 
 TRACONTENT_BLOG_AUTO_EXCERPT_MAX_CHARS = 300
 TRACONTENT_BLOG_COMMENT_MODERATORS = []

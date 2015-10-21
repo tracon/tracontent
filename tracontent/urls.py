@@ -3,13 +3,18 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
 
+from .views import logout_view
+
 
 admin.autodiscover()
+
 
 actual_patterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^ckeditor/', include('ckeditor.urls')),
+    url(r'^logout/?', logout_view, name='logout_view'),
 ]
+
 
 if 'kompassi_oauth2' in settings.INSTALLED_APPS:
     actual_patterns.append(
@@ -26,9 +31,11 @@ if settings.DEBUG:
         static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     )
 
+
 # This needs to come last due to a catch-all route
 actual_patterns.append(
     url(r'', include('content.urls')),
 )
+
 
 urlpatterns = patterns('', *actual_patterns)
