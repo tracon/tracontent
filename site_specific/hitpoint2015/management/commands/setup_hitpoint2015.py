@@ -59,6 +59,9 @@ class Setup(object):
         for page_slug, page_title, child_pages in [
             ('front-page', u'Dummy etusivu', []),
 
+            # Outside fi subsite for technical reasons
+            ('blog', u'Ajankohtaista', []),
+
             ('fi', u'Kaksi päivää pelaamista Tampereen keskustassa!', [
                 ('tapahtuma', u'Tapahtuma'),
                 ('liput', u'Lipunmyynti'),
