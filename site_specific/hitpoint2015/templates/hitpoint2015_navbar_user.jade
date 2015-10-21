@@ -1,0 +1,17 @@
+- load static from staticfiles
+ul.nav.navbar-nav.navbar-right
+  li: a(href='/fi/')
+    img(src='{% static "hitpoint2015/images/blank.gif" %}').flag.flag-fi
+  li: a(href='/en/')
+    img(src='{% static "hitpoint2015/images/blank.gif" %}').flag.flag-gb
+  if user.is_authenticated
+    li.dropdown
+      a(href="#", class="dropdown-toggle", data-toggle="dropdown")
+        | {{ user.get_full_name }}
+        b.caret
+      ul.dropdown-menu
+        //- TODO convert to {% url ...
+        li: a(href='/admin/') Sivuston ylläpito
+        li: a(href='/admin/logout/?next=/') Kirjaudu ulos
+  else
+    li: a(href="#{settings.LOGIN_URL}") Kirjaudu...

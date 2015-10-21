@@ -1,0 +1,68 @@
+doctype html
+- load static from staticfiles
+html
+  head
+    meta(charset='UTF-8')
+    title
+      block full_title
+        |{% if page.title %}{{ page.title }} – {{ site_settings.title }}{% else %}{{ site_settings.title }}{% endif %}
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(content="width=device-width, initial-scale=1", name="viewport")
+    link(href='{% static "hitpoint2015/css/hitpoint2015.css" %}', media="screen", rel="stylesheet")
+
+  body
+    nav.navbar.navbar-inverse.navbar-fixed-top.tracon-navbar
+      .container
+        .navbar-header
+          button(type="button", class="navbar-toggle", data-toggle="collapse", data-target="#tracon-navbar-collapse")
+            span(class="sr-only") Avaa valikko
+            span(class="icon-bar")
+            span(class="icon-bar")
+            span(class="icon-bar")
+
+          a.navbar-brand(href='{{ subsite_frontpage.href }}')= site_settings.title
+
+        .collapse.navbar-collapse#tracon-navbar-collapse
+          include content_navbar_menu.jade
+          include hitpoint2015_navbar_user.jade
+
+    block full_width_content
+      header.header--fullscreen.hidden-xs
+        .text-vertical-center
+          img(src='{% static "hitpoint2015/images/hitpoint_shadow.png" %}', style="opacity: 0.8", style="filter: alpha(opacity=80)")
+
+      .container
+        block content
+
+    footer
+      .container
+        .row
+          .col-lg-10.col-lg-offset-1.text-center
+            hr
+            p Tracon Hitpoint 2015 -tapahtuman järjestää <a href='https://ry.tracon.fi'>Tracon ry</a>. Sivustoa pyörittää {{ tracontent_footer|safe }}
+            ul.some-links
+              li: a(href="http://www.facebook.com/Tracon.fi") facebook.com/Tracon.fi
+              li: a(href="https://twitter.com/Tracon_FI") Twitter @Tracon_FI
+              li: a(href="mailto:hitpoint@tracon.fi") hitpoint@tracon.fi
+
+    script(src="https://maps.googleapis.com/maps/api/js?sensor=false", type='text/javascript')
+    script.
+      google.maps.event.addDomListener(window, 'load', initialize);
+      function initialize() {
+        var latlng = new google.maps.LatLng(61.503312,23.769893);
+        var mapOptions = {
+            center: latlng,
+            scrollwheel: false,
+            zoom: 14
+        };
+        var marker = new google.maps.Marker({
+            position: latlng,
+            url: '/',
+            animation: google.maps.Animation.DROP
+        });
+        var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        marker.setMap(map);
+      };
+
+
+

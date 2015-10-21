@@ -142,6 +142,14 @@ class SiteSettings(models.Model):
         help_text=u'Jos täytät tähän Google Analytics -sivustoavaimen, ei-kirjautuneiden käyttäjien visiitit raportoidaan Google Analyticsiin.',
     )
 
+    context_processor_code = models.CharField(
+        max_length=255,
+        blank=True,
+        default=u'',
+        verbose_name=u'Sivustokontrolleri',
+        help_text=u'Polku funktioon, joka suoritetaan joka sivulatauksella ja joka voi määritellä lisää muuttujia sivuston nimiavaruuteen.',
+    )
+
     @classmethod
     def get_or_create_dummy(cls):
         site, unused = Site.objects.get_or_create(domain='example.com')

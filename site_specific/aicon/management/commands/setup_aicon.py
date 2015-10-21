@@ -61,14 +61,6 @@ class Setup(object):
             )
         )
 
-        # v3
-        if self.site_settings.page_template == 'example_page.jade':
-            self.site_settings.page_template = 'aicon_page.jade'
-        if self.site_settings.blog_index_template == 'example_blog_index.jade':
-            self.site_settings.blog_index_template = 'aicon_blog_index.jade'
-        if self.site_settings.blog_post_template == 'example_blog_post.jade':
-            self.site_settings.blog_post_template = 'aicon_blog_post.jade'
-
         self.site_settings.save()
 
         ordering = 0

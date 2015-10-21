@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.timezone import now
 
+from .utils import get_code
 
 def content_context(request):
     site_settings = request.site.site_settings
@@ -29,5 +30,10 @@ def content_context(request):
             u"</a> © 2015–2016 <a href='https://github.com/tracon/tracontent/blob/master/LICENSE'>"
             "Santtu Pajukanta</a>.".format(app_name=app_name)
     )
+
+
+    if site_settings.context_processor_code:
+        context_processor_func = get_code(site_settings.context_processor_code)
+        vars.update(context_processor_func(request))
 
     return vars

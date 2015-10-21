@@ -2,7 +2,7 @@ ul.nav.navbar-nav
   for entry in menu
     if entry.children
       li.dropdown(class="#{entry.active_css}")
-        a(href, class="dropdown-toggle", data-toggle="dropdown")= entry.text
+        a(href='', class="dropdown-toggle", data-toggle="dropdown")= entry.text
           b.caret
         ul.dropdown-menu
           li(class="#{child.active_css}"): a(href='#{entry.href}')= entry.text
