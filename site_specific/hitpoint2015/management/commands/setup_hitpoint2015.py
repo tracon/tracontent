@@ -66,12 +66,9 @@ class Setup(object):
                 ('tapahtuma', u'Tapahtuma'),
                 ('liput', u'Lipunmyynti'),
                 ('goh', u'Kunniavieraat'),
-                ('ohjelmahaku', u'Ohjelmahaku'),
-                ('tyovoimahaku', u'Työvoimahaku'),
             ]),
 
             ('en', u'Two days of table-top games in Downtown Tampere!', [
-                ('event', u'Event'),
                 ('tickets', u'Tickets'),
                 ('goh', u'Guests of Honour'),
             ]),
