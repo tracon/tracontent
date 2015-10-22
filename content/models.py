@@ -169,13 +169,13 @@ class SiteSettings(models.Model):
     def title(self):
         return self.site.name if self.site else None
 
-    def get_menu(self, t=None, current_url=None):
+    def get_menu(self, t=None, current_url=None, parent=None):
         if t is None:
             t = now()
 
         return [
             page.get_menu_entry(t=t, current_url=current_url)
-            for page in Page.objects.filter(site=self.site, parent=None, visible_from__lte=t).prefetch_related('child_page_set').all()
+            for page in Page.objects.filter(site=self.site, parent=parent, visible_from__lte=t).prefetch_related('child_page_set').all()
         ]
 
     def get_absolute_url(self):
