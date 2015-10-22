@@ -6,18 +6,18 @@ block full_width_content
       img(src='{% static "hitpoint2015/images/hitpoint_shadow.png" %}', style="opacity: 0.8", style="filter: alpha(opacity=80)")
 
   .container
-    include content_toolbar_admin_page.jade
-    article.clearfix
-      h1 {{ page.title }}
-      {{ page.body|safe }}
     .row
-      .col-lg-offset-1.col-lg-5
-        h3 Ajankohtaista
+      .col-lg-9
+        include content_toolbar_admin_page.jade
+        article.clearfix
+          h1 {{ page.title }}
+          {{ page.body|safe }}
+      .col-lg-3
+        h4.space-above Ajankohtaista
         for blog_post in news_posts
           include hitpoint2015_front_page_blog_link.html
         a(href='{% url "content_blog_index_view" %}') Lisää uutisia...
-      .col-lg-5
-        h3 Traconin blogissa
+        h4 Traconin blogissa
         for blog_post in blog_posts
           include hitpoint2015_front_page_blog_link.html
         a(href='{{ blog_index_url }}') Lisää blogikirjoituksia...
