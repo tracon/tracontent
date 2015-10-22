@@ -86,6 +86,13 @@ class PageAdminForm(forms.ModelForm, CommonAdminFormMixin):
         required=not CommonFields.body['blank'],
     )
 
+    def __init__(self, *args, **kwargs):
+        forms.ModelForm.__init__(self, *args, **kwargs)
+
+        if self.instance and self.instance.site:
+            self.fields['parent'].queryset = self.instance.site.page_set.all()
+
+
     def clean_site(self):
         site = self.cleaned_data.get('site')
         parent = self.cleaned_data.get('parent')
