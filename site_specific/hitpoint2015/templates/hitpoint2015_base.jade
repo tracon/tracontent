@@ -7,7 +7,7 @@ html
       block full_title
         |{% if page.title %}{{ page.title }} – {{ site_settings.title }}{% else %}{{ site_settings.title }}{% endif %}
     meta(http-equiv="X-UA-Compatible", content="IE=edge")
-    meta(content="width=device-width, initial-scale=1", name="viewport")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
     link(href='{% static "hitpoint2015/css/hitpoint2015.css" %}', media="screen", rel="stylesheet")
     script(src='{% static "hitpoint2015/js/hitpoint2015.js" %}', type='text/javascript')
 
@@ -52,19 +52,20 @@ html
       if (anchor) {
         anchor.parentElement.innerHTML = '<div id="map-canvas"></div>';
         google.maps.event.addDomListener(window, 'load', initialize);
-        function initialize() {
-          var latlng = new google.maps.LatLng(61.503312,23.769893);
-          var mapOptions = {
-              center: latlng,
-              scrollwheel: false,
-              zoom: 14
-          };
-          var marker = new google.maps.Marker({
-              position: latlng,
-              url: '/',
-              animation: google.maps.Animation.DROP
-          });
-          var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-          marker.setMap(map);
-        };
       }
+
+      function initialize() {
+        var latlng = new google.maps.LatLng(61.503312,23.769893);
+        var mapOptions = {
+            center: latlng,
+            scrollwheel: false,
+            zoom: 14
+        };
+        var marker = new google.maps.Marker({
+            position: latlng,
+            url: '/',
+            animation: google.maps.Animation.DROP
+        });
+        var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        marker.setMap(map);
+      };
