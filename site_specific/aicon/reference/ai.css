@@ -1,7 +1,8 @@
 /* Main stuff */
 
 body{
-	background: url('music-2.jpg') no-repeat #3C1149;
+	background: url('aiconbg.png') no-repeat top left #11001C;
+	background-size: 100% auto;
 	font-family: Arial, Sans-serif;
 	font-size: 14px;
 	margin:0;
@@ -16,8 +17,13 @@ table {
 	border-collapse: collapse;
 }
 
+table .whitebg {
+	background: url('whitebg.png') repeat;
+	padding: 20px 20px;
+}
+
 table .news {
-	background: url('lilabg.png');
+	background: url('lilabg2.png');
 	padding: 10px;
 	color: white;
 	margin-bottom: 5px;
@@ -57,14 +63,10 @@ h2 {
 h3 {
 	font-size: 30px;
 	color: black;
-	margin-top: 0;
+	margin-top: 5px;
 	margin-bottom: 20px;
 	text-align: center;
 	letter-spacing: 4px;
-}
-
-h3:before, h3:after {
-	content: " • ";
 }
 
 h4 {
@@ -76,7 +78,7 @@ h4 {
 .navi {
 	padding: 5px 0px;
 	margin-right: 40px;
-	font-size: 20px;
+	font-size: 25px;
 	font-family: 'Open Sans Condensed', sans-serif;
 	text-transform: uppercase;
 	letter-spacing: 2px;
@@ -101,99 +103,56 @@ a:hover.navi {
 }
 
 a:hover.sivunavi {
-	background: #BB629A;
+	background: #EBC0DD;
 }
 
 a:link.sivunavi, a:visited.sivunavi {
 	text-decoration: none;
-	color: white;
+	color: #430B58;
 }
 
 /* Block systems */
-
-#ai {
-	z-index: -1;
-	background: url('aichan5.png') no-repeat;
-	width: 966px;
-	height: 1121px;
-	position: absolute;
-	top: 0;
-	left: 0;
-}
-
-#ai2 {
-	z-index: -1;
-	background: url('aichan.png') no-repeat;
-	width: 966px;
-	height: 1121px;
-	position: absolute;
-	top: 0;
-	left: 0;
-}
 
 #topsection{
 	width: 100%;
 	top: 0;
 }
 
-#topsection .top1 {
+#topsection .top {
 	width: 100%;
-	height: 20px;
-	background: url('lilabg.png');
-}
-
-#topsection .top1tumma {
-	width: 100%;
-	height: 20px;
-	background: #8D298B;
+	height: 500px;
 }
 
 #topsection .top2 {
 	width: 100%;
-	height: 550px;
+	height: 470px;
 }
 
 #topsection .content {
-	padding-top: 160px;	
-	padding-left: 800px;
 	text-align: left;
-	background: url('aicontesti2.png') no-repeat bottom right;
-	width: 500px;
-	height: 140px;
-}
-
-#topsection .content2 {
-	text-align: left;
-	padding-top: 134px;	
-	padding-left: 800px;
-	background: url('aicontesti2.png') no-repeat bottom right;
-	width: 500px;
-	height: 140px;
-}
-
-#topsection .top3 {
+	background: url('aiconlogo.png') no-repeat 820px 180px;
 	width: 100%;
-	height: 400px;
+	height: 100%;
 }
 
 #topsection .navigaatio {
 	background: url('lilabg.png');
 	width: 100%;
 	text-align: center;
-	height: 60px;
-	padding-top: 40px;
+	height: 70px;
+	padding-top: 50px;
 }
 
 #topsection .tummanavi {
-	background: #8D298B;
+	background: #430B58;
 	width: 100%;
 	text-align: center;
-	height: 60px;
-	padding-top: 40px;
+	height: 70px;
+	padding-top: 50px;
 }
 
 #topsection .navigaatio2 {
-	background: #F6A0C3;
+	background: #F2E3F6;
 	width: 100%;
 	text-align: center;
 	margin: auto;
@@ -206,7 +165,7 @@ a:link.sivunavi, a:visited.sivunavi {
 
 #contentwrapper {
 	margin: auto;
-	padding: 20px 0 30px 0;
+	padding: 40px 0;
 	width: 100%;
 	background: url('whitebg.png');
 }
@@ -223,7 +182,7 @@ a:link.sivunavi, a:visited.sivunavi {
 
 #contentwrapper2 {
 	margin: auto;
-	padding: 20px 0 30px 0;
+	padding: 30px 0;
 	width: 100%;
 	background: white;
 }
@@ -240,13 +199,9 @@ a:link.sivunavi, a:visited.sivunavi {
 
 #contentwrapper3 {
 	margin: auto;
-	padding: 20px 0 30px 0;
+	padding: 30px 0;
 	width: 100%;
-	background: #fff0f6;
-}
-
-#contentwrapper3 a, a:visited {
-	color: #5E1A64;
+	background: #F2E3F6;
 }
 
 #contentwrapper3 .pad {
@@ -270,7 +225,7 @@ a:link.sivunavi, a:visited.sivunavi {
 	font-family: 'Open Sans Condensed', sans-serif;
 	text-transform: uppercase;
 	width: 100%;
-	background: #8D298B;
+	background: #430B58;
 	color: #FFF;
 	text-align: center;
 	padding: 14px 0;

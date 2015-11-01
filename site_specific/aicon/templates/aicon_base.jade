@@ -9,6 +9,7 @@ html
         |{% if page.title %}{{ page.title }} – {{ site_settings.title }}{% else %}{{ site_settings.title }}{% endif %}
     link(href='//fonts.googleapis.com/css?family=Open+Sans+Condensed:300', rel='stylesheet', type='text/css')
     link(href='{% static "aicon/css/aicon.css" %}', rel='stylesheet', type='text/css')
+    link(href='{% static "aicon/css/aicon_tracontent.css" %}', rel='stylesheet', type='text/css')
     link(rel='icon', type='image/x-icon', href='favicon.ico')
   body
     ul#usermenu.list-horizontal
@@ -19,7 +20,6 @@ html
           li: a(href='/admin/') Sivuston ylläpito
         li: a(href='{{ settings.LOGOUT_URL }}') Kirjaudu ulos ({{ request.user.get_full_name }})
 
-    #ai
     #topsection
       .top1
       .top2
@@ -34,10 +34,6 @@ html
           block content
             p Sisältö tulee tähän.
     #footer
-      p
-        a(href='https://twitter.com/Aicon_FI') Twitter
-        |
-        a(href='#') Facebook
       p © Aicon 2015
 
     if site_settings.google_analytics_token
@@ -50,3 +46,6 @@ html
 
           ga('create', '{{ site_settings.google_analytics_token }}', 'auto');
           ga('send', 'pageview');
+
+
+

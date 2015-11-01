@@ -7,7 +7,12 @@ block full_width_content
     tr
       td(width='50%', valign='top', style='text-align: justify; padding-right: 20px;')
         {{ page.body|safe }}
-      td(valign='top')
+        p(align='center')
+          a(href='http://twitter.com/Aicon_FI')
+            img(src='twitterlogo.png', border='0', style='padding-right: 20px;')
+          a(href='http://facebook.com/aiconfinland')
+            img(src='fblogo.png', border='0')
+      td.whitebg(valign='top')
         h3 Uutiset
         for blog_post in news_posts
           include aicon_blog_link.jade
