@@ -56,13 +56,13 @@ class Organizer(models.Model):
     @property
     def name(self):
         if self.nick:
-            return '{first_name} ”{nick}” {last_name}'.format(
+            return u'{first_name} ”{nick}” {last_name}'.format(
                 first_name=self.first_name,
                 nick=self.nick,
                 last_name=self.last_name,
             )
         else:
-            return '{first_name} {last_name}'.format(
+            return u'{first_name} {last_name}'.format(
                 first_name=self.first_name,
                 last_name=self.last_name,
             )
