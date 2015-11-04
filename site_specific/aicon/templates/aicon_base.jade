@@ -12,13 +12,7 @@ html
     link(href='{% url "resources_style_sheet_view" "aicon_tracontent.css" %}', rel='stylesheet', type='text/css')
     link(rel='icon', type='image/x-icon', href='favicon.ico')
   body
-    ul#usermenu.list-horizontal
-      if request.user.is_anonymous
-        li: a(href='{{ settings.LOGIN_URL }}') Kirjaudu sisään...
-      else
-        if request.user.is_staff
-          li: a(href='/admin/') Sivuston ylläpito
-        li: a(href='{{ settings.LOGOUT_URL }}') Kirjaudu ulos ({{ request.user.get_full_name }})
+    include aicon_user_menu.jade
 
     #topsection
       .top1
