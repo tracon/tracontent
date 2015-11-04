@@ -13,4 +13,5 @@ Pillow==2.9.0
 pyasn1==0.1.8
 pyjade==3.1.0
 pyOpenSSL==0.15.1
+python-dateutil==2.4.2
 requests-oauthlib==0.5.0
