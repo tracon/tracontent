@@ -1,7 +1,7 @@
 /* Main stuff */
 
 body{
-	background: url('aiconbg.png') no-repeat top left #11001C;
+	background: url('/static/aicon/img/aiconbg.png') no-repeat top left #11001C;
 	background-size: 100% auto;
 	font-family: Arial, Sans-serif;
 	font-size: 14px;
@@ -18,12 +18,12 @@ table {
 }
 
 table .whitebg {
-	background: url('whitebg.png') repeat;
+	background: url('/static/aicon/img/whitebg.png') repeat;
 	padding: 20px 20px;
 }
 
 table .news {
-	background: url('lilabg2.png');
+	background: url('/static/aicon/img/lilabg2.png');
 	padding: 10px;
 	color: white;
 	margin-bottom: 5px;
@@ -130,13 +130,13 @@ a:link.sivunavi, a:visited.sivunavi {
 
 #topsection .content {
 	text-align: left;
-	background: url('aiconlogo.png') no-repeat 820px 180px;
+	background: url('/static/aicon/img/aiconlogo.png') no-repeat 820px 180px;
 	width: 100%;
 	height: 100%;
 }
 
 #topsection .navigaatio {
-	background: url('lilabg.png');
+	background: url('/static/aicon/img/lilabg.png');
 	width: 100%;
 	text-align: center;
 	height: 70px;
@@ -167,7 +167,7 @@ a:link.sivunavi, a:visited.sivunavi {
 	margin: auto;
 	padding: 40px 0;
 	width: 100%;
-	background: url('whitebg.png');
+	background: url('/static/aicon/img/whitebg.png');
 }
 
 #contentwrapper a, a:visited {
@@ -214,7 +214,7 @@ a:link.sivunavi, a:visited.sivunavi {
 	font-family: 'Open Sans Condensed', sans-serif;
 	text-transform: uppercase;
 	width: 100%;
-	background: url('lilabg.png') repeat;
+	background: url('/static/aicon/img/lilabg.png') repeat;
 	color: #FFF;
 	text-align: center;
 	padding: 14px 0;
