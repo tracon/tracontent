@@ -2,10 +2,10 @@ extends aicon_base.jade
 block full_width_content
   include content_toolbar_admin_page.jade
 
-  h1 {{ page.title }}
   table(width='100%')
     tr
       td(width='50%', valign='top', style='text-align: justify; padding-right: 20px;')
+        h1 {{ page.title }}
         {{ page.body|safe }}
         p(align='center')
           a(href='http://twitter.com/Aicon_FI')
