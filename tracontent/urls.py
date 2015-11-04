@@ -17,25 +17,20 @@ actual_patterns = [
 
 
 if 'kompassi_oauth2' in settings.INSTALLED_APPS:
-    actual_patterns.append(
-        url(r'', include('kompassi_oauth2.urls'))
-    )
+    actual_patterns.append(url(r'', include('kompassi_oauth2.urls')))
 
 if 'ads' in settings.INSTALLED_APPS:
-    actual_patterns.append(
-        url(r'', include('ads.urls'))
-    )
+    actual_patterns.append(url(r'', include('ads.urls')))
+
+if 'resources' in settings.INSTALLED_APPS:
+    actual_patterns.append(url(r'', include('resources.urls')))
 
 if settings.DEBUG:
-    actual_patterns.extend(
-        static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    )
+    actual_patterns.extend(static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))
 
 
 # This needs to come last due to a catch-all route
-actual_patterns.append(
-    url(r'', include('content.urls')),
-)
+actual_patterns.append(url(r'', include('content.urls')))
 
 
 urlpatterns = patterns('', *actual_patterns)

@@ -47,10 +47,13 @@ INSTALLED_APPS = (
 
     'ckeditor',
     'crispy_forms',
+    'djangocodemirror',
+    'reversion',
 
     'kompassi_oauth2',
     'content',
     'ads',
+    'resources',
 
     'site_specific.traconx',
     'site_specific.tracon11',
@@ -77,6 +80,7 @@ AUTHENTICATION_BACKENDS = (
 
 TEMPLATE_LOADERS = (
     ('pyjade.ext.django.Loader',(
+        'resources.template_loaders.DatabaseTemplateLoader',
         'django.template.loaders.filesystem.Loader',
         'django.template.loaders.app_directories.Loader',
     )),
@@ -152,6 +156,11 @@ LOGGING = {
             'level': 'DEBUG' if DEBUG else 'WARNING',
             'propagate': True
         },
+        'resources': {
+            'handlers': ['console'],
+            'level': 'DEBUG' if DEBUG else 'WARNING',
+            'propagate': True
+        }
     }
 }
 

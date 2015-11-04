@@ -1,7 +1,9 @@
 bleach==1.4.1
 django-crispy-forms==1.5.0
 django-ipware==1.1.0
+django-reversion==1.9.3
 Django==1.8.3
+djangocodemirror==0.9.7
 git+https://github.com/django-ckeditor/django-ckeditor@cefb310ccfafdcee05b1f2be2b5bb9ccd215b107#egg=django-ckeditor
 gunicorn==19.3.0
 ipython==4.0.0
