@@ -9,11 +9,11 @@ from .models import (
 
 
 class StyleSheetAdmin(VersionAdmin):
-    pass
+    list_display = ('name', 'active')
 
 
 class TemplateAdmin(VersionAdmin):
-    pass
+    list_display = ('name', 'active')
 
 
 admin.site.register(Template, TemplateAdmin)
