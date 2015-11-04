@@ -2,6 +2,7 @@
 
 import re
 
+import loremipsum
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Div, Hidden
 
@@ -74,3 +75,10 @@ def get_code(path):
     module_name, member_name = path.split(':')
     module = import_module(module_name)
     return getattr(module, member_name)
+
+
+def lorem(paragraphs=5):
+    return u'\n\n'.join(
+        u'<p>{}</p>'.format(par)
+        for par in loremipsum.get_paragraphs(paragraphs, start_with_lorem=True)
+    )

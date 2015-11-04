@@ -1,37 +1,74 @@
-.japsufi-footer-push, footer {
-  height: 45px;
+* {
+  font-family: 'Open Sans', sans-serif;
+}
+
+body {
+  background-color: white;
 }
 
 nav {
-  padding-top: 20px;
+  background-color: #113;
+  color: white;
+  text-transform: uppercase;
+  padding: 15px;
 }
 
-/* Fixed footer black magic */
-html,
-body {
-  height: 100%;
-}
-.japsufi-content-wrap {
-  min-height: 100%;
-  height: auto !important;
-  height: 100%;
-  margin: 0 auto -45px;
-}
-.japsufi-footer-push, footer {
-  height: 45px;
-}
-footer {
-  background-color: #f8f8f8;
-  border-top: 1px solid #e7e7e7;
-}
-footer .japsufi-credit {
-  padding-top: 10px;
+nav h1 {
+  padding-left: 20px;
+  margin-bottom: 25px;
 }
 
-figure {
-  margin: 0.5em;
+nav a:link, nav a:visited {
+  color: white;
+  font-weight: 600;
 }
 
-figcaption {
-  margin-top: 0.2em;
+nav a:hover {
+  color: #111;
+}
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover {
+  background-color: white;
+  color: #333;
+}
+
+article {
+  font-size: 17px;
+  line-height: 31px;
+}
+
+
+@media (min-width: 992px) {
+  nav {
+    position: fixed;
+    height: 100%;
+    width: 250px;
+    padding: 30px;
+  }
+
+  .content {
+    padding-top: 30px;
+    padding-bottom: 20px;
+    margin-left: 250px;
+  }
+
+  .content .container {
+      width: 720px;
+  }
+}
+
+
+@media (min-width: 1200px) {
+  nav {
+    width: 300px;
+    padding: 30px;
+  }
+
+  .content {
+    margin-left: 300px;
+  }
+
+  .content .container {
+      width: 870px;
+  }
 }

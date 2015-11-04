@@ -9,6 +9,7 @@ html
         {% if page.title %}{{ page.title }} – {{ site_settings.title }}{% else %}{{ site_settings.title }}{% endif %}
     meta(name='description', content='{{ site_settings.description }}')
     meta(name='keywords', content='{{ site_settings.keywords }}')
+    link(href='https://fonts.googleapis.com/css?family=Open+Sans:400,500,600,700', rel='stylesheet', type='text/css')
     link(rel='stylesheet', type='text/css', href='{% static "common/css/bootstrap.min.css" %}')
     link(rel='stylesheet', type='text/css', href='{% static "japsufi/css/japsufi.css" %}')
     link(rel='alternate', type='application/rss+xml', title='Blog', href='{{ feeds.rss }}')
@@ -16,30 +17,26 @@ html
     script(src='{% static "common/js/jquery.min.js" %}', defer)
     script(src='{% static "common/js/bootstrap.min.js" %}', defer)
   body
-    .japsufi-content-wrap
-      block full_width_content
+    block full_width_content
+      nav
+        h1 {{ site_settings.title }}
+        ul.nav.nav-pills.nav-stacked
+          for menu_entry in menu
+            if menu_entry.active
+              li.active: a(href="#{menu_entry.href}")= menu_entry.text
+            else
+              li: a(href="#{menu_entry.href}")= menu_entry.text
+      .content
         .container
-          block title
-            h1 {{ site_settings.title }}
-          .row
-            .col-md-2
-              nav
-                ul.nav.nav-pills.nav-stacked
-                  for menu_entry in menu
-                    if menu_entry.active
-                      li.active: a(href="#{menu_entry.href}")= menu_entry.text
-                    else
-                      li: a(href="#{menu_entry.href}")= menu_entry.text
-            .col-md-10
-              block content
-                p Content goes here.
+          block content
+            p Content goes here.
 
-      .japsufi-footer-push
+    //-   .japsufi-footer-push
 
-    footer
-      .container
-        p.japsufi-credit
-          small.text-muted Copyright &copy; 2015 Santtu Pajukanta. Sivustoa pyörittää {{ tracontent_footer|safe }}
+    //- footer
+    //-   .container
+    //-     p.japsufi-credit
+    //-       small.text-muted Copyright &copy; 2015 Santtu Pajukanta. Sivustoa pyörittää {{ tracontent_footer|safe }}
 
     if site_settings.google_analytics_token
       if not request.user.is_staff

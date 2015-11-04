@@ -1,9 +1,11 @@
 extends japsufi_base.jade
 block title
-  h1 {{ site_settings.title }} &raquo; {{ page.title }}
+  |{{ site_settings.title }} &raquo; {{ page.title }}
 block content
   include content_toolbar_admin_blog_index.jade
-  {{ page.body|safe }}
+  article.clearfix
+    h1 {{ page.title }}
+    {{ page.body|safe }}
   for blog_post in blog_posts
     h2: a(href='#{blog_post.get_absolute_url()}')= blog_post.title
     p.text-muted {{ blog_post.author.get_full_name }} {{ blog_post.date|date:"j.n.Y" }}

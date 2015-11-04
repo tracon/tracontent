@@ -11,6 +11,7 @@ from django.core.management.base import BaseCommand
 from django.utils.timezone import now
 
 from content.models import Page, Redirect, SiteSettings, BlogPost
+from content.utils import lorem
 from ads.models import Banner
 
 
@@ -74,7 +75,7 @@ class Setup(object):
                 slug=page_slug,
                 defaults=dict(
                     title=page_title,
-                    body=u'Placeholder for {slug}'.format(slug=page_slug),
+                    body=lorem(),
                     public_from=t,
                     visible_from=t,
                     order=ordering,
@@ -92,7 +93,7 @@ class Setup(object):
                     slug=child_slug,
                     defaults=dict(
                         title=child_title,
-                        body=u'Placeholder for {slug}'.format(slug=child_slug),
+                        body=lorem(),
                         public_from=t,
                         visible_from=t,
                         order=child_ordering,

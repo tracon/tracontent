@@ -11,18 +11,9 @@ from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from django.utils.timezone import now
 
-import loremipsum
-
 from content.models import Page, Redirect, SiteSettings, BlogPost
-from content.utils import slugify
+from content.utils import slugify, lorem
 from ads.models import Banner
-
-
-def lorem():
-    return u'\n\n'.join(
-        u'<p>{}</p>'.format(par)
-        for par in loremipsum.get_paragraphs(5, start_with_lorem=True)
-    )
 
 
 class Command(BaseCommand):
