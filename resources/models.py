@@ -55,12 +55,15 @@ class CodeResource(models.Model):
                 if file_modified <= existing.updated_at:
                     if force:
                         logger.warn('Ingest %s (force)', name)
-                        existing.content = content
-                        existing.save()
                     else:
                         logger.info('Ignore %s (older)', name)
+                        return existing
+                else:
+                    logger.info('Ingest %s (newer)', name)
 
-                    return existing
+                existing.content = content
+                existing.save()
+                return existing
 
     def __unicode__(self):
         return self.name
