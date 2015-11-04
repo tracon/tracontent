@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+import os.path
 from datetime import datetime, timedelta, date
 
 from django.conf import settings
@@ -11,9 +12,10 @@ from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from django.utils.timezone import now
 
+from ads.models import Banner
 from content.models import Page, Redirect, SiteSettings, BlogPost
 from content.utils import slugify, lorem
-from ads.models import Banner
+from resources.models import StyleSheet
 
 
 class Command(BaseCommand):
@@ -138,3 +140,16 @@ class Setup(object):
                         visible_from=t,
                     )
                 )
+
+        for stylesheet_name in [
+            'aicon.css',
+            'aicon_tracontent.css',
+        ]:
+            stylesheet_path = os.path.join(
+                os.path.dirname(__file__),
+                '..', '..', 'static', 'aicon', 'css',
+                stylesheet_name
+            )
+
+            with open(stylesheet_path) as input_file:
+                StyleSheet.ingest(input_file)
