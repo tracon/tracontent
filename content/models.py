@@ -526,6 +526,11 @@ class BlogPost(models.Model, RenderPageMixin, PageAdminMixin):
         blank=True,
         related_name='blog_posts',
     )
+    is_featured = models.BooleanField(
+        default=False,
+        verbose_name=u'Korosta postausta',
+        help_text=u'Korostetut postaukset näkyvät sitä tukevilla sivustoilla näyttävämmin.',
+    )
 
     @property
     def edit_link(self):
@@ -547,6 +552,10 @@ class BlogPost(models.Model, RenderPageMixin, PageAdminMixin):
     @property
     def template(self):
         return self.site.site_settings.blog_post_template
+
+    @property
+    def featured_css(self):
+        return 'featured' if self.is_featured else ''
 
     def get_absolute_url(self):
         return u'//{domain}/{path}'.format(

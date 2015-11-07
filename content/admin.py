@@ -210,7 +210,7 @@ class BlogPostAdmin(admin.ModelAdmin):
             fields=('state', 'internal_notes'),
         )),
         (u'Julkaisuasetukset', dict(
-            fields=('date', 'public_from', 'visible_from', 'categories'),
+            fields=('date', 'public_from', 'visible_from', 'categories', 'is_featured'),
         )),
         (u'Lisäasetukset', dict(
             fields=('site', 'slug', 'author', 'path', 'created_at', 'updated_at'),
