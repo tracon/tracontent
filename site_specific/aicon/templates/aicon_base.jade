@@ -13,21 +13,20 @@ html
     link(rel='icon', type='image/x-icon', href='favicon.ico')
   body
     include aicon_user_menu.jade
-
-    #topsection
-      .top1
-      .top2
-      .navigaatio
-        for entry in menu
-          a.navi(href='#{entry.href}')= entry.text
-
-    #contentwrapper
-      .pad
-        block full_width_content
+    block full_width_content
+      #topsection
+        .top2
+        .tummanavi
+          for entry in menu
+            a.navi(href='#{entry.href}')= entry.text
+      #contentwrapper2
+        .pad
           block content
-            p Sisältö tulee tähän.
-    #footer
-      p © Aicon 2015
+            p Sisältö tulee tähän
+
+      #tummafooter
+        p Twitter | Facebook
+        p © Aicon 2015
 
     if site_settings.google_analytics_token
       if not request.user.is_staff

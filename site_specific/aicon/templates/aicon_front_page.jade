@@ -1,18 +1,30 @@
 extends aicon_base.jade
 block full_width_content
-  include content_toolbar_admin_page.jade
+  #topsection
+    .top1
+    .top2
+    .navigaatio
+      for entry in menu
+        a.navi(href='#{entry.href}')= entry.text
 
-  table(width='100%')
-    tr
-      td(width='50%', valign='top', style='text-align: justify; padding-right: 20px;')
-        h1 {{ page.title }}
-        {{ page.body|safe }}
-        p(align='center')
-          a(href='http://twitter.com/Aicon_FI')
-            img(src='twitterlogo.png', border='0', style='padding-right: 20px;')
-          a(href='http://facebook.com/aiconfinland')
-            img(src='fblogo.png', border='0')
-      td.whitebg(valign='top')
-        h3 Uutiset
-        for blog_post in news_posts
-          include aicon_blog_link.jade
+  #contentwrapper
+    .pad
+      table(width='100%')
+        tr
+          td(width='50%', valign='top', style='text-align: justify; padding-right: 20px;')
+            article
+              h1 {{ page.title }}
+              {{ page.body|safe }}
+            p(align='center')
+              a(href='http://twitter.com/Aicon_FI')
+                img(src='twitterlogo.png', border='0', style='padding-right: 20px;')
+              a(href='http://facebook.com/aiconfinland')
+                img(src='fblogo.png', border='0')
+          td.whitebg(valign='top')
+            h3 Uutiset
+            for blog_post in news_posts
+              include aicon_blog_link.jade
+  #footer
+    p © Aicon 2015
+
+
