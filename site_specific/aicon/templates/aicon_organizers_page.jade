@@ -9,7 +9,8 @@ block content
       tr
         for organizer in organizer_row
           td
-            img(src='{{ organizer.image_file.url }}')
+            if organizer.image_file
+              img(src='{{ organizer.image_file.url }}')
             .name= organizer.name
             .job-title= organizer.job_title
             .email= organizer.email
