@@ -82,3 +82,20 @@ def lorem(paragraphs=5):
         u'<p>{}</p>'.format(par)
         for par in loremipsum.get_paragraphs(paragraphs, start_with_lorem=True)
     )
+
+
+def groups_of_n(iterable, n):
+    groups = []
+    cur_group = []
+    for item in iterable:
+        cur_group.append(item)
+        if len(cur_group) == n:
+            groups.append(cur_group)
+            cur_group = []
+
+    if cur_group:
+        groups.append(cur_group)
+
+    print groups
+
+    return groups

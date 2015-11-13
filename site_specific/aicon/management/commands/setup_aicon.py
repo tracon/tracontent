@@ -96,7 +96,7 @@ class Setup(object):
                     )
                 )
 
-        front_page = Page.objects.get(slug='front-page')
+        front_page = Page.objects.get(site=self.site, slug='front-page')
         if front_page.title == u'Aicon':
             front_page.title = u'Verkatehdas, Hämeenlinna, 8.–9.10.2016'
         if not front_page.override_menu_text:
@@ -108,6 +108,11 @@ class Setup(object):
         if 'Placeholder for front-page' in front_page.body or 'Lorem ipsum' in front_page.body:
             front_page.body = u'Aicon on aasialaiseen musiikkiin ja muotiin keskittyvä kaksipäiväinen tapahtuma, joka järjestään ensimmäistä kertaa syksyllä 2016. Aicon tarjoaa kävijöilleen monipuolista ohjelmaa ja tekemistä täysin omannäköisellään vivahteella, ja toivottaa kaikki aiheesta kiinnostuneet tervetulleiksi tapahtumaan!'
         front_page.save()
+
+        organizers_page = Page.objects.get(site=self.site, slug='yhteys')
+        organizers_page.override_page_template = 'aicon_organizers_page.jade'
+        organizers_page.page_controller_code = 'site_specific.aicon.views:organizers_page_controller'
+        organizers_page.save()
 
         for path, target in [
             ('admin', '/admin/'),
