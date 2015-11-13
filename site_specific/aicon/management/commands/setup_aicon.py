@@ -62,7 +62,9 @@ class Setup(object):
             ('blog', u'Ajankohtaista', []), # pseudo page for menu, actually taken over by blog
             ('tapahtuma', u'Tapahtuma', []),
             ('ohjelma', u'Ohjelma', []),
-            ('yhteys', u'Yhteystiedot', [])
+            ('yhteys', u'Yhteystiedot', []),
+            ('medialle', u'Medialle', []),
+            ('sponsoriksi', u'Sponsoriksi', []),
         ]:
             ordering += 10
 
@@ -113,6 +115,15 @@ class Setup(object):
         organizers_page.override_page_template = 'aicon_organizers_page.jade'
         organizers_page.page_controller_code = 'site_specific.aicon.views:organizers_page_controller'
         organizers_page.save()
+
+        # Secondary menu pages
+        for slug in [
+            'medialle',
+            'sponsoriksi',
+        ]:
+            page = Page.objects.get(site=self.site, slug=slug)
+            page.visible_from = None
+            page.save()
 
         for path, target in [
             ('admin', '/admin/'),
