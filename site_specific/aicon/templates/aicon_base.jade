@@ -18,7 +18,14 @@ html
         .top2
         .tummanavi
           for entry in menu
-            a.navi(href='#{entry.href}')= entry.text
+            a.navi(href='#{entry.href}', class='#{entry.active_css}')= entry.text
+        for entry in menu
+          if entry.active
+            if entry.children
+              .navigaatio2
+                .padding
+                  for child_entry in entry.children
+                    a.sivunavi(href='#{child_entry.href}', class='#{child_entry.active_css}')= child_entry.text
       #contentwrapper2
         .pad
           block content
