@@ -492,7 +492,12 @@ a:link.sivunavi, a:visited.sivunavi {
 	color: #777;
 }
 
+.aicon-organizers {
+	text-align: left;
+}
+
 .aicon-organizer {
 	display: inline-block;
-	margin: 5px;
+	margin: 0 5px 20px 0;
+	text-align: center;
 }
