@@ -9,7 +9,10 @@ def user_attrs_from_kompassi(kompassi_user):
         ('first_name', lambda u: u['first_name']),
         ('last_name', lambda u: u['surname']),
         ('is_superuser', lambda u: settings.KOMPASSI_ADMIN_GROUP in u['groups']),
-        ('is_staff', lambda u: settings.KOMPASSI_EDITOR_GROUP in u['groups']),
+        ('is_staff', lambda u: any(group_name in kompassi_user['groups'] for group_name in [
+            settings.KOMPASSI_EDITOR_GROUP,
+            settings.KOMPASSI_ADMIN_GROUP,
+        ])),
         ('groups', lambda u: [Group.objects.get_or_create(name=group_name)[0] for group_name in u['groups']]),
     ])
 
@@ -25,7 +28,10 @@ class KompassiOAuth2AuthenticationBackend(object):
         kompassi_user = response.json()
 
         # Non-editor users may not log in via OAuth2
-        if settings.KOMPASSI_EDITOR_GROUP not in kompassi_user['groups']:
+        if all(group_name not in kompassi_user['groups'] for group_name in [
+            settings.KOMPASSI_EDITOR_GROUP,
+            settings.KOMPASSI_ADMIN_GROUP,
+        ]):
             return None
 
         user, created = User.objects.get_or_create(username=kompassi_user['username'])
