@@ -1,9 +1,11 @@
 from django.contrib import admin
 
+from reversion.admin import VersionAdmin
+
 from .models import Banner, BannerClick
 
 
-class BannerAdmin(admin.ModelAdmin):
+class BannerAdmin(VersionAdmin):
     model = Banner
     list_display = ('admin_get_sites', 'title', 'url', 'active')
     list_filter = ('sites', 'active')
