@@ -52,7 +52,12 @@ h1, h2, h3, h4 {
 }
 
 h1 {
-	font-size: 40px;
+        font-size: 40px;
+        line-height: 42px;
+}
+
+#contentwrapper h1 {
+        margin-top: 0;
 }
 
 h2 {
@@ -470,4 +475,19 @@ a:link.sivunavi, a:visited.sivunavi {
 	color: black;
 	border-bottom: 1px solid black;
 	margin-top: 0;
+}
+
+.aicon-blog-index article {
+	margin-top: 40px;
+}
+
+.aicon-blog-index h2 {
+	padding-left: 0;
+	margin-bottom: 0;
+}
+
+.aicon-blog-meta {
+	margin-top: 0;
+	font-size: smaller;
+	color: #777;
 }
