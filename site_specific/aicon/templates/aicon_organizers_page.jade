@@ -4,13 +4,11 @@ block content
   article
     h1 {{ page.title }}
     {{ page.body|safe }}
-  table#profiili(width='100%')
-    for organizer_row in organizer_rows
-      tr
-        for organizer in organizer_row
-          td
-            if organizer.image_file
-              img(src='{{ organizer.image_file.url }}')
-            .name= organizer.name
-            .job-title= organizer.job_title
-            .email= organizer.email
+  for organizer_row in organizer_rows
+    for organizer in organizer_row
+      .aicon-organizer
+        if organizer.image_file
+          img(src='{{ organizer.image_file.url }}')
+        .name= organizer.name
+        .job-title= organizer.job_title
+        .email= organizer.email

@@ -491,3 +491,8 @@ a:link.sivunavi, a:visited.sivunavi {
 	font-size: smaller;
 	color: #777;
 }
+
+.aicon-organizer {
+	display: inline-block;
+	margin: 5px;
+}
