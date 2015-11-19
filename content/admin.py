@@ -6,6 +6,7 @@ from django.utils.timezone import now
 from django import forms
 
 from ckeditor.widgets import CKEditorWidget
+from reversion.admin import VersionAdmin
 
 from .models import (
     BlogPost,
@@ -128,7 +129,7 @@ class classproperty(object):
         return self.f(owner)
 
 
-class PageAdmin(admin.ModelAdmin):
+class PageAdmin(VersionAdmin):
     model = Page
     form = PageAdminForm
     list_display = ('site', 'path', 'title', 'admin_is_published', 'admin_is_visible')
@@ -172,7 +173,8 @@ class PageAdmin(admin.ModelAdmin):
 
         return super(PageAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
-class RedirectAdmin(admin.ModelAdmin):
+
+class RedirectAdmin(VersionAdmin):
     model = Redirect
     list_display = ('site', 'path', 'target')
     list_filter = ('site',)
@@ -195,7 +197,7 @@ class BlogPostAdminForm(forms.ModelForm, CommonAdminFormMixin):
         fields = ('site', 'date', 'slug', 'title', 'override_excerpt', 'body', 'public_from', 'visible_from', 'path', 'author')
 
 
-class BlogPostAdmin(admin.ModelAdmin):
+class BlogPostAdmin(VersionAdmin):
     model = BlogPost
     form = BlogPostAdminForm
     list_display = ('site', 'path', 'title', 'state', 'admin_is_published', 'admin_is_visible')
