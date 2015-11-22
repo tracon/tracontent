@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User, Group
 from django.conf import settings
 
+from users.models import UserMeta
+
 
 def user_attrs_from_kompassi(kompassi_user):
     return dict((django_key, accessor_func(kompassi_user)) for (django_key, accessor_func) in [
@@ -14,6 +16,13 @@ def user_attrs_from_kompassi(kompassi_user):
             settings.KOMPASSI_ADMIN_GROUP,
         ])),
         ('groups', lambda u: [Group.objects.get_or_create(name=group_name)[0] for group_name in u['groups']]),
+    ])
+
+
+def user_meta_attrs_from_kompassi(kompassi_user):
+    return dict((django_key, accessor_func(kompassi_user)) for (django_key, accessor_func) in [
+        ('nick', lambda u: u['nick']),
+        ('preferred_name_display_style', lambda u: u['preferred_name_display_style']),
     ])
 
 
@@ -35,11 +44,14 @@ class KompassiOAuth2AuthenticationBackend(object):
             return None
 
         user, created = User.objects.get_or_create(username=kompassi_user['username'])
-
         for key, value in user_attrs_from_kompassi(kompassi_user).iteritems():
             setattr(user, key, value)
-
         user.save()
+
+        user_meta = UserMeta.get_for_user(user)
+        for key, value  in user_meta_attrs_from_kompassi(kompassi_user).iteritems():
+            setattr(user_meta, key, value)
+        user_meta.save()
 
         return user
 

@@ -8,9 +8,9 @@ block content
       //- TODO ugly, do with css instead
       if blog_post.is_featured
         h2: a(href='#{blog_post.get_absolute_url()}')= blog_post.title
-        p.text-muted {{ blog_post.author.get_full_name }} {{ blog_post.date|date:"j.n.Y" }}
+        p.text-muted {{ blog_post.formatted_author }} {{ blog_post.date|date:"j.n.Y" }}
         p.lead= blog_post.excerpt
       else
         h4: a(href='#{blog_post.get_absolute_url()}')= blog_post.title
-        p.text-muted {{ blog_post.author.get_full_name }} {{ blog_post.date|date:"j.n.Y" }}
+        p.text-muted {{ blog_post.formatted_author }} {{ blog_post.date|date:"j.n.Y" }}
         p= blog_post.excerpt

@@ -8,5 +8,5 @@ block content
     {{ page.body|safe }}
   for blog_post in blog_posts
     h2: a(href='#{blog_post.get_absolute_url()}')= blog_post.title
-    p.text-muted {{ blog_post.author.get_full_name }} {{ blog_post.date|date:"j.n.Y" }}
+    p.text-muted {{ blog_post.formatted_author }} {{ blog_post.date|date:"j.n.Y" }}
     p= blog_post.excerpt

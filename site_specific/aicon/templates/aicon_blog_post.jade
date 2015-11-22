@@ -5,7 +5,7 @@ block content
   article.clearfix
     header
       h1 {{ blog_post.title }}
-      p.aicon-blog-meta #{blog_post.author.get_full_name} <time pubdate datetime="{{ blog_post.date.isoformat }}">{{ blog_post.date|date:"j.n.Y" }}</time>
+      p.aicon-blog-meta #{blog_post.formatted_author} <time pubdate datetime="{{ blog_post.date.isoformat }}">{{ blog_post.date|date:"j.n.Y" }}</time>
     {{ blog_post.body|safe }}
   h2 Kommentit
   if blog_comments

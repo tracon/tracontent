@@ -4,4 +4,4 @@ ul#usermenu.list-horizontal
   else
     if request.user.is_staff
       li: a(href='/admin/') Sivuston ylläpito
-    li: a(href='{{ settings.LOGOUT_URL }}') Kirjaudu ulos ({{ request.user.get_full_name }})
+    li: a(href='{{ settings.LOGOUT_URL }}') Kirjaudu ulos ({{ user_meta.get_full_name }})

@@ -54,6 +54,7 @@ INSTALLED_APPS = (
     'content',
     'ads',
     'resources',
+    'users',
 
     'site_specific.traconx',
     'site_specific.tracon11',
@@ -94,6 +95,7 @@ TEMPLATE_CONTEXT_PROCESSORS = defaults.TEMPLATE_CONTEXT_PROCESSORS + (
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
     'content.context_processors.content_context',
+    'users.context_processors.users_context',
 )
 
 if 'ads' in INSTALLED_APPS:

@@ -15,6 +15,8 @@ from django.template.loader import get_template
 
 import bleach
 
+from users.models import UserMeta
+
 from .utils import slugify, pick_attrs, format_emails, get_code
 
 
@@ -556,6 +558,13 @@ class BlogPost(models.Model, RenderPageMixin, PageAdminMixin):
     @property
     def featured_css(self):
         return 'featured' if self.is_featured else ''
+
+    @property
+    def formatted_author(self):
+        if self.author:
+            return UserMeta.get_for_user(self.author).get_full_name()
+        else:
+            return u''
 
     def get_absolute_url(self):
         return u'//{domain}/{path}'.format(
