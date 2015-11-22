@@ -66,6 +66,7 @@ class Setup(object):
                 ('tapahtuma', u'Tapahtuma'),
                 ('liput', u'Lipunmyynti'),
                 ('goh', u'Kunniavieraat'),
+                ('ohjelma', u'Ohjelma'),
             ]),
 
             ('en', u'Two days of table-top games in Downtown Tampere!', [
@@ -111,6 +112,13 @@ class Setup(object):
         if not fi_front_page.page_controller_code:
             fi_front_page.page_controller_code = 'site_specific.tracommon.views:front_page_controller'
         fi_front_page.save()
+
+        programme_page = Page.objects.get(site=self.site, path='fi/ohjelma')
+        if not programme_page.page_controller_code:
+            programme_page.page_controller_code = 'site_specific.hitpoint2015.views:programme_page_controller'
+        if not programme_page.override_page_template:
+            programme_page.override_page_template = 'hitpoint2015_programme_page.jade'
+        programme_page.save()
 
         for path, target in [
             ('admin', '/admin/'),

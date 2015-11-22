@@ -198,7 +198,7 @@ CKEDITOR_CONFIGS = {
 }
 
 KOMPASSI_INSTALLATION_SLUG = 'turskadev'
-KOMPASSI_HOST = 'http://kompassi.dev:8000'
+KOMPASSI_HOST = 'https://kompassi.eu'
 KOMPASSI_OAUTH2_AUTHORIZATION_URL = '{KOMPASSI_HOST}/oauth2/authorize'.format(**locals())
 KOMPASSI_OAUTH2_TOKEN_URL = '{KOMPASSI_HOST}/oauth2/token'.format(**locals())
 KOMPASSI_OAUTH2_CLIENT_ID = 'kompassi_insecure_test_client_id'
@@ -208,6 +208,7 @@ KOMPASSI_API_V2_USER_INFO_URL = '{KOMPASSI_HOST}/api/v2/people/me'.format(**loca
 KOMPASSI_API_V2_EVENT_INFO_URL_TEMPLATE = '{kompassi_host}/api/v2/events/{event_slug}'
 KOMPASSI_ADMIN_GROUP = 'admins'
 KOMPASSI_EDITOR_GROUP = 'tracontent-staff'
+KOMPASSI_PROGRAMME_EXPIRY_SECONDS = 300
 
 LOGIN_URL = '/oauth2/login' if 'kompassi_oauth2' in INSTALLED_APPS else '/admin/login/'
 LOGOUT_URL = '/logout/'
