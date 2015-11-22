@@ -114,11 +114,24 @@ class Setup(object):
         fi_front_page.save()
 
         programme_page = Page.objects.get(site=self.site, path='fi/ohjelma')
-        if not programme_page.page_controller_code:
-            programme_page.page_controller_code = 'site_specific.hitpoint2015.views:programme_page_controller'
-        if not programme_page.override_page_template:
-            programme_page.override_page_template = 'hitpoint2015_programme_page.jade'
-        programme_page.save()
+        programme_schedule_page, created = Page.objects.get_or_create(
+            site=self.site,
+            parent=programme_page,
+            slug='ohjelmakartta',
+            defaults=dict(
+                title=u'Ohjelmakartta',
+                body=u'',
+                public_from=t,
+                visible_from=t,
+                page_controller_code='site_specific.hitpoint2015.views:programme_page_controller',
+                override_page_template='hitpoint2015_programme_page.jade',
+                order=0,
+            )
+        )
+
+        programme_schedule_page.page_controller_code = 'site_specific.hitpoint2015.views:programme_page_controller'
+        programme_schedule_page.override_page_template = 'hitpoint2015_programme_page.jade'
+        programme_schedule_page.save()
 
         for path, target in [
             ('admin', '/admin/'),
