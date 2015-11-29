@@ -415,7 +415,7 @@ class Page(models.Model, RenderPageMixin, PageAdminMixin):
             child_page.save()
 
     def __unicode__(self):
-        return self.title
+        return u'{title} ({site})'.format(title=self.title, site=self.site)
 
     class Meta:
         verbose_name = u'sivu'
