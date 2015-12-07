@@ -81,7 +81,7 @@ AUTHENTICATION_BACKENDS = (
 
 TEMPLATE_LOADERS = (
     ('pyjade.ext.django.Loader',(
-        'resources.template_loaders.DatabaseTemplateLoader',
+        # 'resources.template_loaders.DatabaseTemplateLoader',
         'django.template.loaders.filesystem.Loader',
         'django.template.loaders.app_directories.Loader',
     )),
