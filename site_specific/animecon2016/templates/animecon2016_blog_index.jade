@@ -1,0 +1,9 @@
+extends animecon2016_base.jade
+block content
+  include content_toolbar_admin_blog_index.jade
+  h2 {{ page.title }}
+  {{ page.body|safe }}
+  for blog_post in blog_posts
+    h3: a(href='#{blog_post.get_absolute_url()}')= blog_post.title
+    p.post-meta {{ blog_post.formatted_author }} {{ blog_post.date|date:"j.n.Y" }}
+    p= blog_post.excerpt

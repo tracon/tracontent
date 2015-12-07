@@ -60,6 +60,7 @@ INSTALLED_APPS = (
     'site_specific.tracon11',
     'site_specific.aicon',
     'site_specific.hitpoint2015',
+    'site_specific.animecon2016',
 
     'site_specific.japsufi',
 )

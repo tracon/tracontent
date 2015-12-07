@@ -1,0 +1,19 @@
+extends animecon2016_base.jade
+- load crispy_forms_tags
+block content
+  include content_toolbar_admin_blog_post.jade
+  h2 {{ blog_post.title }}
+  p.animecon-post-meta: small #{blog_post.formatted_author} <time pubdate datetime="{{ blog_post.date.isoformat }}">{{ blog_post.date|date:"j.n.Y" }}</time>
+  {{ blog_post.body|safe }}
+  h3 Kommentit
+  if blog_comments
+    for comment in blog_comments
+      .animecon-blog-comment
+        a.animecon-blog-comment-anchor(id='comment-{{ comment.id }}')
+        p.animecon-post-meta: small {{ comment.author_name }} {{ comment.created_at|date:"j.n.Y G:i:s"}}
+        {{ comment.comment|linebreaks }}
+  else
+    p.animecon-post-meta Ei kommentteja.
+  h4 Lähetä kommentti
+  form(method='POST')
+    {{ blog_comment_form }}
