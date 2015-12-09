@@ -10,12 +10,7 @@ class Command(BaseCommand):
     args = ''
     help = 'Setup all the things'
 
-    def add_arguments(self, parser):
-        parser.add_argument('--test', action='store_true', default=False)
-
     def handle(self, *args, **options):
-        test = options['test']
-
         management_commands = [
             (('collectstatic',), dict(interactive=False)),
             (('migrate',), dict()),
@@ -27,7 +22,7 @@ class Command(BaseCommand):
         for pargs, opts in management_commands:
             call_command(*pargs, **opts)
 
-        if test:
+        if settings.DEBUG:
             user, created = User.objects.get_or_create(
                 username='mahti',
                 first_name='Markku',
