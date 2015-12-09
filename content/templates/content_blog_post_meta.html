@@ -1,0 +1,3 @@
+{{ blog_post.formatted_author }}
+<time pubdate datetime="{{ blog_post.date.isoformat }}">{{ blog_post.date|date:"j.n.Y" }}</time>
+{% if blog_post.categories.exists %} – {{ blog_post.categories_html|safe }}{% endif %}

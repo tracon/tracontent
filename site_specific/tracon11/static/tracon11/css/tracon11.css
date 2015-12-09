@@ -65,3 +65,7 @@ figure {
 figcaption {
   margin-top: 0.2em;
 }
+
+.post-meta, .post-meta a:link, .post-meta a:visited {
+  color: #777;
+}

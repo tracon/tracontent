@@ -450,7 +450,7 @@ class BlogCategory(models.Model):
 
     @property
     def path(self):
-        return reverse("content_blog_category_index_view", args=(self.slug,))
+        return reverse("content_blog_category_index_view", args=(self.slug,))[1:] # remove leading /
 
     def get_absolute_url(self):
         return u'//{domain}/{path}'.format(
@@ -580,6 +580,15 @@ class BlogPost(models.Model, RenderPageMixin, PageAdminMixin):
             return UserMeta.get_for_user(self.author).get_full_name()
         else:
             return u''
+
+    @property
+    def categories_html(self):
+        return u', '.join(
+            u'<a href="{href}">{title}</a>'.format(
+                href=category.get_absolute_url(),
+                title=category.title,
+            ) for category in self.categories.all()
+        )
 
     def get_absolute_url(self):
         return u'//{domain}/{path}'.format(
