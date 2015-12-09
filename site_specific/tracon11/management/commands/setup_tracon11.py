@@ -10,7 +10,7 @@ from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from django.utils.timezone import now
 
-from content.models import Page, Redirect, SiteSettings, BlogPost
+from content.models import Page, Redirect, SiteSettings, BlogPost, BlogCategory
 from ads.models import Banner
 
 
@@ -134,6 +134,19 @@ class Setup(object):
         if not front_page.page_controller_code or front_page.page_controller_code == 'events.tracommon.views:front_page_controller':
             front_page.page_controller_code = 'site_specific.tracommon.views:front_page_controller'
         front_page.save()
+
+        for category_slug, category_title in [
+            ('conzine', u'Conzine'),
+            ('palaute', u'Palaute'),
+            ('jarjestaminen', u'Traconin järjestäminen'),
+        ]:
+            BlogCategory.objects.get_or_create(
+                site=self.site,
+                slug=category_slug,
+                defaults=dict(
+                    title=category_title,
+                )
+            )
 
         for path, target in [
             ('admin', '/admin/'),
