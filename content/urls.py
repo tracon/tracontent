@@ -34,6 +34,12 @@ urlpatterns = patterns('',
     ),
 
     url(
+        r'^blog/category/(?P<category_slug>[a-z0-9-]+)/?$',
+        content_blog_index_view,
+        name='content_blog_category_index_view',
+    ),
+
+    url(
         r'^(?P<path>[a-z0-9-]+(/[a-z0-9-]+)*)/?$',
         content_page_view,
         name='content_page_view',

@@ -2,6 +2,7 @@
 
 from django.contrib import admin
 from django.contrib.sites.models import Site
+from django.forms import ValidationError
 from django.utils.timezone import now
 from django import forms
 
@@ -9,8 +10,9 @@ from ckeditor.widgets import CKEditorWidget
 from reversion.admin import VersionAdmin
 
 from .models import (
-    BlogPost,
+    BlogCategory,
     BlogComment,
+    BlogPost,
     CommonFields,
     Page,
     Redirect,
@@ -192,6 +194,22 @@ class BlogPostAdminForm(forms.ModelForm, CommonAdminFormMixin):
 
         self.fields['date'].initial = now().date()
 
+        try:
+            site = self.instance.site
+        except Site.DoesNotExist:
+            pass
+        else:
+            if site:
+                self.fields['categories'].queryset = BlogCategory.objects.filter(site=site)
+
+    def clean(self):
+        cleaned_data = super(BlogPostAdminForm, self).clean()
+        site = self.cleaned_data.get('site')
+        categories = self.cleaned_data.get('categories')
+
+        if categories and site and any(category.site != site for category in categories):
+            raise ValidationError(u'Kaikkien kategorioiden, joihin postaus kuuluu, tulee olla samalla sivustolla postauksen kanssa.')
+
     class Meta:
         model = BlogPost
         fields = ('site', 'date', 'slug', 'title', 'override_excerpt', 'body', 'public_from', 'visible_from', 'path', 'author')
@@ -298,8 +316,15 @@ class BlogCommentAdmin(admin.ModelAdmin):
             blog_comment.save()
 
 
+class BlogCategoryAdmin(admin.ModelAdmin):
+    list_display = ('site', 'slug', 'title')
+    list_filter = ('site',)
+    search_fields = ('slug', 'title')
+
+
 admin.site.register(Page, PageAdmin)
 admin.site.register(Redirect, RedirectAdmin)
 admin.site.register(BlogPost, BlogPostAdmin)
 admin.site.register(SiteSettings)
 admin.site.register(BlogComment, BlogCommentAdmin)
+admin.site.register(BlogCategory, BlogCategoryAdmin)

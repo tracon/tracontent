@@ -189,10 +189,10 @@ class SiteSettings(models.Model):
             path=reverse(view_name, args=args, kwargs=kwargs),
         )
 
-    def get_visible_blog_posts(self):
+    def get_visible_blog_posts(self, **extra_criteria):
         t = now()
 
-        return self.site.blog_post_set.filter(visible_from__lte=t)
+        return self.site.blog_post_set.filter(visible_from__lte=t, **extra_criteria)
 
     def __unicode__(self):
         return self.site.domain if self.site else None
@@ -448,8 +448,21 @@ class BlogCategory(models.Model):
     def get_visible_blog_posts(self):
         return self.blog_posts.filter(visible_from__lte=now())
 
+    @property
+    def path(self):
+        return reverse("content_blog_category_index_view", args=(self.slug,))
+
+    def get_absolute_url(self):
+        return u'//{domain}/{path}'.format(
+            domain=self.site.domain,
+            path=self.path,
+        )
+
     def __unicode__(self):
-        return self.title
+        return u'{title} ({domain})'.format(
+            title=self.title,
+            domain=self.site.domain if self.site else None,
+        )
 
     def save(self, *args, **kwargs):
         if self.title and not self.slug:
@@ -527,6 +540,8 @@ class BlogPost(models.Model, RenderPageMixin, PageAdminMixin):
         verbose_name=u'Kategoriat',
         blank=True,
         related_name='blog_posts',
+        help_text=u'Voit halutessasi lisätä postauksen yhteen tai useampaan kategoriaan. Kaikkien valittujen '
+            u'kategorioiden tulee olla samalla sivustolla postauksen kanssa.',
     )
     is_featured = models.BooleanField(
         default=False,
