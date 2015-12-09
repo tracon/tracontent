@@ -135,19 +135,6 @@ class Setup(object):
             front_page.page_controller_code = 'site_specific.tracommon.views:front_page_controller'
         front_page.save()
 
-        for category_slug, category_title in [
-            ('conzine', u'Conzine'),
-            ('palaute', u'Palaute'),
-            ('jarjestaminen', u'Traconin järjestäminen'),
-        ]:
-            BlogCategory.objects.get_or_create(
-                site=self.site,
-                slug=category_slug,
-                defaults=dict(
-                    title=category_title,
-                )
-            )
-
         for path, target in [
             ('admin', '/admin/'),
         ]:
@@ -191,3 +178,17 @@ class Setup(object):
             blog_index_template='tracon11_blog_index.jade',
             blog_post_template='tracon11_blog_post.jade',
         ))
+
+        for category_slug, category_title in [
+            ('conzine', u'Conzine'),
+            ('palaute', u'Palaute'),
+            ('jarjestaminen', u'Traconin järjestäminen'),
+        ]:
+            BlogCategory.objects.get_or_create(
+                site=blog_site,
+                slug=category_slug,
+                defaults=dict(
+                    title=category_title,
+                )
+            )
+
