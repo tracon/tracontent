@@ -30,14 +30,16 @@ class Setup(object):
         self.domain = domain
 
     def setup(self):
-        print 'NOTE: Setting up Tracon 11 site at {domain}'.format(domain=self.domain)
+        print 'NOTE: Setting up Tracon (2016) site at {domain}'.format(domain=self.domain)
         self.setup_site()
         self.setup_content()
         self.setup_ads()
         self.setup_blog()
 
     def setup_site(self):
-        self.site, unused = Site.objects.get_or_create(domain=self.domain, name=u'Tracon 11')
+        self.site, unused = Site.objects.get_or_create(domain=self.domain, defaults=dict(
+            name=u'Tracon (2016)',
+        ))
 
     def setup_content(self):
         t = now()
@@ -64,7 +66,7 @@ class Setup(object):
 
         ordering = 0
         for page_slug, page_title, child_pages in [
-            ('front-page', u'Tracon 11 Tampere-talossa 3.–4. syyskuuta 2016', []),
+            ('front-page', u'Tracon Tampere-talossa 3.–4. syyskuuta 2016', []),
             ('blog', u'Ajankohtaista', []), # pseudo page for menu, actually taken over by blog
             ('tapahtuma', u'Tapahtuma', [
                 ('tyovoima', u'Vänkäriksi'),

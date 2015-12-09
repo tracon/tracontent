@@ -47,7 +47,7 @@ html
     footer
       .container
         p.tracon-credit
-          small.text-muted Tracon 11 -tapahtuman järjestää <a href='http://ry.tracon.fi'>Tracon ry</a>. Sivustoa pyörittää {{ tracontent_footer|safe }}
+          small.text-muted Traconin järjestää <a href='http://ry.tracon.fi'>Tracon ry</a>. Sivustoa pyörittää {{ tracontent_footer|safe }}
 
     if site_settings.google_analytics_token
       if not request.user.is_staff
