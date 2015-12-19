@@ -31,7 +31,7 @@ Install dependencies:
 Setup basic example content:
 
     ./manage.py setup
-    ./manage.py setup_example_content 127.0.0.1:8001
+    ./manage.py setup_tracon11 127.0.0.1:8001
 
 Run the server and view the site in your favourite web browser:
 
