@@ -11,28 +11,6 @@ def mkpath(*parts):
 SECRET_KEY = '9()(lzm)jdr$szjfdx8^^#j_6efj@d&$9pb6l2h&=udxom3(bn'
 
 DEBUG = True
-TEMPLATE_DEBUG = True
-
-if DEBUG:
-    # XXX Monkey patch is_secure_transport to allow development over insecure HTTP
-
-    from warnings import warn
-    warn(UserWarning("Monkey_patching oauthlib.oauth2:is_secure_transport to allow OAuth2 over HTTP. Never do this in production!"))
-
-    fake_is_secure_transport = lambda token_url: True
-
-    import oauthlib.oauth2
-    import requests_oauthlib.oauth2_session
-    import oauthlib.oauth2.rfc6749.parameters
-    import oauthlib.oauth2.rfc6749.clients.base
-
-    for module in [
-        oauthlib.oauth2,
-        requests_oauthlib.oauth2_session,
-        oauthlib.oauth2.rfc6749.parameters,
-        oauthlib.oauth2.rfc6749.clients.base,
-    ]:
-        module.is_secure_transport = fake_is_secure_transport
 
 ALLOWED_HOSTS = ['ssoexample.tracon.fi']
 
@@ -80,29 +58,36 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-TEMPLATE_LOADERS = (
-    ('pyjade.ext.django.Loader',(
-        # 'resources.template_loaders.DatabaseTemplateLoader',
-        'django.template.loaders.filesystem.Loader',
-        'django.template.loaders.app_directories.Loader',
-    )),
-)
-
-TEMPLATE_DIRS = (
-    mkpath('tracontent','templates'),
-)
-
-TEMPLATE_CONTEXT_PROCESSORS = defaults.TEMPLATE_CONTEXT_PROCESSORS + (
-    'django.core.context_processors.request',
-    'django.contrib.messages.context_processors.messages',
-    'content.context_processors.content_context',
-    'users.context_processors.users_context',
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [mkpath('tracontent','templates')],
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.request',
+                'content.context_processors.content_context',
+                'users.context_processors.users_context',
+            ],
+            'loaders': [
+                # PyJade part:   ##############################
+                ('pyjade.ext.django.Loader', (
+                    'django.template.loaders.filesystem.Loader',
+                    'django.template.loaders.app_directories.Loader',
+                ))
+            ],
+            'builtins': ['pyjade.ext.django.templatetags'],
+        },
+    },
+]
 
 if 'ads' in INSTALLED_APPS:
-    TEMPLATE_CONTEXT_PROCESSORS += (
+    TEMPLATES[0]['OPTIONS']['context_processors'] += [
         'ads.context_processors.ads_context',
-    )
+    ]
 
 ROOT_URLCONF = 'tracontent.urls'
 

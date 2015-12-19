@@ -1,3 +1,6 @@
+# encoding: utf-8
+
+from unittest import skip
 
 from django.test import TestCase, Client
 from django.template.loader import get_template
@@ -14,6 +17,10 @@ class CodeResourceTestCase(TestCase):
 
         self.client = Client(HTTP_HOST=self.site.domain)
 
+    @skip("""
+        Due to Pyjade's cache not being easily clearable over all server processes, we are not currently
+        using the DatabaseTemplateLoader. Therefore this test would fail.
+    """)
     def test_template_loader(self):
         db_template = Template.objects.create(name='foo.html', content='<h1>Hello, World!</h1>')
         dj_template = get_template('foo.html')
