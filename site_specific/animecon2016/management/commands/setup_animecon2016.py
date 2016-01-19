@@ -71,7 +71,7 @@ class Setup(object):
                     title=page_title,
                     body=u'Placeholder for {slug}'.format(slug=page_slug),
                     public_from=t,
-                    visible_from=t,
+                    visible_from=None if page_slug == 'blog' else t,
                     order=ordering,
                 )
             )
@@ -112,6 +112,7 @@ class Setup(object):
         for stylesheet_name in [
             'layout.css',
             'style.css',
+            'usermenu.css',
         ]:
             stylesheet_path = os.path.join(
                 os.path.dirname(__file__),
