@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+import os
+
 from datetime import datetime, timedelta, date
 
 from django.contrib.auth.models import User
@@ -10,8 +12,9 @@ from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from django.utils.timezone import now
 
-from content.models import Page, Redirect, SiteSettings, BlogPost
 from ads.models import Banner
+from content.models import Page, Redirect, SiteSettings, BlogPost
+from resources.models import StyleSheet
 
 
 class Command(BaseCommand):
@@ -106,3 +109,15 @@ class Setup(object):
                 ),
             )
 
+        for stylesheet_name in [
+            'layout.css',
+            'style.css',
+        ]:
+            stylesheet_path = os.path.join(
+                os.path.dirname(__file__),
+                '..', '..', 'static', 'animecon2016', 'css',
+                stylesheet_name
+            )
+
+            with open(stylesheet_path) as input_file:
+                StyleSheet.ingest(input_file)
