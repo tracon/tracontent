@@ -8,7 +8,7 @@ from datetime import datetime
 from django.db import models, transaction
 
 from dateutil.tz import tzutc
-import reversion
+from reversion import revisions
 
 logger = logging.getLogger(__name__)
 
@@ -43,8 +43,8 @@ class CodeResource(models.Model):
         stat_info = os.stat(open_file.name)
         file_modified = datetime.utcfromtimestamp(stat_info.st_mtime).replace(tzinfo=tzutc())
 
-        with transaction.atomic(), reversion.create_revision():
-            reversion.set_comment('Ingested {name}'.format(name=name))
+        with transaction.atomic(), revisions.create_revision():
+            revisions.set_comment('Ingested {name}'.format(name=name))
 
             try:
                 existing = cls.objects.get(name=name)
