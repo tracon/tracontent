@@ -5,11 +5,11 @@ html
     title Animecon 2016
     meta(charset='utf-8')
     //- script(type='text/javascript', src='code/javascript/slide.js')
-    link(rel='stylesheet', type='text/css', href='{% url "resources_style_sheet_view" "animecon_style.css" %}')
-    link(rel='stylesheet', type='text/css', href='{% url "resources_style_sheet_view" "animecon_layout.css" %}')
-    link(rel='stylesheet', type='text/css', href='{% url "resources_style_sheet_view" "animecon_usermenu.css" %}')
-    //- link(rel='shortcut icon', href='/favicon.ico?v=2', type='image/ico')
-    //- link(rel='icon', href='/favicon.ico?v=2', type='image/ico')
+    link(rel='stylesheet', type='text/css', href='{% url "resources_style_sheet_view" "style.css" %}')
+    link(rel='stylesheet', type='text/css', href='{% url "resources_style_sheet_view" "layout.css" %}')
+    link(rel='stylesheet', type='text/css', href='{% url "resources_style_sheet_view" "usermenu.css" %}')
+    link(rel='shortcut icon', href='{% static "animecon2016/img/favicon.png" %}', type='image/png')
+    link(rel='icon', href='{% static "animecon2016/img/favicon.png" %}', type='image/ico')
     script(type='text/javascript').
       document.createElement('header');
       document.createElement('nav');
@@ -21,9 +21,13 @@ html
       document.createElement('content');
       document.createElement('sponsors');
       document.createElement('footer');
+    style.
+      html{
+        background-image: url({% static "animecon2016/img/bg_pattern.png" %}); background-repeat:repeat-x; background-color:#eaeaea;
+      }
   body
     include animecon2016_user_menu.jade
-    header
+    header(style='background-image:url({% static "animecon2016/img/banneri_2016.png" %}); background-repeat:no-repeat; background-position:center;')
     nav
       #extra
       #wrapper

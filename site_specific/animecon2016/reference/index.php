@@ -6,8 +6,11 @@
 <script type="text/javascript" src="code/javascript/slide.js"></script>
 <link rel="stylesheet" type="text/css" href="code/css/style.css">
 <link rel="stylesheet" type="text/css" href="code/css/layout.css">
-<link rel="shortcut icon" href="/favicon.ico?v=2" type="image/ico">
-<link rel="icon" href="/favicon.ico?v=2" type="image/ico">
+
+
+<link rel="shortcut icon" href="/favicon.png?v=2" type="image/ico">
+<link rel="icon" href="/favicon.png?v=2" type="image/ico">
+
 	<script type="text/javascript">
 		document.createElement('header');
 		document.createElement('nav');
@@ -20,11 +23,26 @@
 		document.createElement('sponsors');
 		document.createElement('footer');
 	</script>
+
+
+
+	<style>
+		html{
+		background-image: url("/img/bg_pattern.png"); background-repeat:repeat-x; background-color:#eaeaea;
+		}
+	</style>
+
+
+
 </head>
 <body>
-	<header>
 
+
+
+	<header style="background-image:url(/img/banneri2016.png); background-repeat:no-repeat; background-position:center;">
 	</header>
+
+
 
 	<nav> <div id="extra"></div>
 		<div id="wrapper">
