@@ -5,9 +5,9 @@ html
     title Animecon 2016
     meta(charset='utf-8')
     //- script(type='text/javascript', src='code/javascript/slide.js')
-    link(rel='stylesheet', type='text/css', href='{% static "animecon2016/css/style.css" %}')
-    link(rel='stylesheet', type='text/css', href='{% static "animecon2016/css/layout.css" %}')
-    link(rel='stylesheet', type='text/css', href='{% static "animecon2016/css/usermenu.css" %}')
+    link(rel='stylesheet', type='text/css', href='{% url "resources_style_sheet_view" "animecon_style.css" %}')
+    link(rel='stylesheet', type='text/css', href='{% url "resources_style_sheet_view" "animecon_layout.css" %}')
+    link(rel='stylesheet', type='text/css', href='{% url "resources_style_sheet_view" "animecon_usermenu.css" %}')
     //- link(rel='shortcut icon', href='/favicon.ico?v=2', type='image/ico')
     //- link(rel='icon', href='/favicon.ico?v=2', type='image/ico')
     script(type='text/javascript').
