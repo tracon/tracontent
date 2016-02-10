@@ -1,0 +1,7 @@
+for entry in menu
+  if entry.active
+    for child in entry.children
+      if child.active
+        #menuItemSec.activeSec: a(href='#{ child.href }')= child.text
+      else
+        #menuItemSec: a(href='{{ child.href }}')= child.text

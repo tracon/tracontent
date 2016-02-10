@@ -1,4 +1,4 @@
-html{background-color: #EAEAEA;}
+html{}
 
 /* PERUS TYYLITYS */
 body{}
@@ -34,8 +34,13 @@ a:hover {color: #7FCEC6; text-decoration: none;}
 #menuitem a:visited {color: #404041; text-decoration: none;}
 #menuitem:hover{background:#ffffff;}
 #menuitem a:hover{color:#404041;}
-.active{background-color: #ffffff;}
+.active{background-color: #ffffff;} 
 
+#menuitemSec a:link{text-decoration: none; color: #404041;}
+#menuitemSec a:visited {color: #404041; text-decoration: none;}
+#menuitemSec:hover{background:#F9F9F9;}
+#menuitemSec a:hover{color:#404041;}
+.activeSec{background-color: #F9F9F9;} 
 
 
 /* YHTEYSTIETO TABLE */
@@ -43,6 +48,6 @@ table{margin-left: 10px; margin-bottom: 10px; margin-right:10px; font-size: 15px
 table#yht tr:nth-child(even){background-color: #c9ece3;}
 table#yht tr:nth-child(odd){background-color: #effffb;}
 tr, td{padding: 5px;}
-th{background-color: #2BB085; color: #15584C; padding: 5px; font-size: 16px; text-transform: uppercase; text-align: left;}
+th{background-color: #2BB085; color: #15584C; padding: 5px; font-size: 16px; text-transform: uppercase; text-align: left;} 
 
 

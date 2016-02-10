@@ -12,7 +12,9 @@ html
     link(rel='icon', href='{% static "animecon2016/img/favicon.png" %}', type='image/ico')
     script(type='text/javascript').
       document.createElement('header');
+      document.createElement('language');
       document.createElement('nav');
+      document.createElement('secondaryNav');
       document.createElement('main');
       document.createElement('article');
       document.createElement('twitter');
@@ -27,11 +29,13 @@ html
       }
   body
     include animecon2016_user_menu.jade
+
     header(style='background-image:url({% static "animecon2016/img/banneri_2016.png" %}); background-repeat:no-repeat; background-position:center;')
+
     nav
-      #extra
       #wrapper
         include animecon2016_menu.jade
+      #extra
         icon
           a(target='_blank', href='https://www.facebook.com/AnimeconFI')
             img(src='{% static "animecon2016/img/some_fb.png" %}')
@@ -39,9 +43,22 @@ html
             img(src='{% static "animecon2016/img/some_twitter.png" %}')
           a(target='_blank', href='https://www.youtube.com/channel/UCrFNhEYZO-KPo4Mn2wucnUQ')
             img(src='{% static "animecon2016/img/some_yt.png" %}')
+
+        language
+          #langextra
+          a(style='margin-left:-20px; margin-right:5px;', href='/')
+            img(src='{% static "animecon2016/img/Finnish_button.png" %}')
+          a(style='margin-right:20px;', href='/en')
+            img(src='{% static "animecon2016/img/English_button.png" %}')
+
+
     #shadow
       .navshadow
       .navShadow
+
+    secondaryNav
+      include animecon2016_secondary_menu.jade
+
     block content_full_width
       content
         main
@@ -60,6 +77,9 @@ html
           sponsors
             h1 Sponsorit
             include ads_sidebar_banners.jade
+
+    .footshadow
+    .footShadow
     footer
       #extraFoot
-      p @Animecon
+      p @Animecon – Sivustoa pyörittää <a href="https://github.com/tracon/tracontent" target="_blank">TraContent CMS Enterprise Edition</a> © 2015–2016 <a href="https://github.com/tracon/tracontent/blob/master/LICENSE">Santtu Pajukanta</a>.

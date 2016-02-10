@@ -13,7 +13,9 @@
 
 	<script type="text/javascript">
 		document.createElement('header');
+		document.createElement('language');
 		document.createElement('nav');
+		document.createElement('secondaryNav');
 		document.createElement('main');
 		document.createElement('article');
 		document.createElement('twitter');
@@ -39,27 +41,45 @@
 
 
 
+
+
 	<header style="background-image:url(/img/banneri2016.png); background-repeat:no-repeat; background-position:center;">
 	</header>
 
 
 
-	<nav> <div id="extra"></div>
+	<nav>
 		<div id="wrapper">
 			<div id="menuitem" class="active"><a href="">Menu 1</a></div>
 			<div id="menuitem"><a href="">menu 2</a></div>
 			<div id="menuitem"><a href="">menu 3</a></div>
 			<div id="menuitem"><a href="">menu 4</a></div>
 
+		</div>
+		 <div id="extra">
 			<icon>
-				<a target="_blank" href="https://www.facebook.com/AnimeconFI"><img src="img/FB_button.png"></img></a>
-				<a target="_blank" href="https://twitter.com/AnimeconFI"><img src="img/Twitter_button.png"></img></a>
-				<a target="_blank" href="https://www.youtube.com/channel/UCrFNhEYZO-KPo4Mn2wucnUQ"><img src="img/Youtube_button.png"></img></a>
+				<a target="_blank" href="https://www.facebook.com/AnimeconFI"><img src="img/some_fb.png"></img></a>
+				<a target="_blank" href="https://twitter.com/AnimeconFI"><img src="img/some_twitter.png"></img></a>
+				<a target="_blank" href="https://www.youtube.com/channel/UCrFNhEYZO-KPo4Mn2wucnUQ"><img src="img/some_yt.png"></img></a>
 			</icon>
+
+			<language>
+				<div id="langextra"></div>
+				<a style="margin-left:-20px; margin-right:5px;" href=""><img src="/img/Finnish_button.png"></img></a>
+				<a style="margin-right:20px;" href=""><img src="/img/English_button.png"></img></a>
+			</language>
 		</div>
 	</nav>
 
 		<div id="shadow"><div class="navshadow"></div><div class="navShadow"></div></div>
+
+		<secondaryNav>
+			<div id="menuitemSec" class="activeSec"><a href="">MenuSec 1</a></div>
+			<div id="menuitemSec"><a href="">menuSec 2</a></div>
+			<div id="menuitemSec"><a href="">menuSec 3</a></div>
+			<div id="menuitemSec"><a href="">menuSec 4</a></div>
+		</secondaryNav>
+
 	<content>
 		<main>
 			<h2>H2 header</h2>
@@ -69,7 +89,24 @@
 			<p>tekstiä tekstiä jee jee tekstiä. <br />
 			<a href="http://www.google.com">linkki</a><br />
 			Testi kuva</p>
-			<img src="/img/test.jpg"></img>
+			<p>Lorem ipsum dolor sit amet, ut his ipsum errem urbanitas. Accusata disputationi id qui. Has ferri commodo liberavisse ea.
+			Cum ex consul facilisi, ne quaestio interesset duo. Ad est vero albucius. Luptatum phaedrum cu sed. Aliquip euismod voluptua eos ne,
+			pri ad falli timeam nostrum.</p>
+			<p>Quo no probo docendi, nam in erat ornatus. Vix verear scribentur et. Id eruditi adolescens vel, vel nobis saperet urbanitas te. Duo
+			ad simul saperet. Vix ut magna graece rationibus, legere putant eu ius. Omnis qualisque interpretaris id vim, malis solet oratio vel te,
+			vel elitr gubergren consequuntur ea.</p>
+			<p>Lorem ipsum dolor sit amet, ut his ipsum errem urbanitas. Accusata disputationi id qui. Has ferri commodo liberavisse ea.
+			Cum ex consul facilisi, ne quaestio interesset duo. Ad est vero albucius. Luptatum phaedrum cu sed. Aliquip euismod voluptua eos ne,
+			pri ad falli timeam nostrum.</p>
+			<p>Quo no probo docendi, nam in erat ornatus. Vix verear scribentur et. Id eruditi adolescens vel, vel nobis saperet urbanitas te. Duo
+			ad simul saperet. Vix ut magna graece rationibus, legere putant eu ius. Omnis qualisque interpretaris id vim, malis solet oratio vel te,
+			vel elitr gubergren consequuntur ea.</p>
+			<p>Lorem ipsum dolor sit amet, ut his ipsum errem urbanitas. Accusata disputationi id qui. Has ferri commodo liberavisse ea.
+			Cum ex consul facilisi, ne quaestio interesset duo. Ad est vero albucius. Luptatum phaedrum cu sed. Aliquip euismod voluptua eos ne,
+			pri ad falli timeam nostrum.</p>
+			<p>Quo no probo docendi, nam in erat ornatus. Vix verear scribentur et. Id eruditi adolescens vel, vel nobis saperet urbanitas te. Duo
+			ad simul saperet. Vix ut magna graece rationibus, legere putant eu ius. Omnis qualisque interpretaris id vim, malis solet oratio vel te,
+			vel elitr gubergren consequuntur ea.</p>
 			<p>Lorem ipsum dolor sit amet, ut his ipsum errem urbanitas. Accusata disputationi id qui. Has ferri commodo liberavisse ea.
 			Cum ex consul facilisi, ne quaestio interesset duo. Ad est vero albucius. Luptatum phaedrum cu sed. Aliquip euismod voluptua eos ne,
 			pri ad falli timeam nostrum.</p>
@@ -99,10 +136,11 @@
 	</content>
 
 
-
+<div class="footshadow"></div><div class="footShadow"></div>
 	<footer>
 		<div id="extraFoot"></div>
 		<p>@Animecon</p>
 	</footer>
+
 </body>
 </html>
