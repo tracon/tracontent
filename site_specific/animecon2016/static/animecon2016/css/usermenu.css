@@ -26,3 +26,12 @@
 .list-horizontal li + li {
        margin-left: 1em;
 }
+
+.tracontent-footer, .tracontent-footer a  {
+      color: #ccc
+}
+
+.tracontent-footer {
+      text-align: center;
+      margin-top: 3em;
+}
