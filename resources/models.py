@@ -1,11 +1,14 @@
 # encoding: utf-8
 
+from __future__ import unicode_literals
+
 import logging
 import os.path
 import os
 from datetime import datetime
 
 from django.db import models, transaction
+from django.utils.encoding import python_2_unicode_compatible
 
 from dateutil.tz import tzutc
 from reversion import revisions
@@ -13,27 +16,28 @@ from reversion import revisions
 logger = logging.getLogger(__name__)
 
 
+@python_2_unicode_compatible
 class CodeResource(models.Model):
     name = models.CharField(
         max_length=63,
-        verbose_name=u'Nimi',
-        help_text=u'Uniikki tunniste, jolla resurssi ladataan koodista tai HTML:stä käsin.',
+        verbose_name='Nimi',
+        help_text='Uniikki tunniste, jolla resurssi ladataan koodista tai HTML:stä käsin.',
         unique=True,
     )
 
     active = models.BooleanField(
         default=True,
-        verbose_name=u'Aktiivinen',
-        help_text=u'Ei-aktiivisia resursseja ei huomioida.',
+        verbose_name='Aktiivinen',
+        help_text='Ei-aktiivisia resursseja ei huomioida.',
     )
 
     content = models.TextField(
         blank=True,
-        verbose_name=u'Sisältö',
+        verbose_name='Sisältö',
     )
 
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name=u'Luotu')
-    updated_at = models.DateTimeField(auto_now=True, verbose_name=u'Muokattu')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Luotu')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Muokattu')
 
     @classmethod
     def ingest(cls, open_file, force=False):
@@ -65,7 +69,7 @@ class CodeResource(models.Model):
                 existing.save()
                 return existing
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -74,11 +78,11 @@ class CodeResource(models.Model):
 
 class StyleSheet(CodeResource):
     class Meta:
-        verbose_name = u'Tyylitiedosto'
-        verbose_name_plural = u'Tyylitiedostot'
+        verbose_name = 'Tyylitiedosto'
+        verbose_name_plural = 'Tyylitiedostot'
 
 
 class Template(CodeResource):
     class Meta:
-        verbose_name = u'Sivupohja'
-        verbose_name_plural = u'Sivupohjat'
+        verbose_name = 'Sivupohja'
+        verbose_name_plural = 'Sivupohjat'

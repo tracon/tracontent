@@ -5,21 +5,23 @@ from django.core.urlresolvers import reverse
 from django.db import models, transaction, IntegrityError
 from django.db.models import F
 from django.utils.timezone import now
+from django.utils.encoding import python_2_unicode_compatible
 
 
+@python_2_unicode_compatible
 class Banner(models.Model):
-    sites = models.ManyToManyField(Site, verbose_name=u'Sivustot')
+    sites = models.ManyToManyField(Site, verbose_name='Sivustot')
 
     title = models.CharField(
         max_length=1023,
-        verbose_name=u'Otsikko',
-        help_text=u'Esimerkiksi mainostettavan yrityksen tai sivuston nimi. Näytetään alt- ja hover-tekstinä.',
+        verbose_name='Otsikko',
+        help_text='Esimerkiksi mainostettavan yrityksen tai sivuston nimi. Näytetään alt- ja hover-tekstinä.',
     )
 
     url = models.CharField(
         max_length=1023,
-        verbose_name=u'Osoite',
-        help_text=u'Bannerin klikkaaja ohjataan tähän osoitteeseen.',
+        verbose_name='Osoite',
+        help_text='Bannerin klikkaaja ohjataan tähän osoitteeseen.',
     )
 
     image_file = models.FileField(
@@ -29,13 +31,13 @@ class Banner(models.Model):
 
     active = models.BooleanField(
         default=True,
-        verbose_name=u'Aktiivinen',
-        help_text=u'Voit piilottaa bannerin poistamatta sitä ottamalla tästä ruksin pois.'
+        verbose_name='Aktiivinen',
+        help_text='Voit piilottaa bannerin poistamatta sitä ottamalla tästä ruksin pois.'
     )
 
     def admin_get_sites(self):
         return u', '.join(site.domain for site in self.sites.all())
-    admin_get_sites.short_description = u'Sivustot'
+    admin_get_sites.short_description = 'Sivustot'
     admin_get_sites.admin_order_field = 'sites'
 
     @classmethod
@@ -58,23 +60,23 @@ class Banner(models.Model):
     def get_absolute_url(self):
         return reverse('ads_banner_redirect_view', args=(self.pk,))
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     class Meta:
-        verbose_name = u'banneri'
-        verbose_name_plural = u'bannerit'
+        verbose_name = 'banneri'
+        verbose_name_plural = 'bannerit'
 
 
 class BannerClick(models.Model):
-    site = models.ForeignKey(Site, verbose_name=u'Sivusto', null=True)
+    site = models.ForeignKey(Site, verbose_name='Sivusto', null=True)
     banner = models.ForeignKey(Banner,
-        verbose_name=u'Banneri',
+        verbose_name='Banneri',
         related_name='banner_click_set'
     )
 
-    date = models.DateField(verbose_name=u'Päivämäärä')
-    clicks = models.IntegerField(verbose_name=u'Klikkauksia')
+    date = models.DateField(verbose_name='Päivämäärä')
+    clicks = models.IntegerField(verbose_name='Klikkauksia')
 
     @classmethod
     def click(cls, site, banner, d=None):
@@ -94,7 +96,7 @@ class BannerClick(models.Model):
                 banner_click.clicks = F('clicks') + 1
                 banner_click.save()
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{banner_title} ({date})".format(
             banner_title=self.banner.title if self.banner else None,
             date=self.date.isoformat() if self.date else None,
@@ -102,5 +104,5 @@ class BannerClick(models.Model):
 
     class Meta:
         unique_together = [('banner', 'date')]
-        verbose_name = u'bannerin klikkaukset'
-        verbose_name_plural = u'bannerien klikkaukset'
+        verbose_name = 'bannerin klikkaukset'
+        verbose_name_plural = 'bannerien klikkaukset'
