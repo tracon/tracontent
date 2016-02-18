@@ -40,7 +40,7 @@ class Setup(object):
 
     def setup_site(self):
         self.site, unused = Site.objects.get_or_create(domain=self.domain, defaults=dict(
-            name=u'Tracon (2016)',
+            name='Tracon (2016)',
         ))
 
     def setup_content(self):
@@ -93,7 +93,7 @@ class Setup(object):
                 slug=page_slug,
                 defaults=dict(
                     title=page_title,
-                    body=u'Placeholder for {slug}'.format(slug=page_slug),
+                    body='Placeholder for {slug}'.format(slug=page_slug),
                     public_from=t,
                     visible_from=t,
                     order=ordering,
@@ -115,7 +115,7 @@ class Setup(object):
                     slug=child_slug,
                     defaults=dict(
                         title=child_title,
-                        body=u'Placeholder for {slug}'.format(slug=child_slug),
+                        body='Placeholder for {slug}'.format(slug=child_slug),
                         public_from=t,
                         visible_from=t,
                         order=child_ordering,
@@ -155,7 +155,7 @@ class Setup(object):
             try:
                 Banner.objects.get(sites=self.site, url=banner_url)
             except Banner.DoesNotExist:
-                with open(banner_path) as banner_file:
+                with open(banner_path, 'rb') as banner_file:
                     banner = Banner(
                         title=banner_title,
                         url=banner_url,
