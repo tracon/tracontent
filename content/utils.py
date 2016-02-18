@@ -96,6 +96,4 @@ def groups_of_n(iterable, n):
     if cur_group:
         groups.append(cur_group)
 
-    print groups
-
     return groups

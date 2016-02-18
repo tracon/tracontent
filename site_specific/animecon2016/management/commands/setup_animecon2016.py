@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+from __future__ import print_function, unicode_literals
+
 import os
 
 from datetime import datetime, timedelta, date
@@ -33,12 +35,12 @@ class Setup(object):
         self.domain = domain
 
     def setup(self):
-        print 'NOTE: Setting up Animecon 2016 site at {domain}'.format(domain=self.domain)
+        print('NOTE: Setting up Animecon 2016 site at {domain}'.format(domain=self.domain))
         self.setup_site()
         self.setup_content()
 
     def setup_site(self):
-        self.site, unused = Site.objects.get_or_create(domain=self.domain, name=u'Animecon 2016')
+        self.site, unused = Site.objects.get_or_create(domain=self.domain, name='Animecon 2016')
 
     def setup_content(self):
         t = now()
@@ -54,12 +56,12 @@ class Setup(object):
         )
         ordering = 0
         for page_slug, page_title, child_pages in [
-            ('front-page', u'Etusivu', []),
-            ('blog', u'Ajankohtaista', []), # pseudo page for menu, actually taken over by blog
-            ('tapahtuma', u'Tapahtuma', []),
-            ('ohjelma', u'Ohjelma', []),
-            ('liput', u'Liput', []),
-            ('yhteys', u'Ota yhteyttä!', [])
+            ('front-page', 'Etusivu', []),
+            ('blog', 'Ajankohtaista', []), # pseudo page for menu, actually taken over by blog
+            ('tapahtuma', 'Tapahtuma', []),
+            ('ohjelma', 'Ohjelma', []),
+            ('liput', 'Liput', []),
+            ('yhteys', 'Ota yhteyttä!', [])
         ]:
             ordering += 10
 
@@ -69,7 +71,7 @@ class Setup(object):
                 slug=page_slug,
                 defaults=dict(
                     title=page_title,
-                    body=u'Placeholder for {slug}'.format(slug=page_slug),
+                    body='Placeholder for {slug}'.format(slug=page_slug),
                     public_from=t,
                     visible_from=None if page_slug == 'blog' else t,
                     order=ordering,
@@ -91,7 +93,7 @@ class Setup(object):
                     slug=child_slug,
                     defaults=dict(
                         title=child_title,
-                        body=u'Placeholder for {slug}'.format(slug=child_slug),
+                        body='Placeholder for {slug}'.format(slug=child_slug),
                         public_from=t,
                         visible_from=t,
                         order=child_ordering,

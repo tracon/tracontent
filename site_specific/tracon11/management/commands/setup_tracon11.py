@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+from __future__ import print_function, unicode_literals
+
 from datetime import datetime, timedelta, date
 
 from django.contrib.auth.models import User
@@ -30,7 +32,7 @@ class Setup(object):
         self.domain = domain
 
     def setup(self):
-        print 'NOTE: Setting up Tracon (2016) site at {domain}'.format(domain=self.domain)
+        print('NOTE: Setting up Tracon (2016) site at {domain}'.format(domain=self.domain))
         self.setup_site()
         self.setup_content()
         self.setup_ads()
@@ -66,21 +68,21 @@ class Setup(object):
 
         ordering = 0
         for page_slug, page_title, child_pages in [
-            ('front-page', u'Tracon Tampere-talossa 3.–4. syyskuuta 2016', []),
-            ('blog', u'Ajankohtaista', []), # pseudo page for menu, actually taken over by blog
-            ('tapahtuma', u'Tapahtuma', [
-                ('tyovoima', u'Vänkäriksi'),
-                ('jarjestyssaannot', u'Järjestyssäännöt'),
-                ('tapahtumapaikka', u'Tapahtumapaikka'),
+            ('front-page', 'Tracon Tampere-talossa 3.–4. syyskuuta 2016', []),
+            ('blog', 'Ajankohtaista', []), # pseudo page for menu, actually taken over by blog
+            ('tapahtuma', 'Tapahtuma', [
+                ('tyovoima', 'Vänkäriksi'),
+                ('jarjestyssaannot', 'Järjestyssäännöt'),
+                ('tapahtumapaikka', 'Tapahtumapaikka'),
             ]),
-            ('ohjelma', u'Ohjelma', [
-                ('ohjelmanjarjestajaksi', u'Ohjelmanjärjestäjäksi'),
+            ('ohjelma', 'Ohjelma', [
+                ('ohjelmanjarjestajaksi', 'Ohjelmanjärjestäjäksi'),
             ]),
-            ('liput', u'Liput', []),
-            ('yhteys', u'Ota yhteyttä!', [
-                ('conitea', u'Järjestäjät'),
-                ('media', u'Tiedotusvälineille'),
-                ('sponsorit', u'Yhteistyökumppaneille'),
+            ('liput', 'Liput', []),
+            ('yhteys', 'Ota yhteyttä!', [
+                ('conitea', 'Järjestäjät'),
+                ('media', 'Tiedotusvälineille'),
+                ('sponsorit', 'Yhteistyökumppaneille'),
             ])
         ]:
             ordering += 10
@@ -148,7 +150,7 @@ class Setup(object):
 
     def setup_ads(self):
         for banner_title, banner_url, banner_path in [
-            (u'Säätöyhteisö B2 ry', 'http://b2.fi', 'site_specific/tracon11/static/tracon11/img/b2-saatoa2008-wh-200.png'),
+            ('Säätöyhteisö B2 ry', 'http://b2.fi', 'site_specific/tracon11/static/tracon11/img/b2-saatoa2008-wh-200.png'),
         ]:
             try:
                 Banner.objects.get(sites=self.site, url=banner_url)
@@ -180,9 +182,9 @@ class Setup(object):
         ))
 
         for category_slug, category_title in [
-            ('conzine', u'Conzine'),
-            ('palaute', u'Palaute'),
-            ('jarjestaminen', u'Traconin järjestäminen'),
+            ('conzine', 'Conzine'),
+            ('palaute', 'Palaute'),
+            ('jarjestaminen', 'Traconin järjestäminen'),
         ]:
             BlogCategory.objects.get_or_create(
                 site=blog_site,

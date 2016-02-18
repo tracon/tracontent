@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+from __future__ import print_function, unicode_literals
+
 from datetime import datetime, timedelta, date
 
 from django.contrib.auth.models import User
@@ -31,12 +33,12 @@ class Setup(object):
         self.domain = domain
 
     def setup(self):
-        print 'NOTE: Setting up japsu.fi site at {domain}'.format(domain=self.domain)
+        print('NOTE: Setting up japsu.fi site at {domain}'.format(domain=self.domain))
         self.setup_site()
         self.setup_content()
 
     def setup_site(self):
-        self.site, unused = Site.objects.get_or_create(domain=self.domain, name=u'Japsu.fi')
+        self.site, unused = Site.objects.get_or_create(domain=self.domain, name='Japsu.fi')
 
     def setup_content(self):
         t = now()
@@ -53,11 +55,11 @@ class Setup(object):
 
         ordering = 0
         for page_data in [
-            ('front-page', u'Japsu.fi', u'Etusivu', []),
-            ('blog', u'Blogi', []), # pseudo page for menu, actually taken over by blog
-            ('kuvat', u'Valokuvia', []),
-            ('projektit', u'Projektit', []),
-            ('yhteys', u'Ota yhteyttä!', [])
+            ('front-page', 'Japsu.fi', 'Etusivu', []),
+            ('blog', 'Blogi', []), # pseudo page for menu, actually taken over by blog
+            ('kuvat', 'Valokuvia', []),
+            ('projektit', 'Projektit', []),
+            ('yhteys', 'Ota yhteyttä!', [])
         ]:
             if len(page_data) == 3:
                 page_slug, page_title, child_pages = page_data

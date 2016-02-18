@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+from __future__ import print_function, unicode_literals
+
 from datetime import datetime, timedelta, date
 
 from django.contrib.auth.models import User
@@ -30,14 +32,14 @@ class Setup(object):
         self.domain = domain
 
     def setup(self):
-        print 'NOTE: Setting up Tracon Hitpoint 2015 site at {domain}'.format(domain=self.domain)
+        print('NOTE: Setting up Tracon Hitpoint 2015 site at {domain}'.format(domain=self.domain))
         self.setup_site()
         self.setup_content()
         self.setup_ads()
         self.setup_blog()
 
     def setup_site(self):
-        self.site, unused = Site.objects.get_or_create(domain=self.domain, name=u'Tracon Hitpoint 2015')
+        self.site, unused = Site.objects.get_or_create(domain=self.domain, name='Tracon Hitpoint 2015')
 
     def setup_content(self):
         t = now()
@@ -57,21 +59,21 @@ class Setup(object):
 
         ordering = 0
         for page_slug, page_title, child_pages in [
-            ('front-page', u'Dummy etusivu', []),
+            ('front-page', 'Dummy etusivu', []),
 
             # Outside fi subsite for technical reasons
-            ('blog', u'Ajankohtaista', []),
+            ('blog', 'Ajankohtaista', []),
 
-            ('fi', u'Kaksi päivää pelaamista Tampereen keskustassa!', [
-                ('tapahtuma', u'Tapahtuma'),
-                ('liput', u'Lipunmyynti'),
-                ('goh', u'Kunniavieraat'),
-                ('ohjelma', u'Ohjelma'),
+            ('fi', 'Kaksi päivää pelaamista Tampereen keskustassa!', [
+                ('tapahtuma', 'Tapahtuma'),
+                ('liput', 'Lipunmyynti'),
+                ('goh', 'Kunniavieraat'),
+                ('ohjelma', 'Ohjelma'),
             ]),
 
-            ('en', u'Two days of table-top games in Downtown Tampere!', [
-                ('tickets', u'Tickets'),
-                ('goh', u'Guests of Honour'),
+            ('en', 'Two days of table-top games in Downtown Tampere!', [
+                ('tickets', 'Tickets'),
+                ('goh', 'Guests of Honour'),
             ]),
         ]:
             ordering += 10
@@ -82,7 +84,7 @@ class Setup(object):
                 slug=page_slug,
                 defaults=dict(
                     title=page_title,
-                    body=u'Placeholder for {slug}'.format(slug=page_slug),
+                    body='Placeholder for {slug}'.format(slug=page_slug),
                     public_from=t,
                     visible_from=t,
                     order=ordering,
@@ -99,7 +101,7 @@ class Setup(object):
                     slug=child_slug,
                     defaults=dict(
                         title=child_title,
-                        body=u'Placeholder for {slug}'.format(slug=child_slug),
+                        body='Placeholder for {slug}'.format(slug=child_slug),
                         public_from=t,
                         visible_from=t,
                         order=child_ordering,
@@ -119,8 +121,8 @@ class Setup(object):
             parent=programme_page,
             slug='ohjelmakartta',
             defaults=dict(
-                title=u'Ohjelmakartta',
-                body=u'',
+                title='Ohjelmakartta',
+                body='',
                 public_from=t,
                 visible_from=t,
                 page_controller_code='site_specific.hitpoint2015.views:programme_page_controller',
@@ -147,7 +149,7 @@ class Setup(object):
 
     def setup_ads(self):
         for banner_title, banner_url, banner_path in [
-            (u'Säätöyhteisö B2 ry', 'http://b2.fi', 'site_specific/tracon11/static/tracon11/img/b2-saatoa2008-wh-200.png'),
+            ('Säätöyhteisö B2 ry', 'http://b2.fi', 'site_specific/tracon11/static/tracon11/img/b2-saatoa2008-wh-200.png'),
         ]:
             try:
                 banner = Banner.objects.get(url=banner_url)

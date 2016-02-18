@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+from __future__ import print_function, unicode_literals
+
 import os.path
 from datetime import datetime, timedelta, date
 
@@ -34,7 +36,7 @@ class Setup(object):
         self.domain = domain
 
     def setup(self):
-        print 'NOTE: Setting up Aicon site at {domain}'.format(domain=self.domain)
+        print('NOTE: Setting up Aicon site at {domain}'.format(domain=self.domain))
         self.setup_site()
         self.setup_content()
 
@@ -58,13 +60,13 @@ class Setup(object):
 
         ordering = 0
         for page_slug, page_title, child_pages in [
-            ('front-page', u'Verkatehdas, Hämeenlinna, 8.–9.10.2016', []),
-            ('blog', u'Ajankohtaista', []), # pseudo page for menu, actually taken over by blog
-            ('tapahtuma', u'Tapahtuma', []),
-            ('ohjelma', u'Ohjelma', []),
-            ('yhteys', u'Yhteystiedot', [
-                ('medialle', u'Medialle'),
-                ('sponsoriksi', u'Sponsoriksi'),
+            ('front-page', 'Verkatehdas, Hämeenlinna, 8.–9.10.2016', []),
+            ('blog', 'Ajankohtaista', []), # pseudo page for menu, actually taken over by blog
+            ('tapahtuma', 'Tapahtuma', []),
+            ('ohjelma', 'Ohjelma', []),
+            ('yhteys', 'Yhteystiedot', [
+                ('medialle', 'Medialle'),
+                ('sponsoriksi', 'Sponsoriksi'),
             ]),
         ]:
             ordering += 10
@@ -100,16 +102,16 @@ class Setup(object):
                 )
 
         front_page = Page.objects.get(site=self.site, slug='front-page')
-        if front_page.title == u'Aicon':
-            front_page.title = u'Verkatehdas, Hämeenlinna, 8.–9.10.2016'
+        if front_page.title == 'Aicon':
+            front_page.title = 'Verkatehdas, Hämeenlinna, 8.–9.10.2016'
         if not front_page.override_menu_text:
-            front_page.override_menu_text = u'Etusivu'
+            front_page.override_menu_text = 'Etusivu'
         if not front_page.override_page_template:
             front_page.override_page_template = 'aicon_front_page.jade'
         if not front_page.page_controller_code:
             front_page.page_controller_code = 'site_specific.aicon.views:front_page_controller'
         if 'Placeholder for front-page' in front_page.body or 'Lorem ipsum' in front_page.body:
-            front_page.body = u'Aicon on aasialaiseen musiikkiin ja muotiin keskittyvä kaksipäiväinen tapahtuma, joka järjestään ensimmäistä kertaa syksyllä 2016. Aicon tarjoaa kävijöilleen monipuolista ohjelmaa ja tekemistä täysin omannäköisellään vivahteella, ja toivottaa kaikki aiheesta kiinnostuneet tervetulleiksi tapahtumaan!'
+            front_page.body = 'Aicon on aasialaiseen musiikkiin ja muotiin keskittyvä kaksipäiväinen tapahtuma, joka järjestään ensimmäistä kertaa syksyllä 2016. Aicon tarjoaa kävijöilleen monipuolista ohjelmaa ja tekemistä täysin omannäköisellään vivahteella, ja toivottaa kaikki aiheesta kiinnostuneet tervetulleiksi tapahtumaan!'
         front_page.save()
 
         organizers_page = Page.objects.get(site=self.site, slug='yhteys')
@@ -132,9 +134,9 @@ class Setup(object):
             d = date.today()
 
             for blog_title in [
-                u'Japan-poppia, minun conissani!?!',
-                u'Aiconin kävijäkysely',
-                u'Seuraa Aiconia Twitterissä ja Facebookissa!',
+                'Japan-poppia, minun conissani!?!',
+                'Aiconin kävijäkysely',
+                'Seuraa Aiconia Twitterissä ja Facebookissa!',
             ]:
                 blog_post, unused = BlogPost.objects.get_or_create(
                     site=self.site,
