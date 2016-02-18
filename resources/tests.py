@@ -33,4 +33,4 @@ class CodeResourceTestCase(TestCase):
         response = self.client.get('/css/foo.css')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response['Content-Type'], 'text/css')
-        self.assertEqual(response.content, style_sheet.content)
+        self.assertEqual(response.content.decode('UTF-8'), style_sheet.content)
