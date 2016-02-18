@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+from __future__ import unicode_literals, print_function
+
 from django.core.management import call_command
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
@@ -34,4 +36,4 @@ class Command(BaseCommand):
             if created:
                 user.set_password('mahti')
                 user.save()
-                print 'WARNING: Creating superuser "mahti" with password "mahti"'
+                print('WARNING: Creating superuser "mahti" with password "mahti"')

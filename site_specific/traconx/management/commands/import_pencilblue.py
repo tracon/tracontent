@@ -14,11 +14,11 @@ class Command(BaseCommand):
     help = 'Import a PencilBlue site'
 
     def add_arguments(self, parser):
-        parser.add_argument('domain', type=unicode)
-        parser.add_argument('--mongo-username', type=unicode)
-        parser.add_argument('--mongo-password', type=unicode)
-        parser.add_argument('--mongo-database', type=unicode, default='tracon2015')
-        parser.add_argument('--mongo-host', type=unicode, default='localhost')
+        parser.add_argument('domain', type=str)
+        parser.add_argument('--mongo-username', type=str)
+        parser.add_argument('--mongo-password', type=str)
+        parser.add_argument('--mongo-database', type=str, default='tracon2015')
+        parser.add_argument('--mongo-host', type=str, default='localhost')
         parser.add_argument('--mongo-port', type=int, default=27017)
 
     def handle(self, *args, **options):

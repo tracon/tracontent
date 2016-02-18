@@ -25,7 +25,7 @@ class Command(BaseCommand):
     help = 'Setup Aicon site'
 
     def add_arguments(self, parser):
-        parser.add_argument('domain', type=unicode)
+        parser.add_argument('domain', type=str)
 
     def handle(self, *args, **options):
         Setup(domain=options['domain']).setup()

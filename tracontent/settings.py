@@ -25,7 +25,6 @@ INSTALLED_APPS = (
 
     'ckeditor',
     'crispy_forms',
-    'djangocodemirror',
     'reversion',
 
     'kompassi_oauth2',
