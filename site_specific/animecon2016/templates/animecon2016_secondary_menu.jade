@@ -2,6 +2,6 @@ for entry in menu
   if entry.active
     for child in entry.children
       if child.active
-        #activeSec.menuitemSec: a(href='#{ child.href }')= child.text
+        #activeSec.menuitemSec: a(href='#{ child.href }')= child.text
       else
-        .menuitemSec: a(href='{{ child.href }}')= child.text
+        div.menuitemSec: a(href='{{ child.href }}')= child.text
