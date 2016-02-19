@@ -8,12 +8,19 @@ from .views import logout_view
 
 admin.autodiscover()
 
+urlpatterns = []
 
-urlpatterns = [
+# Disable Django Admin login view and use OAuth2 to Kompassi instead
+if 'kompassi_oauth2' in settings.INSTALLED_APPS and not settings.DEBUG:
+    from kompassi_oauth2.views import LoginView
+
+    urlpatterns.append(url(r'^admin/login/?$', LoginView.as_view()))
+
+urlpatterns.extend((
     url(r'^admin/', include(admin.site.urls)),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^logout/?', logout_view, name='logout_view'),
-]
+))
 
 
 if 'kompassi_oauth2' in settings.INSTALLED_APPS:
