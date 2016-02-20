@@ -52,16 +52,37 @@ class Setup(object):
                 page_template='animecon2016_page.jade',
                 blog_index_template='animecon2016_blog_index.jade',
                 blog_post_template='animecon2016_blog_post.jade',
+                context_processor_code='site_specific.animecon2016.context_processors:animecon2016_context',
             )
         )
+
+        if not self.site_settings.context_processor_code:
+            self.site_settings.context_processor_code = 'site_specific.animecon2016.context_processors:animecon2016_context'
+            self.site_settings.save()
+
         ordering = 0
         for page_slug, page_title, child_pages in [
-            ('front-page', 'Etusivu', []),
-            ('blog', 'Ajankohtaista', []), # pseudo page for menu, actually taken over by blog
-            ('tapahtuma', 'Tapahtuma', []),
-            ('ohjelma', 'Ohjelma', []),
-            ('liput', 'Liput', []),
-            ('yhteys', 'Ota yhteyttä!', [])
+            ('front-page', 'Dummy etusivu', []),
+
+            # Outside fi subsite for technical reasons
+            ('blog', 'Ajankohtaista', []),
+
+            ('fi', 'Animecon 2016', [
+                ('front-page', 'Etusivu'),
+                ('blog', 'Ajankohtaista'), # pseudo page for menu, actually taken over by blog
+                ('tapahtuma', 'Tapahtuma'),
+                ('ohjelma', 'Ohjelma'),
+                ('liput', 'Liput'),
+                ('yhteys', 'Ota yhteyttä!'),
+            ]),
+
+            ('en', 'Animecon 2016 in English', [
+                ('front-page', 'Front page'),
+                ('event', 'Event'),
+                ('program', 'Program'),
+                ('tickets', 'Tickets'),
+                ('contact', 'Contact us!'),
+            ]),
         ]:
             ordering += 10
 
@@ -73,15 +94,10 @@ class Setup(object):
                     title=page_title,
                     body='Placeholder for {slug}'.format(slug=page_slug),
                     public_from=t,
-                    visible_from=None if page_slug == 'blog' else t,
+                    visible_from=t,
                     order=ordering,
                 )
             )
-
-            # v2
-            if parent_page.order == 0:
-                parent_page.order = ordering
-                parent_page.save()
 
             child_ordering = 0
             for child_slug, child_title in child_pages:
@@ -102,6 +118,7 @@ class Setup(object):
 
         for path, target in [
             ('admin', '/admin/'),
+            ('front-page', '/fi'),
         ]:
             redirect, unused = Redirect.objects.get_or_create(
                 site=self.site,
