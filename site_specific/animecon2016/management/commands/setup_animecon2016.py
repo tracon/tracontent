@@ -118,7 +118,9 @@ class Setup(object):
 
         for path, target in [
             ('admin', '/admin/'),
-            ('front-page', '/fi'),
+            ('fi', '/fi/front-page'),
+            ('en', '/en/front-page'),
+            ('front-page', '/fi/front-page'),
         ]:
             redirect, unused = Redirect.objects.get_or_create(
                 site=self.site,
