@@ -37,6 +37,16 @@ article {
   line-height: 31px;
 }
 
+figure {
+  max-width: 100%;
+}
+
+figcaption {
+  font-size: 15px;
+  line-height: 21px;
+  margin-top: 1em;
+}
+
 
 @media (min-width: 992px) {
   nav {
