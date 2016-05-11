@@ -44,12 +44,12 @@ class KompassiOAuth2AuthenticationBackend(object):
             return None
 
         user, created = User.objects.get_or_create(username=kompassi_user['username'])
-        for key, value in user_attrs_from_kompassi(kompassi_user).iteritems():
+        for key, value in user_attrs_from_kompassi(kompassi_user).items():
             setattr(user, key, value)
         user.save()
 
         user_meta = UserMeta.get_for_user(user)
-        for key, value  in user_meta_attrs_from_kompassi(kompassi_user).iteritems():
+        for key, value  in user_meta_attrs_from_kompassi(kompassi_user).items():
             setattr(user_meta, key, value)
         user_meta.save()
 
