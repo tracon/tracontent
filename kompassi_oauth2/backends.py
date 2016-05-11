@@ -4,6 +4,10 @@ from django.conf import settings
 from users.models import UserMeta
 
 
+STAFF_GROUPS = set(settings.KOMPASSI_EDITOR_GROUPS)
+STAFF_GROUPS.add(settings.KOMPASSI_ADMIN_GROUP)
+
+
 def user_attrs_from_kompassi(kompassi_user):
     return dict((django_key, accessor_func(kompassi_user)) for (django_key, accessor_func) in [
         ('username', lambda u: u['username']),
@@ -11,10 +15,7 @@ def user_attrs_from_kompassi(kompassi_user):
         ('first_name', lambda u: u['first_name']),
         ('last_name', lambda u: u['surname']),
         ('is_superuser', lambda u: settings.KOMPASSI_ADMIN_GROUP in u['groups']),
-        ('is_staff', lambda u: any(group_name in kompassi_user['groups'] for group_name in [
-            settings.KOMPASSI_EDITOR_GROUP,
-            settings.KOMPASSI_ADMIN_GROUP,
-        ])),
+        ('is_staff', lambda u: bool(STAFF_GROUPS.intersection(kompassi_user['groups'])),
         ('groups', lambda u: [Group.objects.get_or_create(name=group_name)[0] for group_name in u['groups']]),
     ])
 
@@ -37,10 +38,7 @@ class KompassiOAuth2AuthenticationBackend(object):
         kompassi_user = response.json()
 
         # Non-editor users may not log in via OAuth2
-        if all(group_name not in kompassi_user['groups'] for group_name in [
-            settings.KOMPASSI_EDITOR_GROUP,
-            settings.KOMPASSI_ADMIN_GROUP,
-        ]):
+        if not STAFF_GROUPS.intersection(kompassi_user['groups']):
             return None
 
         user, created = User.objects.get_or_create(username=kompassi_user['username'])
