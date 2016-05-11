@@ -6,7 +6,7 @@ from django.forms import ValidationError
 from django.utils.timezone import now
 from django import forms
 
-from ckeditor.widgets import CKEditorWidget
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from reversion.admin import VersionAdmin
 
 from .models import (
@@ -84,7 +84,7 @@ VisibleListFilter = make_is_null_list_filter('visible_from', u'Näkyvissä')
 
 class PageAdminForm(forms.ModelForm, CommonAdminFormMixin):
     body = forms.CharField(
-        widget=CKEditorWidget(),
+        widget=CKEditorUploadingWidget(),
         label=CommonFields.body['verbose_name'],
         required=not CommonFields.body['blank'],
     )
@@ -184,7 +184,7 @@ class RedirectAdmin(VersionAdmin):
 
 class BlogPostAdminForm(forms.ModelForm, CommonAdminFormMixin):
     body = forms.CharField(
-        widget=CKEditorWidget(),
+        widget=CKEditorUploadingWidget(),
         label=CommonFields.body['verbose_name'],
         required=not CommonFields.body['blank'],
     )
