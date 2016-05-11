@@ -24,6 +24,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
 
     'ckeditor',
+    'ckeditor_uploader',
     'crispy_forms',
     'reversion',
 
