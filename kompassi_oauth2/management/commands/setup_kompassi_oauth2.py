@@ -11,18 +11,19 @@ class Command(BaseCommand):
     help = 'Setup Kompassi OAuth2'
 
     def handle(self, *args, **options):
-        group, unused = Group.objects.get_or_create(name=settings.KOMPASSI_EDITOR_GROUP)
+        for group_name in settings.KOMPASSI_EDITOR_GROUPS:
+            group, unused = Group.objects.get_or_create(name=group_name)
 
-        content_permissions = Permission.objects.filter(
-            content_type__app_label='content',
-            content_type__model__in=['page', 'redirect', 'blogpost', 'blogcomment'],
-        )
+            content_permissions = Permission.objects.filter(
+                content_type__app_label='content',
+                content_type__model__in=['page', 'redirect', 'blogpost', 'blogcomment'],
+            )
 
-        group.permissions.add(*content_permissions)
+            group.permissions.add(*content_permissions)
 
-        ads_permissions = Permission.objects.filter(
-            content_type__app_label='ads',
-            content_type__model__in=['banner', 'bannerclick'],
-        )
+            ads_permissions = Permission.objects.filter(
+                content_type__app_label='ads',
+                content_type__model__in=['banner', 'bannerclick'],
+            )
 
-        group.permissions.add(*ads_permissions)
+            group.permissions.add(*ads_permissions)
