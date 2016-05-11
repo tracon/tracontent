@@ -15,7 +15,7 @@ def user_attrs_from_kompassi(kompassi_user):
         ('first_name', lambda u: u['first_name']),
         ('last_name', lambda u: u['surname']),
         ('is_superuser', lambda u: settings.KOMPASSI_ADMIN_GROUP in u['groups']),
-        ('is_staff', lambda u: bool(STAFF_GROUPS.intersection(kompassi_user['groups'])),
+        ('is_staff', lambda u: bool(STAFF_GROUPS.intersection(kompassi_user['groups']))),
         ('groups', lambda u: [Group.objects.get_or_create(name=group_name)[0] for group_name in u['groups']]),
     ])
 
