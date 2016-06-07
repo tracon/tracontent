@@ -20,7 +20,11 @@ If you have Kompassi OAuth2 support enabled, you're running the Enterprise Editi
 
 ## Getting started
 
-Install dependencies:
+Install C dependencies:
+
+    sudo apt-get install python-dev libz-dev libjpeg-dev libffi-dev libssl-dev build-essential
+
+Install Python dependencies:
 
     virtualenv venv-tracontent
     source venv-tracontent/bin/activate
@@ -36,7 +40,7 @@ Setup basic example content:
 Run the server and view the site in your favourite web browser:
 
     ./manage.py runserver 127.0.0.1:8001
-    iexplore http://127.0.0.1:8001
+    iexplore http://127.0.0.1:8001/admin/login
 
 Note that due to multisite support, `127.0.0.1:8001` needs to match whatever `host:port` you use to access your development instance.
 
