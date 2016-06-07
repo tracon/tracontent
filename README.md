@@ -40,7 +40,8 @@ Setup basic example content:
 Run the server and view the site in your favourite web browser:
 
     ./manage.py runserver 127.0.0.1:8001
-    iexplore http://127.0.0.1:8001/admin/login
+    iexplore http://127.0.0.1:8001
+    iexplore http://127.0.0.1:8001/admin/login/
 
 Note that due to multisite support, `127.0.0.1:8001` needs to match whatever `host:port` you use to access your development instance.
 
