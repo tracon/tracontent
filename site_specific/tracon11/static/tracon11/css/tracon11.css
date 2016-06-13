@@ -119,17 +119,17 @@ footer {
 }
 /* HEADINGS */
 
-h1 i, 
-h2 i, 
-h3 i, 
+h1 i,
+h2 i,
+h3 i,
 h4 i {
 	padding-right: 10px;
 	color: #A8D13B;
 	font-size: 0.8em;
 }
 
-h2:after, 
-h3:after, 
+h2:after,
+h3:after,
 h4:after {
 	position: absolute;
 	content: "";
@@ -137,12 +137,12 @@ h4:after {
 	border-radius: 2px;
 	left: 0;
 	bottom: 0;
-	box-shadow: 
-		0 -1px 0 rgba(0,0,0,0.1), 
+	box-shadow:
+		0 -1px 0 rgba(0,0,0,0.1),
 		0 1px 0 rgba(255,255,255,0.6);
 }
 
-h2:after { width: 100%; } 
+h2:after { width: 100%; }
 h3:after { width:  75%; }
 h4:after { width:  50%; }
 
@@ -281,6 +281,10 @@ footer {
     text-align: center;
 }
 
+.tracon-banners {
+    margin-top: 2em;
+}
+
 .adverts p {
 }
 
@@ -300,7 +304,7 @@ footer {
 
 @media (min-width: 768px) {
     .navbar {
-        position: relative; 
+        position: relative;
         width: 100%;
         z-index: 10000;
     }
@@ -320,7 +324,7 @@ footer {
         max-height: 10em;
     }
 
-   
+
 
     .container.standalone {
         padding-top: 11em;
