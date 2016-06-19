@@ -4,7 +4,7 @@ from django.core.cache import caches
 import requests
 
 
-def kompassi_get_programme(event_slug):
+def kompassi_get_programme(event_slug, special=False, category=None):
     cache = caches['default']
     cache_key = "kompassi_get_programme:{event_slug}".format(event_slug=event_slug)
 
@@ -12,9 +12,11 @@ def kompassi_get_programme(event_slug):
     if cached:
         return cached
 
-    url = "{kompassi}/events/{event_slug}/programme/fragment".format(
+    url = "{kompassi}/events/{event_slug}/programme/{special}fragment{query}".format(
         kompassi=settings.KOMPASSI_HOST,
         event_slug=event_slug,
+        special='special/' if special else '',
+        query='?category={category}'.format(category=category) if category else '',
     )
 
     response = requests.get(url)

@@ -148,6 +148,22 @@ class Setup(object):
                 ),
             )
 
+        programme_page = Page.objects.get(site=self.site, path='ohjelma')
+        programme_miitit_page, created = Page.objects.get_or_create(
+            site=self.site,
+            parent=programme_page,
+            slug='miitit',
+            defaults=dict(
+                title='Miitit',
+                body='Placeholder',
+                public_from=t,
+                visible_from=t,
+                page_controller_code='site_specific.tracon11.views:miitit_page_controller',
+                override_page_template='tracon11_programme_page.jade',
+                order=0,
+            )
+        )
+
     def setup_ads(self):
         for banner_title, banner_url, banner_path in [
             ('Säätöyhteisö B2 ry', 'http://b2.fi', 'site_specific/tracon11/static/tracon11/img/b2-saatoa2008-wh-200.png'),
