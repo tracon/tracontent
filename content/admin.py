@@ -149,7 +149,7 @@ class PageAdmin(VersionAdmin):
             fields=('parent', 'public_from', 'visible_from')
         )),
         (u'Lisäasetukset', dict(
-            fields=('site', 'order', 'slug', 'path', 'override_menu_text', 'created_at', 'updated_at'),
+            fields=('site', 'order', 'slug', 'path', 'override_menu_text', 'override_page_template', 'created_at', 'updated_at'),
             classes=('collapse',),
         ))
     )

@@ -1,0 +1,75 @@
+.tracon-navbar {
+  background-color: #0099CC;
+  border-bottom: 1px solid #9cf;
+}
+
+.tracon-navbar .navbar-brand, .tracon-navbar .navbar-nav>li>a {
+  color: #f8f8f8;
+}
+
+.tracon-navbar .navbar-nav>.active>a, .tracon-navbar .navbar-nav>.active>a:focus, .tracon-navbar .navbar-nav>.active>a:hover {
+  background-color: #00CC33;
+}
+
+.tracon-navbar-push {
+  margin-top: 60px;
+}
+
+.tracon-footer-push, footer {
+  height: 45px;
+}
+
+.tracon-banners a, .tracon-banners img {
+  display: block;
+  width: 100%;
+}
+
+.tracon-banners a {
+  margin-bottom: 5px;
+}
+
+.tracon-blog-comment {
+  margin-bottom: 25px;
+  position: relative;
+}
+
+/* Ugly hack to fix anchored content being hidden under the fixed nav bar */
+.tracon-blog-comment-anchor {
+  position: absolute;
+  top: -60px;
+}
+
+/* Fixed footer black magic */
+html,
+body {
+  height: 100%;
+}
+.tracon-content-wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -45px;
+  padding-top: 60px;
+}
+.tracon-footer-push, footer {
+  height: 45px;
+}
+footer {
+  background-color: #f8f8f8;
+  border-top: 1px solid #e7e7e7;
+}
+footer .tracon-credit {
+  padding-top: 10px;
+}
+
+figure {
+  margin: 0.5em;
+}
+
+figcaption {
+  margin-top: 0.2em;
+}
+
+.post-meta, .post-meta a:link, .post-meta a:visited {
+  color: #777;
+}

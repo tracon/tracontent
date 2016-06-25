@@ -1,0 +1,11 @@
+extends conikuvat_base.jade
+- load static from staticfiles
+block content
+  include content_toolbar_admin_page.jade
+  img(
+    style='width: 100%; padding: 2em 0 2em 0'
+    alt='Conikuvat.fi'
+    src='{% static "conikuvat/img/conikuvat-cu.svg" %}'
+  )
+  article.clearfix
+    {{ page.body|safe }}
