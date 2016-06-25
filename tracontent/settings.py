@@ -34,6 +34,7 @@ INSTALLED_APPS = (
     'resources',
     'users',
 
+    'site_specific.simple',
     'site_specific.traconx',
     'site_specific.tracon11',
     'site_specific.aicon',
