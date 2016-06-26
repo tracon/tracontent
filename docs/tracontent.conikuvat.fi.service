@@ -1,0 +1,18 @@
+# /etc/systemd/system/tracontent.conikuvat.fi.service
+
+[Unit]
+Description=Conikuvat.fi - TraContent CMS Enterprise Edition
+After=network.target
+
+[Service]
+PIDFile=/run/conikuvat/tracontent.pid
+User=conikuvat
+Group=users
+WorkingDirectory=/home/conikuvat/tracontent
+ExecStart=/home/conikuvat/venv3-tracontent/bin/gunicorn --listen 127.0.0.1:9021 --workers 4 --pid /run/conikuvat/tracontent.pid tracontent.wsgi:application
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
