@@ -116,6 +116,11 @@ class Setup(object):
                     )
                 )
 
+        programme_page = Page.objects.get(site=self.site, path='fi/ohjelma')
+        programme_page.page_controller_code = 'site_specific.animecon2016.views:programme_page_controller'
+        programme_page.override_page_template = 'animecon2016_programme_page.jade'
+        programme_page.save()
+
         for path, target in [
             ('admin', '/admin/'),
             ('fi', '/fi/front-page'),
