@@ -119,6 +119,11 @@ class Setup(object):
         organizers_page.page_controller_code = 'site_specific.aicon.views:organizers_page_controller'
         organizers_page.save()
 
+        programme_page = Page.objects.get(site=self.site, path='ohjelma')
+        programme_page.page_controller_code = 'site_specific.aicon.views:programme_page_controller'
+        programme_page.override_page_template = 'aicon_programme_page.jade'
+        programme_page.save()
+
         for path, target in [
             ('admin', '/admin/'),
         ]:
