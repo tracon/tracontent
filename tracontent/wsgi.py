@@ -1,14 +1,11 @@
-b"""
-WSGI config for tracontent project.
-
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/1.6/howto/deployment/wsgi/
-"""
+# encoding: utf-8
 
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tracontent.settings")
 
 from django.core.wsgi import get_wsgi_application
-application = get_wsgi_application()
+
+from dj_static import MediaCling
+
+
+application = MediaCling(get_wsgi_application())
