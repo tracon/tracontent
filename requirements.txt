@@ -16,3 +16,4 @@ pyOpenSSL>=0.15,<0.16
 python-dateutil>=2.4,<2.5
 requests-oauthlib>=0.6,<0.7
 requests>=2.9,<2.10
+dj-static~=0.0.6
