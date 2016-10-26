@@ -116,7 +116,7 @@ ROOT_URLCONF = 'tracontent.urls'
 WSGI_APPLICATION = 'tracontent.wsgi.application'
 
 DATABASES = {
-    'default': env.db(default='sqlite:///infokala.sqlite3'),
+    'default': env.db(default='sqlite:///tracontent.sqlite3'),
 }
 
 LOGGING = {
