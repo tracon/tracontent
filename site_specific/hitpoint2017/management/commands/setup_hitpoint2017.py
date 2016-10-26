@@ -37,7 +37,9 @@ class Setup(object):
         self.setup_blog()
 
     def setup_site(self):
-        self.site, unused = Site.objects.get_or_create(domain=self.domain, name='Tracon Hitpoint 2017')
+        self.site, unused = Site.objects.get_or_create(domain=self.domain, defaults=dict(
+            name='Tracon Hitpoint (2017)'
+        ))
 
     def setup_content(self):
         t = now()
