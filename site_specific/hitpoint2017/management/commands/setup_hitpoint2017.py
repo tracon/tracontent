@@ -75,15 +75,15 @@ class Setup(object):
             ('blog', 'Ajankohtaista', []),
 
             ('fi', 'Kaksi päivää pelaamista Tampereen keskustassa!', [
-                ('tapahtuma', 'Tapahtuma'),
-                ('liput', 'Lipunmyynti'),
-                ('goh', 'Kunniavieraat'),
-                ('ohjelma', 'Ohjelma'),
+                # ('tapahtuma', 'Tapahtuma'),
+                # ('liput', 'Lipunmyynti'),
+                # ('goh', 'Kunniavieraat'),
+                # ('ohjelma', 'Ohjelma'),
             ]),
 
             ('en', 'Two days of table-top games in Downtown Tampere!', [
-                ('tickets', 'Tickets'),
-                ('goh', 'Guests of Honour'),
+                # ('tickets', 'Tickets'),
+                # ('goh', 'Guests of Honour'),
             ]),
         ]:
             ordering += 10
