@@ -1,0 +1,21 @@
+extends hitpoint2017_base.jade
+- load static from staticfiles
+block full_width_content
+  header.header-huge.hidden-xs
+
+  .container
+    .row
+      .col-lg-9
+        include content_toolbar_admin_page.jade
+        article.clearfix
+          h1 {{ page.title }}
+          {{ page.body|safe }}
+      .col-lg-3
+        h4.space-above Ajankohtaista
+        for blog_post in news_posts
+          include hitpoint2017_front_page_blog_link.html
+        a(href='{% url "content_blog_index_view" %}') Lisää uutisia...
+        h4 Traconin blogissa
+        for blog_post in blog_posts
+          include hitpoint2017_front_page_blog_link.html
+        a(href='{{ blog_index_url }}') Lisää blogikirjoituksia...

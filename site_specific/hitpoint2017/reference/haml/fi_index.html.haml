@@ -1,0 +1,69 @@
+!!! 5
+<!DOCTYPE html>
+%html{ :lang => "en" }
+  = Haml::Engine.new(File.read("head.haml")).render
+  %body
+    = Haml::Engine.new(File.read("fi_header.haml")).render
+
+    %header.header--fullscreen.hidden-xs
+      .text-vertical-center
+        %img{ :src => "../images/hitpoint_shadow.png", :style => "opacity: 0.8", :style => "filter: alpha(opacity=80)" }
+
+    %section#anchor
+
+    %section#alert.info
+      - File.readlines('fi_alerts').each do |line|
+        - if line.length <= 1
+          - next
+        .container-fluid
+          %p{:style => "color:green"}<
+            = line
+
+    %section#info
+      .container
+        %h2<
+          Kaksi päivää pelaamista Tampereen keskustassa!
+        %h3<
+          Aika
+        %p<
+          28.-29.11.2015
+        %h3<
+          Sijainti
+        %p<
+          Tammerkosken koulutalo, Juhannuskylän koulu.
+          %br/
+          Rautatienkatu 3-5
+        #map-canvas.maps
+
+    %section#desc
+      .container
+        %row
+          %article
+            %h3<
+              Hitpoint on uusi pöytäpelaamiseen keskittyvä tapahtuma Tampereen keskustassa
+            %p<
+              %b<
+                Luvassa on kaksi päivää lauta-, kortti-, rooli- ja figuuripelejä. Lokaationa toimii tilava Tampereen koulutalo, jonka luokkahuoneet tarjoavat luontaiset jaottelut erilaisille peleille.
+    
+    %section#games
+      .container
+        - File.open("fi_main", "r") do |fh|
+          - count = 0
+          - begin
+            - while (true)
+              - header = fh.readline
+              - lines = []
+              - while(line = fh.gets) != nil
+                - if line.length == 1
+                  - break
+                - lines << line
+              %row
+                %article
+                  %h3<
+                    = header
+                  - lines.each do |line|
+                    %p<
+                      = line
+          - rescue => ex
+
+    = Haml::Engine.new(File.read("footer.haml")).render

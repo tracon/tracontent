@@ -1,0 +1,43 @@
+!!! 5
+<!DOCTYPE html>
+%html{ :lang => "en" }
+  = Haml::Engine.new(File.read("head.haml")).render
+  %body
+    = Haml::Engine.new(File.read("fi_header.haml")).render
+
+    %header.header--fullscreen.hidden-xs
+      .text-vertical-center
+        %img{ :src => "../images/hitpoint_shadow.png", :style => "opacity: 0.8", :style => "filter: alpha(opacity=80)" }
+
+    %section#anchor
+
+    %section#alert.info
+      - File.readlines('fi_alerts').each do |line|
+        - if line.length <= 1
+          - next
+        .container-fluid
+          %p{:style => "color:green"}<
+            = line
+
+    %section#goh
+      .container
+        - File.open("fi_goh", "r") do |fh|
+          - count = 0
+          - begin
+            - while (true)
+              - header = fh.readline
+              - lines = []
+              - while(line = fh.gets) != nil
+                - if line.length == 1
+                  - break
+                - lines << line
+              %row
+                %article
+                  %h3<
+                    = header
+                  - lines.each do |line|
+                    %p<
+                      = line
+          - rescue => ex
+
+    = Haml::Engine.new(File.read("footer.haml")).render

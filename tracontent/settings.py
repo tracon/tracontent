@@ -60,6 +60,7 @@ INSTALLED_APPS = (
     'site_specific.hitpoint2015',
     'site_specific.animecon2016',
     'site_specific.conikuvat',
+    'site_specific.hitpoint2017',
 
     'site_specific.japsufi',
 )
