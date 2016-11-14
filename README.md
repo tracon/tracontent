@@ -20,6 +20,14 @@ If you have Kompassi OAuth2 support enabled, you're running the Enterprise Editi
 
 ## Getting started
 
+Python 3.5 required. Python 2.7 might work, but is no longer supported.
+
+### Docker
+
+TBD.
+
+### Linux, OS X
+
 Install C dependencies:
 
     sudo apt-get install python-dev libz-dev libjpeg-dev libffi-dev libssl-dev build-essential
@@ -31,19 +39,46 @@ Install Python dependencies:
     git clone https://github.com/tracon/tracontent.git
     cd tracontent
     pip install -r requirements.txt
+    
+The `DEBUG` environment variable is required to run the default development configuration:
+
+    export DEBUG=1
+    
+### Windows
+
+PowerShell recommended for running commands. Make sure you have `pip` installed and update `setuptools` and `wheel`:
+
+    easy_install-3.5.exe pip
+    pip install -U setuptools wheel virtualenv
+
+Install Python dependencies:
+
+    virtualenv venv-tracontent
+    venv-tracontent\Scripts\activate.ps1
+    git clone https://github.com/tracon/tracontent.git
+    cd tracontent
+    pip install -r requirements.txt
+
+The `DEBUG` environment variable is required to run the default development configuration:
+
+    $env:DEBUG = 1
+
+### Common
 
 Setup basic example content:
 
-    ./manage.py setup
-    ./manage.py setup_tracon11 127.0.0.1:8001
+    python manage.py setup
+    python manage.py setup_tracon11 127.0.0.1:8001
 
 Run the server and view the site in your favourite web browser:
 
-    ./manage.py runserver 127.0.0.1:8001
+    python manage.py runserver 127.0.0.1:8001
     iexplore http://127.0.0.1:8001
     iexplore http://127.0.0.1:8001/admin/login/
 
 Note that due to multisite support, `127.0.0.1:8001` needs to match whatever `host:port` you use to access your development instance.
+
+The `python manage.py setup` command created a superuser called `mahti` with the password `mahti`.
 
 ## Kompassi OAuth2 Enabled
 
