@@ -4,11 +4,10 @@
     height: 11px;
     background:url(../images/flags.png) no-repeat;
 
-    &.flag-fi {
-        background-position: -16px 0;
-    }
+.flag-fi {
+    background-position: -16px 0;
+}
 
-    &.flag-gb {
-        background-position: 0 -11px;
-    }
+.flag-gb {
+    background-position: 0 -11px;
 }

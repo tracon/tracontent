@@ -12,24 +12,7 @@ import streamify from "gulp-streamify";
 import uglify from "gulp-uglify";
 import {production} from "./gulp-env";
 
-gulp.task("hitpoint2017:build", ["hitpoint2017:styles", "hitpoint2017:scripts"])
-
-gulp.task("hitpoint2017:styles", () => {
-    return gulp.src("site_specific/hitpoint2017/static_src/less/hitpoint2017.less")
-        .pipe(sourcemaps.init())
-        .pipe(less({
-            paths: [
-                '.',
-                './node_modules/bootstrap-less',
-            ]
-        }))
-        .pipe(autoprefixer())
-        .pipe((production ? cssnano() : gutil.noop()))
-        .pipe(rename("hitpoint2017.css"))
-        .pipe(size())
-        .pipe(sourcemaps.write("."))
-        .pipe(gulp.dest("site_specific/hitpoint2017/static/hitpoint2017/css"));
-});
+gulp.task("hitpoint2017:build", ["hitpoint2017:scripts"])
 
 gulp.task("hitpoint2017:scripts", () => {
     var pipeline = browserify({

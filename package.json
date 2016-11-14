@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "NODE_ENV=production gulp build",
+    "start": "DEBUG=1 gulp",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
