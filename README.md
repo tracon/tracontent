@@ -54,7 +54,7 @@ PowerShell recommended for running commands. Make sure you have `pip` installed 
 Install Python dependencies:
 
     set-executionpolicy -scope CurrentUser RemoteSigned
-    virtualenv venv-tracontent
+    python -m venv venv-tracontent
     venv-tracontent\Scripts\activate.ps1
     git clone https://github.com/tracon/tracontent.git
     cd tracontent
