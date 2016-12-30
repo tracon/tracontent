@@ -150,7 +150,7 @@ class Setup(object):
 
     def setup_ads(self):
         for banner_title, banner_url, banner_path in [
-            ('Säätöyhteisö B2 ry', 'http://b2.fi', 'site_specific/tracon2017/static/tracon2017/img/b2-saatoa2008-wh-200.png'),
+            ('Säätöyhteisö B2 ry', 'http://b2.fi', 'site_specific/tracon2017/static/tracon2017/img/b2-2016-200x-tr.png'),
         ]:
             try:
                 Banner.objects.get(sites=self.site, url=banner_url)
