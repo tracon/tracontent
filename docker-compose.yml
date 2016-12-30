@@ -1,0 +1,28 @@
+version: '2'
+services:
+  web:
+    build: .
+    command: /bin/bash -c 'sleep 2 && exec python manage.py docker_start'
+    ports:
+      - 8001:8001
+    links:
+      - postgres
+    volumes:
+      - tracontent-media:/usr/src/app/media
+      - .:/usr/src/app
+    environment:
+      DEBUG: 1
+      DATABASE_URL: psql://tracontent:secret@postgres/tracontent
+  postgres:
+    image: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: tracontent
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: tracontent
+volumes:
+  postgres-data:
+    driver: local
+  tracontent-media:
+    driver: local

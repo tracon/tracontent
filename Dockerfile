@@ -8,7 +8,7 @@ RUN env DEBUG=1 python manage.py collectstatic --noinput && \
     python -m compileall -q . && \
     mkdir -p /usr/src/app/media && \
     chown tracontent:tracontent /usr/src/app/media
-USER tracontent
 VOLUME /usr/src/app/media
+USER tracontent
 EXPOSE 8000
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

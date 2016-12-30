@@ -21,7 +21,7 @@ def mkpath(*args):
 
 DEBUG = env.bool('DEBUG', default=False)
 SECRET_KEY = env.str('SECRET_KEY', default=('' if not DEBUG else 'xxx'))
-ALLOWED_HOSTS = env('ALLOWED_HOSTS', default='').split()
+ALLOWED_HOSTS = env('ALLOWED_HOSTS', default=('' if not DEBUG else '*')).split()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ADMINS = [parseaddr(addr) for addr in env('ADMINS', default='').split(',') if addr]
 
@@ -61,6 +61,7 @@ INSTALLED_APPS = (
     'site_specific.animecon2016',
     'site_specific.conikuvat',
     'site_specific.hitpoint2017',
+    'site_specific.tracon2017',
 
     'site_specific.japsufi',
 )
@@ -83,7 +84,7 @@ AUTHENTICATION_BACKENDS = (
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [mkpath('tracontent','templates')],
+        'DIRS': [mkpath('tracontent', 'templates')],
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',

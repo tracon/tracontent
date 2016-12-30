@@ -21,6 +21,8 @@ rev-manifest.json
 tmp/
 virtualenv/
 __pycache__/
+.DS_Store
+.vscode/
 
 # stuff not in .gitgnore
 .git
