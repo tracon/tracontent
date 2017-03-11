@@ -89,7 +89,7 @@ For more information, see the [Kompassi OAuth2 Example](/tracon/kompassi-oauth2-
 
     The MIT License (MIT)
 
-    Copyright (c) 2014–2016 Santtu Pajukanta
+    Copyright (c) 2014–2017 Santtu Pajukanta
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal

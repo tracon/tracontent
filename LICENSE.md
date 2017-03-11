@@ -4,7 +4,7 @@
 
     The MIT License (MIT)
 
-    Copyright © 2014–2016 Santtu Pajukanta
+    Copyright © 2014–2017 Santtu Pajukanta
     Copyright © 2015 Aarni Koskela
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
