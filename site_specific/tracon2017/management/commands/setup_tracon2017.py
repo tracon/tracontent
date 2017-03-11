@@ -73,7 +73,7 @@ class Setup(object):
             ('ohjelma', 'Ohjelma', [
                 ('ohjelmanjarjestajaksi', 'Ohjelmanjärjestäjäksi'),
             ]),
-            ('liput', 'Liput', []),
+            # ('liput', 'Liput', []),
             ('yhteys', 'Ota yhteyttä!', [
                 ('conitea', 'Järjestäjät'),
                 ('media', 'Tiedotusvälineille'),
@@ -147,6 +147,13 @@ class Setup(object):
                 order=0,
             )
         )
+
+        organizers_page = Page.objects.get(site=self.site, path='yhteys/conitea')
+        if not organizers_page.override_page_template:
+            organizers_page.override_page_template = 'tracon2017_organizers_page.jade'
+        if not organizers_page.page_controller_code:
+            organizers_page.page_controller_code = 'site_specific.tracon2017.views:organizers_page_controller'
+        organizers_page.save()
 
     def setup_ads(self):
         for banner_title, banner_url, banner_path in [
