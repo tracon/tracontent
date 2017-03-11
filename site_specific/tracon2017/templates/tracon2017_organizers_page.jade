@@ -12,6 +12,6 @@ block content
       ul
         for organizer in team.members
           if organizer.is_team_leader
-            li: strong {{ organizer.display_name }}, {{ organizer.job_title.lower }}
+            li: strong {{ organizer.display_name }} – {{ organizer.job_title }}
           else:
-            li: {{ organizer.display_name }}, {{ organizer.job_title.lower }}
+            li: {{ organizer.display_name } – {{ organizer.job_title }}
