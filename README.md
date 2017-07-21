@@ -24,7 +24,12 @@ Python 3.5 required. Python 2.7 might work, but is no longer supported.
 
 ### Docker
 
-TBD.
+    TRACONTENT_SITE=tracon2017 docker-compose up
+    open http://localhost:8001
+
+Replace `TRACONTENT_SITE` with any site under `site_specific/`. The site selection only affects the setup script to run and if you want to change the default site, clear your current installation first with
+
+    docker-compose down -v
 
 ### Linux, OS X
 
@@ -39,11 +44,11 @@ Install Python dependencies:
     git clone https://github.com/tracon/tracontent.git
     cd tracontent
     pip install -r requirements.txt
-    
+
 The `DEBUG` environment variable is required to run the default development configuration:
 
     export DEBUG=1
-    
+
 ### Windows
 
 PowerShell recommended for running commands. Make sure you have `pip` installed and update `setuptools` and `wheel`:

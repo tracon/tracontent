@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 services:
   web:
     build: .
@@ -13,6 +13,7 @@ services:
     environment:
       DEBUG: 1
       DATABASE_URL: psql://tracontent:secret@postgres/tracontent
+      TRACONTENT_SITE: ${TRACONTENT_SITE:-tracon2017}
   postgres:
     image: postgres
     volumes:

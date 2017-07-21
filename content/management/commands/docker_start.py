@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+from os import environ
+
 import logging
 import time
 
@@ -20,6 +22,8 @@ class Command(BaseCommand):
         from content.models import SiteSettings
 
         test = settings.DEBUG
+        site = environ.get('TRACONTENT_SITE', 'tracon2017')
+        site_setup_command = f'setup_{site}'
 
         if not test:
             raise ValueError('Should run with DEBUG=true')
@@ -28,6 +32,6 @@ class Command(BaseCommand):
             SiteSettings.objects.first()
         except ProgrammingError:
             call_command('setup')
-            call_command('setup_tracon2017', 'tracontent.dev:8001')
+            call_command(site_setup_command, 'tracontent.dev:8001')
 
         call_command('runserver', '0.0.0.0:8001')
