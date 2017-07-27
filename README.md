@@ -20,7 +20,7 @@ If you have Kompassi OAuth2 support enabled, you're running the Enterprise Editi
 
 ## Getting started
 
-Python 3.5 required. Python 2.7 might work, but is no longer supported.
+Python 3.6 required. Lower will not work as syntax features introduced in Python 3.6 are used.
 
 ### Docker
 
@@ -30,6 +30,8 @@ Python 3.5 required. Python 2.7 might work, but is no longer supported.
 Replace `TRACONTENT_SITE` with any site under `site_specific/`. The site selection only affects the setup script to run and if you want to change the default site, clear your current installation first with
 
     docker-compose down -v
+
+Also if you want to change the hostname you will access the site at, use the `TRACONTENT_HOSTNAME` environment variable (without port, default `localhost`). Port is hard-coded at 8001. Changing the hostname requires changes to the `Site` object in the database, so it is easiest to clear your installation if you need to change this in development.
 
 ### Linux, OS X
 
@@ -113,3 +115,5 @@ For more information, see the [Kompassi OAuth2 Example](/tracon/kompassi-oauth2-
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
+
+The work of Santtu Pajukanta on Kompassi has been partially sponsored by [Leonidas Oy](https://leonidasoy.fi/opensource).
