@@ -23,7 +23,7 @@ class Command(BaseCommand):
 
         test = settings.DEBUG
         site = environ.get('TRACONTENT_SITE', 'tracon2017')
-        site_setup_command = f'setup_{site}'
+        hostname = environ.get('TRACONTENT_HOSTNAME', 'localhost')
 
         if not test:
             raise ValueError('Should run with DEBUG=true')
@@ -32,6 +32,6 @@ class Command(BaseCommand):
             SiteSettings.objects.first()
         except ProgrammingError:
             call_command('setup')
-            call_command(site_setup_command, 'tracontent.dev:8001')
+            call_command(f'setup_{site}', f'{hostname}:8001')
 
         call_command('runserver', '0.0.0.0:8001')

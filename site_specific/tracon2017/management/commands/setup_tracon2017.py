@@ -69,6 +69,7 @@ class Setup(object):
                 ('tyovoima', 'Vänkäriksi'),
                 ('jarjestyssaannot', 'Järjestyssäännöt'),
                 ('tapahtumapaikka', 'Tapahtumapaikka'),
+                ('taidekuja', 'Taidekuja'),
             ]),
             ('ohjelma', 'Ohjelma', [
                 ('ohjelmanjarjestajaksi', 'Ohjelmanjärjestäjäksi'),
@@ -148,12 +149,16 @@ class Setup(object):
             )
         )
 
-        organizers_page = Page.objects.get(site=self.site, path='yhteys/conitea')
-        if not organizers_page.override_page_template:
-            organizers_page.override_page_template = 'tracon2017_organizers_page.jade'
-        if not organizers_page.page_controller_code:
-            organizers_page.page_controller_code = 'site_specific.tracon2017.views:organizers_page_controller'
-        organizers_page.save()
+        for path, template, controller in [
+            ('yhteys/conitea', 'tracon2017_organizers_page.jade', 'site_specific.tracon2017.views:organizers_page_controller'),
+            ('tapahtuma/taidekuja', 'tracon2017_artists_alley_page.jade', 'site_specific.tracommon.views:artists_alley_page_controller')
+        ]:
+            page = Page.objects.get(site=self.site, path=path)
+            if not page.override_page_template:
+                page.override_page_template = template
+            if not page.page_controller_code:
+                page.page_controller_code = controller
+            page.save()
 
     def setup_ads(self):
         for banner_title, banner_url, banner_path in [
