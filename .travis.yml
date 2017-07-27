@@ -5,8 +5,7 @@ cache:
   - "$HOME/.cache/pip"
   - "$HOME/.npm"
 python:
-- 3.4
-- 3.5
+- 3.6
 install:
 - ". $HOME/.nvm/nvm.sh"
 - nvm install stable
