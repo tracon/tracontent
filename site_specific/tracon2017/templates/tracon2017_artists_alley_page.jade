@@ -12,18 +12,19 @@ block content
         thead
           tr
             th(scope='row') Pöytä
-            th(scope='col') Taidekujailija
-            th(scope='col') Kuvaus
+            th(scope='col') Kuva
+            th(scope='col') Nimi ja kuvaus
         tbody
           for artist in artists
             tr
               th(scope='row') {{ artist.table_number }}.
               td
-                div
-                  if artist.homepage_url
-                    a(href='{{ artist.homepage_url }}' target='_blank') {{ artist.name }}
-                  else
-                    | {{ artist.name }}
                 if artist.image_file
                   img(src='{{ artist.image_file.url }}' style='width: 100%')
-              td {{ artist.description|linebreaks }}
+              td
+                p
+                  if artist.homepage_url
+                    strong: a(href='{{ artist.homepage_url }}' target='_blank') {{ artist.name }}
+                  else
+                    strong {{ artist.name }}
+                {{ artist.description|linebreaks }}
