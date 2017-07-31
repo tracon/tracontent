@@ -28,9 +28,9 @@ class Command(BaseCommand):
 
             group.permissions.add(*ads_permissions)
 
-            tracommon_artist_permission = Permission.objects.get(
+            tracommon_permissions = Permission.objects.filter(
                 content_type__app_label='tracommon',
-                content_type__model='artist',
+                content_type__model__in=['artist'],
             )
 
-            group.permissions.add(tracommon_artist_permission)
+            group.permissions.add(*tracommon_permissions)
