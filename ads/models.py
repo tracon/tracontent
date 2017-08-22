@@ -103,6 +103,6 @@ class BannerClick(models.Model):
         )
 
     class Meta:
-        unique_together = [('banner', 'date')]
+        unique_together = [('site', 'banner', 'date')]
         verbose_name = 'bannerin klikkaukset'
         verbose_name_plural = 'bannerien klikkaukset'
