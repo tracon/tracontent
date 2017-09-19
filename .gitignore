@@ -22,3 +22,4 @@ virtualenv/
 __pycache__/
 .DS_Store
 .vscode/
+*.egg-info/
