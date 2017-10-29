@@ -15,7 +15,7 @@ services:
       PYTHONUNBUFFERED: 1
       DEBUG: 1
       DATABASE_URL: psql://tracontent:secret@postgres/tracontent
-      TRACONTENT_SITE: ${TRACONTENT_SITE:-tracon2017}
+      TRACONTENT_SITE: ${TRACONTENT_SITE:-tracon2018}
       TRACONTENT_HOSTNAME: ${TRACONTENT_HOSTNAME:-localhost}
   postgres:
     image: postgres

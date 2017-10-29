@@ -1,0 +1,30 @@
+extends tracon2018_base.jade
+block content
+  include content_toolbar_admin_page.jade
+  article.clearfix
+    h1 {{ page.title }}
+    {{ page.body|safe }}
+
+    p &nbsp;
+
+    if artists.exists
+      table.table.table-striped
+        thead
+          tr
+            th(scope='row') Pöytä
+            th(scope='col', style='width: 30%') Kuva
+            th(scope='col') Nimi ja kuvaus
+        tbody
+          for artist in artists
+            tr
+              th(scope='row') {{ artist.table_number }}.
+              td
+                if artist.image_file
+                  img(src='{{ artist.image_file.url }}' style='width: 100%')
+              td
+                p
+                  if artist.homepage_url
+                    strong: a(href='{{ artist.homepage_url }}' target='_blank') {{ artist.name }}
+                  else
+                    strong {{ artist.name }}
+                {{ artist.description|linebreaks }}

@@ -1,0 +1,17 @@
+extends tracon2018_base.jade
+block content
+  include content_toolbar_admin_page.jade
+  article.clearfix
+    h1 {{ page.title }}
+    {{ page.body|safe }}
+
+    p &nbsp;
+    for team in teams
+      h2 {{ team.name }}
+
+      ul
+        for organizer in team.members
+          if organizer.is_team_leader
+            li: strong {{ organizer.display_name }} – {{ organizer.job_title }}
+          else:
+            li: {{ organizer.display_name }} – {{ organizer.job_title }}
