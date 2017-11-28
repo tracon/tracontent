@@ -1,0 +1,263 @@
+body {
+	background: #11011D url(aichanbg2.png) no-repeat left top; /* headerkuva tulee tähän */
+	background-size: contain;
+	font-size: 15px;
+	word-spacing: 2px;
+	letter-spacing: 0.02em;
+	line-height: 22px;
+	margin: 0;
+}
+
+@media screen and (max-width:768px) {
+	body {
+		background-size: 200%;
+	}
+}
+
+a, a:hover {
+	color: #BD629C;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Open Sans Condensed', sans-serif;
+	text-transform: uppercase;
+	color: #67517D;
+}
+
+h1 {
+	font-size: 40px;
+}
+
+h2 {
+	font-size: 35px;
+	letter-spacing: 1px;
+	word-spacing: 3px;
+}
+
+/* HEADER */
+
+.jumbotron {
+	background: url(logo.png) no-repeat right 140px center; /* logo tulee tähän */
+	background-size: 500px;
+	height: 450px;
+	margin: 0;
+}
+
+@media screen and (max-width:992px) {
+	.jumbotron {
+		height: 350px;
+		background-size: 400px;
+		background-position: right 50px center;
+	}
+}
+
+@media screen and (max-width:768px) {
+	.jumbotron {
+		height: 300px;
+		background-position: left 20px top 20px;
+		background-size: 150px;
+	}
+}
+
+/* MAIN CONTENTS */
+
+.blogi {
+	background: #ECE6F5;
+}
+
+.blogi h2 {
+	text-align: center;
+	margin: 20px;
+}
+
+@media screen and (max-width:992px) {
+
+	.blogi {
+		border-top: 1px solid white;
+		border-bottom: 1px solid white;
+		margin-top: 40px;
+	}
+}
+
+.news {
+	background: white;
+	padding: 10px 20px;
+}
+
+.sponsors {
+	padding: 20px;
+	margin: 50px 0;
+}
+
+main {
+	background: white;
+	padding: 30px 0;
+}
+
+footer {
+	background: #D6D2F1;
+	padding: 30px;
+	font-size: 12px;
+}
+
+footer .some {
+	font-size: 28px;
+	word-spacing: 6px;
+	margin-bottom: 30px;
+}
+
+footer a {
+	color: white;
+}
+
+footer a:hover {
+	color: #FFFFF2;
+}
+
+/* BLOG */
+
+.aicon-blog-index h2 {
+	font-size: 25px;
+	margin-bottom: 0;
+}
+
+.aicon-blog-meta {
+	color: #AAA;
+	font-size: 12px;
+}
+
+.aicon-blog-comment {
+	border-bottom: 1px solid #ECE6F5;
+	margin-bottom: 10px;
+}
+
+.aicon-blog-comment:last-child {
+	border-bottom: 0;
+}
+
+/* OHJELMAKARTTA */
+
+.incontinuity{border-top:3pt dotted #D6D2F1;}
+
+.kompassi-space-after{display:inline-block;margin-right:.3em}
+
+.label-danger {
+	background: black;
+	padding: 2px 3px;
+}
+
+.label-primary {
+	background: #D358F7;
+	padding: 2px 3px;
+}
+
+.descriptions h3 {
+	text-align: center;
+}
+
+.programme {
+	padding: 20px;
+	margin-bottom: 15px;
+}
+
+thead, th {
+	background: #ECE6F5;
+	text-transform: uppercase;
+	font-family: 'Open Sans Condensed', sans-serif;
+}
+
+table a {
+	color: #424242;
+}
+
+.color1 {
+	background: #F2F2F2;
+}
+
+.color2 {
+	background: #F8E0E6;
+}
+
+.color3 {
+	background: #ECE0F8;
+}
+
+.color4 {
+	background: #E0F2F7;
+}
+
+.color5 {
+	background: #F7F8E0;
+}
+
+.legend .categories{
+	margin:30px 0; 
+	padding:0;
+}
+
+.legend .categories li{
+	display:inline-block;
+	list-style-type:none;
+	margin-left:3px;
+	padding: 5px 10px;
+	text-transform: uppercase;
+	font-family: 'Open Sans Condensed', sans-serif;
+}
+
+.categories{
+	margin:0;
+	padding:0;
+}
+
+
+/* NAVBARS */
+
+.sivu {
+	text-transform: uppercase;
+	font-family: 'Open Sans Condensed', sans-serif;
+	font-size: 18px;
+}
+
+.sivu>li>a {
+	background: #ECE6F5;
+	margin-bottom: 5px;
+	border-radius: 0;
+}
+
+.navbar{
+	min-height: 0;
+	margin-bottom: 0px;
+	border:0px solid transparent;
+	border-radius: 0;
+	padding: 30px 0;
+}
+
+.navbar-default{
+	background: url(pinkbg.png) repeat;
+	font-family: 'Open Sans Condensed', sans-serif;
+	font-size: 24px;
+	text-transform: uppercase;
+	letter-spacing: 0.02em;
+}
+
+@media screen and (max-width:992px) {
+	.navbar {
+		padding: 20px 0;
+	}
+
+	.navbar-default {
+		font-size: 18px;
+	}
+}
+
+.navbar-default .nav-justified>li>a{
+	color: #11011D;
+	background: transparent;
+	transition: text-shadow 0.5s;
+}
+
+.navbar-default .nav-justified>li>a:focus,.navbar-default .nav-justified>li>a:hover{
+	transition: text-shadow 0.5s;
+	text-shadow: 0 0 10px white;
+	background-color:transparent;
+}
