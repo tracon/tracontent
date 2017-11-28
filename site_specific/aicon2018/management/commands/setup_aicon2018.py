@@ -106,8 +106,8 @@ class Setup(object):
             front_page.title = 'Tulossa 2018'
         if not front_page.override_menu_text:
             front_page.override_menu_text = 'Etusivu'
-        if not front_page.override_page_template:
-            front_page.override_page_template = 'aicon2018_front_page.jade'
+        # if not front_page.override_page_template:
+        #     front_page.override_page_template = 'aicon2018_front_page.jade'
         if not front_page.page_controller_code:
             front_page.page_controller_code = 'site_specific.aicon2018.views:front_page_controller'
         if 'Placeholder for front-page' in front_page.body or 'Lorem ipsum' in front_page.body:

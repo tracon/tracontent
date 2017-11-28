@@ -1,38 +1,81 @@
 doctype html
 - load static from staticfiles
-html
+html(lang='en')
   head
     meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width, initial-scale=1')
     title
       block full_title
         |{% if page.title %}{{ page.title }} – {{ site_settings.title }}{% else %}{{ site_settings.title }}{% endif %}
-    link(href='//fonts.googleapis.com/css?family=Open+Sans+Condensed:300', rel='stylesheet', type='text/css')
-    link(href='{% url "resources_style_sheet_view" "aicon.css" %}', rel='stylesheet', type='text/css')
+    link(href='{% static "common/css/bootstrap.min.css" %}', rel='stylesheet')
+    link(href='{% url "resources_style_sheet_view" "aicon.css" %}', rel='stylesheet')
     link(href='{% url "resources_style_sheet_view" "aicon_tracontent.css" %}', rel='stylesheet', type='text/css')
-    link(rel='icon', type='image/x-icon', href='/favicon.ico')
+    link(href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300', rel='stylesheet')
+    link(href='{% static "common/aicon_avatar.png" %}', rel='shortcut icon', type='image')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
   body
-    include aicon_user_menu.jade
-    block full_width_content
-      #topsection
-        .top2
-        .tummanavi
-          for entry in menu
-            a.navi(href='#{entry.href}', class='#{entry.active_css}')= entry.text
-        for entry in menu
-          if entry.active
-            if entry.children
-              .navigaatio2
-                .padding
-                  for child_entry in entry.children
-                    a.sivunavi(href='#{child_entry.href}', class='#{child_entry.active_css}')= child_entry.text
-      #contentwrapper2
-        .pad
-          block content
-            p Sisältö tulee tähän
-
-      #tummafooter
-        p <a href='http://twitter.com/Aicon_FI' target='_blank'>Twitter</a> | <a href='http://facebook.com/aiconfinland' target='_blank'>Facebook</a>
-        p © Aicon 2015
-
-    include google_analytics.jade
+    include aicon2018_user_menu.jade
+    .jumbotron.container-fluid
+      .container
+        .row
+    nav.navbar.navbar-default
+      .container-fluid
+        .navbar-header
+          button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1', aria-expanded='false')
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+        #bs-example-navbar-collapse-1.collapse.navbar-collapse
+          ul.nav.nav-justified
+            li
+              a(href='index.html') Etusivu
+            li
+              a(href='ajankohtaista.html') Ajankohtaista
+            li
+              a(href='ohjelma.html') Ohjelma
+            li
+              a(href='yhteystiedot.html') Yhteystiedot
+    main.container-fluid
+      block full_width_content
+        .container
+          .row
+            .col-md-7
+              block content
+                p Sisältö tulee tähän
+            .col-md-5.blogi
+              h2 Uutiset
+              dl.news
+                dt
+                  a(href='#') Kiitos Aiconista 2016 - Lähetä meille palautetta!
+                  small 10.10.2016
+                dd
+                  | Aicon 2016 on nyt ohi, kiitos kaikille kävijöille! Palautelomakkeemme on nyt auki.
+              dl.news
+                dt
+                  a(href='#') Kiitos Aiconista 2016 - Lähetä meille palautetta!
+                  small 10.10.2016
+                dd
+                  | Aicon 2016 on nyt ohi, kiitos kaikille kävijöille! Palautelomakkeemme on nyt auki.
+          .row
+            .col-md-12.sponsors.text-center
+              img(src='BJDark.jpg', width='150px', alt='Bard & Jester')
+              img(src='winkiemainos.jpg', width='150px', alt='winkie winkie')
+    footer.container-fluid
+      .container
+        .row
+          .col-md-2.text-center.some
+            a(href='https://twitter.com/Aicon_FI')
+              i.fa.fa-twitter-square
+            a(href='https://www.facebook.com/aiconfinland')
+              i.fa.fa-facebook-square
+            a(href='https://www.facebook.com/aiconfinland')
+              i.fa.fa-instagram
+          .col-md-10.text-right
+            p
+              | Web Design © 2017 Ronja Kyrölä
+              br
+              | Sivustoa pyörittää TraContent CMS Enterprise Edition © 2014–2017 Santtu Pajukanta.
+    script(src='{% static "common/js/bootstrap.min.js" %}')
+    script(src='{% static "common/js/jquery.min.js" %}')
