@@ -1,0 +1,6 @@
+.news
+  b {{ blog_post.title }} – {{ blog_post.date|date:"SHORT_DATE_FORMAT" }}
+  br
+  | {{ blog_post.excerpt }} (
+  a(href='{{ blog_post.get_absolute_url }}') lue lisää
+  | )

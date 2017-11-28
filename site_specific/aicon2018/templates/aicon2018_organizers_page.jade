@@ -1,0 +1,14 @@
+extends aicon_base.jade
+block content
+  include content_toolbar_admin_page.jade
+  article
+    h1 {{ page.title }}
+    {{ page.body|safe }}
+  .aicon-organizers
+    for organizer in organizers
+      .aicon-organizer
+        if organizer.image_file
+          img(src='{{ organizer.image_file.url }}')
+        .name= organizer.name
+        .job-title= organizer.job_title
+        .email= organizer.email

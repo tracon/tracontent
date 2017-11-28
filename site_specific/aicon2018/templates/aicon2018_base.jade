@@ -1,0 +1,38 @@
+doctype html
+- load static from staticfiles
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    title
+      block full_title
+        |{% if page.title %}{{ page.title }} – {{ site_settings.title }}{% else %}{{ site_settings.title }}{% endif %}
+    link(href='//fonts.googleapis.com/css?family=Open+Sans+Condensed:300', rel='stylesheet', type='text/css')
+    link(href='{% url "resources_style_sheet_view" "aicon.css" %}', rel='stylesheet', type='text/css')
+    link(href='{% url "resources_style_sheet_view" "aicon_tracontent.css" %}', rel='stylesheet', type='text/css')
+    link(rel='icon', type='image/x-icon', href='/favicon.ico')
+  body
+    include aicon_user_menu.jade
+    block full_width_content
+      #topsection
+        .top2
+        .tummanavi
+          for entry in menu
+            a.navi(href='#{entry.href}', class='#{entry.active_css}')= entry.text
+        for entry in menu
+          if entry.active
+            if entry.children
+              .navigaatio2
+                .padding
+                  for child_entry in entry.children
+                    a.sivunavi(href='#{child_entry.href}', class='#{child_entry.active_css}')= child_entry.text
+      #contentwrapper2
+        .pad
+          block content
+            p Sisältö tulee tähän
+
+      #tummafooter
+        p <a href='http://twitter.com/Aicon_FI' target='_blank'>Twitter</a> | <a href='http://facebook.com/aiconfinland' target='_blank'>Facebook</a>
+        p © Aicon 2015
+
+    include google_analytics.jade

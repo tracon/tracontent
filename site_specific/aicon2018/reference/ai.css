@@ -1,0 +1,473 @@
+/* Main stuff */
+
+body{
+	background: url('aiconbg.png') no-repeat top left #11001C;
+	background-size: 100% auto;
+	font-family: Arial, Sans-serif;
+	font-size: 14px;
+	margin:0;
+	padding:0;
+	line-height: 1.5em;
+}
+
+table {
+	font-family: Arial, Sans-serif;
+	font-size: 14px;
+	line-height: 1.5em;
+	border-collapse: collapse;
+}
+
+table .whitebg {
+	background: url('whitebg.png') repeat;
+	padding: 20px 20px;
+}
+
+table .news {
+	background: url('lilabg2.png');
+	padding: 10px;
+	color: white;
+	margin-bottom: 5px;
+}
+
+table .news b {
+	color: #ffff99;
+}
+
+table .news a {
+	color: white;
+}
+
+a:link, a:visited {
+	color: #5E1A64;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+h1, h2, h3, h4 {
+	font-family: 'Open Sans Condensed', sans-serif;
+	text-transform: uppercase;
+	font-weight: normal;
+}
+
+h1 {
+	font-size: 40px;
+}
+
+h2 {
+	font-size: 25px;
+	padding-left: 30px;
+}
+
+h3 {
+	font-size: 30px;
+	color: black;
+	margin-top: 5px;
+	margin-bottom: 20px;
+	text-align: center;
+	letter-spacing: 4px;
+}
+
+h4 {
+	font-size: 20px;
+}
+
+/* Navigation systems */
+
+.navi {
+	padding: 5px 0px;
+	margin-right: 40px;
+	font-size: 25px;
+	font-family: 'Open Sans Condensed', sans-serif;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
+
+a:link.navi, a:visited.navi {
+	color: #ffff99;
+	text-decoration: none;
+}
+
+a:hover.navi {
+	color: white;
+	text-shadow: 0 0 10px #FFF9DC;
+}
+
+.sivunavi {
+	padding: 10px 5px;
+	font-size: 15px;
+	font-family: 'Open Sans Condensed', sans-serif;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
+
+a:hover.sivunavi {
+	background: #EBC0DD;
+}
+
+a:link.sivunavi, a:visited.sivunavi {
+	text-decoration: none;
+	color: #430B58;
+}
+
+/* Block systems */
+
+#topsection{
+	width: 100%;
+	top: 0;
+}
+
+#topsection .top {
+	width: 100%;
+	height: 500px;
+}
+
+#topsection .top2 {
+	width: 100%;
+	height: 470px;
+}
+
+#topsection .content {
+	text-align: left;
+	background: url('aiconlogo.png') no-repeat 820px 180px;
+	width: 100%;
+	height: 100%;
+}
+
+#topsection .navigaatio {
+	background: url('lilabg.png');
+	width: 100%;
+	text-align: center;
+	height: 70px;
+	padding-top: 50px;
+}
+
+#topsection .tummanavi {
+	background: #430B58;
+	width: 100%;
+	text-align: center;
+	height: 70px;
+	padding-top: 50px;
+}
+
+#topsection .navigaatio2 {
+	background: #F2E3F6;
+	width: 100%;
+	text-align: center;
+	margin: auto;
+	height: 40px;
+}
+
+.padding {
+	padding: 10px 0;
+}
+
+#contentwrapper {
+	margin: auto;
+	padding: 40px 0;
+	width: 100%;
+	background: url('whitebg.png');
+}
+
+#contentwrapper a, a:visited {
+	color: #5E1A64;
+}
+
+#contentwrapper .pad {
+	margin: auto;
+	width: 80%;
+	text-align: justify;
+}
+
+#contentwrapper2 {
+	margin: auto;
+	padding: 30px 0;
+	width: 100%;
+	background: white;
+}
+
+#contentwrapper2 a, a:visited {
+	color: #5E1A64;
+}
+
+#contentwrapper2 .pad {
+	margin: auto;
+	width: 80%;
+	text-align: justify;
+}
+
+#contentwrapper3 {
+	margin: auto;
+	padding: 30px 0;
+	width: 100%;
+	background: #F2E3F6;
+}
+
+#contentwrapper3 .pad {
+	margin: auto;
+	width: 80%;
+	text-align: justify;
+}
+
+#footer {
+	font-family: 'Open Sans Condensed', sans-serif;
+	text-transform: uppercase;
+	width: 100%;
+	background: url('lilabg.png') repeat;
+	color: #FFF;
+	text-align: center;
+	padding: 14px 0;
+	bottom: 0;
+}
+
+#tummafooter {
+	font-family: 'Open Sans Condensed', sans-serif;
+	text-transform: uppercase;
+	width: 100%;
+	background: #430B58;
+	color: #FFF;
+	text-align: center;
+	padding: 14px 0;
+	bottom: 0;
+}
+
+/* organizers */
+
+#profiili td, tr {
+	text-align: center;
+	padding-bottom: 10px;
+	width: 20%;
+	vertical-align: top;
+}
+
+#profiili img {
+	margin-bottom: 10px;
+}
+
+/* Ohjelmatyypit */
+
+.ohjelmapalkki {
+	background: black;
+	color: white;
+	text-align: center;
+	padding: 5px 5px;
+	font-family: 'Open Sans Condensed', sans-serif;
+	text-transform: uppercase;
+	width: 225px;
+	border-bottom: 1px solid white;
+	border-right: 1px solid white;
+}
+
+.ohaika {
+	background: black;
+	color: white;
+	text-align: center;
+	padding: 5px 5px;
+	font-family: 'Open Sans Condensed', sans-serif;
+	text-transform: uppercase;
+	width: 60px;
+	border-bottom: 1px solid white;
+	border-right: 1px solid white;
+}
+
+.ohjelmatyyppi {
+	padding: 5px 15px;
+	text-align: center;
+	border-right: 5px solid white;
+	font-family: 'Open Sans Condensed', sans-serif;
+	text-transform: uppercase;
+	font-weight: bold;
+	letter-spacing: 1px;
+	color: white;
+}
+
+.esitys {
+	color: white;
+	padding: 5px 5px;
+	border: 1px solid white;
+	background: #A15EBC;
+	text-align: center;
+}
+
+.esitys a:link, a:visited {
+	color: white;
+	text-decoration: none;
+}
+
+.musa {
+	color: white;
+	padding: 5px 5px;
+	border: 1px solid white;
+	background: #7BEEE0;
+	text-align: center;
+}
+
+.musa a:link, a:visited {
+	color: white;
+	text-decoration: none;
+}
+
+.muoti {
+	color: white;
+	padding: 5px 5px;
+	border: 1px solid white;
+	background: #4D2989;
+	text-align: center;
+}
+
+.muoti a:link, a:visited {
+	color: white;
+	text-decoration: none;
+}
+
+.kunnia {
+	color: white;
+	padding: 5px 5px;
+	border: 1px solid white;
+	background: #9222B3;
+	text-align: center;
+}
+
+.kunnia a:link, a:visited {
+	color: white;
+	text-decoration: none;
+}
+
+.miitti {
+	color: white;
+	padding: 5px 5px;
+	border: 1px solid white;
+	background: #5A1B5B;
+	text-align: center;
+}
+
+.miitti a:link, a:visited {
+	color: white;
+	text-decoration: none;
+}
+
+.muu {
+	color: white;
+	padding: 5px 5px;
+	border: 1px solid white;
+	background: #DFC9ED;
+	text-align: center;
+}
+
+.muu a:link, a:visited {
+	color: white;
+	text-decoration: none;
+}
+
+.paja {
+	color: white;
+	padding: 5px 5px;
+	border: 1px solid white;
+	background: #160C6F;
+	text-align: center;
+}
+
+.paja a:link, a:visited {
+	color: white;
+	text-decoration: none;
+}
+
+.ohjelma1 {
+	padding: 0px 5px;
+	text-align: center;
+	margin: 0;
+	color: white;
+	background: #A15EBC;
+	font-family: 'Open Sans Condensed', sans-serif;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+.ohjelma2 {
+	padding: 0px 5px;
+	text-align: center;
+	margin: 0;
+	color: white;
+	background: #7BEEE0;
+	font-family: 'Open Sans Condensed', sans-serif;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+.ohjelma3 {
+	padding: 0px 5px;
+	text-align: center;
+	margin: 0;
+	color: white;
+	background: #4D2989;
+	font-family: 'Open Sans Condensed', sans-serif;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+.ohjelma4 {
+	padding: 0px 5px;
+	text-align: center;
+	margin: 0;
+	color: white;
+	background: #9222B3;
+	font-family: 'Open Sans Condensed', sans-serif;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+.ohjelma5 {
+	padding: 0px 5px;
+	text-align: center;
+	margin: 0;
+	color: white;
+	background: #5A1B5B;
+	font-family: 'Open Sans Condensed', sans-serif;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+.ohjelma6 {
+	padding: 0px 5px;
+	text-align: center;
+	margin: 0;
+	color: white;
+	background: #DFC9ED;
+	font-family: 'Open Sans Condensed', sans-serif;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+.ohjelma7 {
+	padding: 0px 5px;
+	text-align: center;
+	margin: 0;
+	color: white;
+	background: #160C6F;
+	font-family: 'Open Sans Condensed', sans-serif;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+#dhtmltooltip{
+	position: absolute;
+	width: 300px;
+	padding: 10px;
+	background: white;
+	visibility: hidden;
+	z-index: 100;
+	color: black;
+	border: 1px solid black;
+}
+
+#dhtmltooltip h1 {
+	font-family: 'Open Sans Condensed', sans-serif;
+	text-transform: uppercase;
+	font-weight: normal;
+	font-size: 20px;
+	text-align: center;
+	color: black;
+	border-bottom: 1px solid black;
+	margin-top: 0;
+}

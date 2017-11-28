@@ -1,0 +1,22 @@
+extends aicon_base.jade
+- load crispy_forms_tags
+block content
+  include content_toolbar_admin_blog_post.jade
+  article.clearfix
+    header
+      h1 {{ blog_post.title }}
+      p.aicon-blog-meta #{blog_post.formatted_author} <time pubdate datetime="{{ blog_post.date.isoformat }}">{{ blog_post.date|date:"j.n.Y" }}</time>
+    {{ blog_post.body|safe }}
+  h2 Kommentit
+  if blog_comments
+    for comment in blog_comments
+      .aicon-blog-comment
+        a.aicon-blog-comment-anchor(id='comment-{{ comment.id }}')
+        p.aicon-blog-meta {{ comment.author_name }} {{ comment.created_at|date:"j.n.Y G:i:s"}}
+        {{ comment.comment|linebreaks }}
+  else
+    p.text-muted Ei kommentteja.
+  h3 Lähetä kommentti
+  .row
+    .aicon-blog-comment.col-md-8
+      {% crispy blog_comment_form %}
