@@ -39,6 +39,7 @@ class Setup(object):
         print('NOTE: Setting up Aicon site at {domain}'.format(domain=self.domain))
         self.setup_site()
         self.setup_content()
+        self.setup_ads()
 
     def setup_site(self):
         self.site, unused = Site.objects.get_or_create(domain=self.domain, name=u'Aicon')
@@ -168,3 +169,23 @@ class Setup(object):
 
             with open(stylesheet_path) as input_file:
                 StyleSheet.ingest(input_file)
+
+    def setup_ads(self):
+        for banner_title, banner_url, banner_path in [
+            ('Bard & Jester', 'http://bardjester.com/', 'site_specific/aicon2018/static/aicon2018/img/BJDark.jpg'),
+            ('Winkie Winkie', 'https://www.winkie-winkie.com/', 'site_specific/aicon2018/static/aicon2018/img/winkiemainos.jpg'),
+        ]:
+            try:
+                Banner.objects.get(sites=self.site, url=banner_url)
+            except Banner.DoesNotExist:
+                with open(banner_path, 'rb') as banner_file:
+                    banner = Banner(
+                        title=banner_title,
+                        url=banner_url,
+                        image_file=File(banner_file),
+                    )
+
+                    banner.save()
+
+                    banner.sites = [self.site,]
+                    banner.save()

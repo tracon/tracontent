@@ -26,3 +26,7 @@
 .list-horizontal li + li {
        margin-left: 1em;
 }
+
+.sponsors img {
+  width: 150px;
+}
