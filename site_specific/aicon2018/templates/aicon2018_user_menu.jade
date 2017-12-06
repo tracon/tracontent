@@ -1,7 +1,0 @@
-ul#usermenu.list-horizontal
-  if request.user.is_anonymous
-    li: a(href='{{ settings.LOGIN_URL }}') Kirjaudu sisään...
-  else
-    if request.user.is_staff
-      li: a(href='/admin/') Sivuston ylläpito
-    li: a(href='{{ settings.LOGOUT_URL }}') Kirjaudu ulos ({{ user_meta.get_full_name }})

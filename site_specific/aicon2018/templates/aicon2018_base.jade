@@ -15,7 +15,6 @@ html(lang='en')
     link(href='{% static "common/aicon_avatar.png" %}', rel='shortcut icon', type='image')
     link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
   body
-    include aicon2018_user_menu.jade
     .jumbotron.container-fluid
       .container
         .row
@@ -38,18 +37,8 @@ html(lang='en')
     main.container-fluid
       block full_width_content
         .container
-          .row
-            .col-md-7
-              block content
-                p Sisältö tulee tähän
-            .col-md-5.blogi
-              h2 Uutiset
-              for blog_post in news_posts
-                dl.news
-                  dt
-                    a(href='{{ blog_post.get_absolute_url }}')= blog_post.title
-                    small {{ blog_post.date|date:"SHORT_DATE_FORMAT" }}
-                  dd= blog_post.excerpt
+          block content
+            p Sisältö tulee tähän
           .row
             .col-md-12.sponsors.text-center
               include ads_sidebar_banners.jade
@@ -57,16 +46,23 @@ html(lang='en')
       .container
         .row
           .col-md-2.text-center.some
-            a(href='https://twitter.com/Aicon_FI')
-              i.fa.fa-twitter-square
-            a(href='https://www.facebook.com/aiconfinland')
-              i.fa.fa-facebook-square
-            a(href='https://www.facebook.com/aiconfinland')
-              i.fa.fa-instagram
+            div
+              a(href='https://twitter.com/Aicon_FI')
+                i.fa.fa-twitter-square
+              a(href='https://www.facebook.com/aiconfinland')
+                i.fa.fa-facebook-square
+              a(href='https://www.facebook.com/aiconfinland')
+                i.fa.fa-instagram
+
           .col-md-10.text-right
             p
               | Web Design © 2017 Ronja Kyrölä
               br
               | Sivustoa pyörittää TraContent CMS Enterprise Edition © 2014–2017 Santtu Pajukanta.
+            if request.user.is_anonymous
+              p: a(href='{{ settings.LOGIN_URL }}') Kirjaudu sisään...
+            else
+              p: <a href='/admin/'>Sivuston ylläpito</a> · <a href='{{ settings.LOGOUT_URL }}'>Kirjaudu ulos ({{ user_meta.get_full_name }})</a>
+
     script(src='{% static "common/js/bootstrap.min.js" %}')
     script(src='{% static "common/js/jquery.min.js" %}')
