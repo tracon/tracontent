@@ -4,7 +4,9 @@ block full_width_content
     .row
       .col-md-7
         block content
-          p Sisältö tulee tähän
+          include content_toolbar_admin_page.jade
+          h2 {{ page.title }}
+          {{ page.body|safe }}
       .col-md-5.blogi
         h2 Uutiset
         for blog_post in news_posts
