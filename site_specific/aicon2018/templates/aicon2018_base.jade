@@ -29,14 +29,12 @@ html(lang='en')
             span.icon-bar
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
           ul.nav.nav-justified
-            li
-              a(href='index.html') Etusivu
-            li
-              a(href='ajankohtaista.html') Ajankohtaista
-            li
-              a(href='ohjelma.html') Ohjelma
-            li
-              a(href='yhteystiedot.html') Yhteystiedot
+            for entry in menu
+              if entry.active
+                li.active: a(href='#{entry.href}')= entry.text
+              else
+                li: a(href='#{entry.href}')= entry.text
+
     main.container-fluid
       block full_width_content
         .container
@@ -46,18 +44,12 @@ html(lang='en')
                 p Sisältö tulee tähän
             .col-md-5.blogi
               h2 Uutiset
-              dl.news
-                dt
-                  a(href='#') Kiitos Aiconista 2016 - Lähetä meille palautetta!
-                  small 10.10.2016
-                dd
-                  | Aicon 2016 on nyt ohi, kiitos kaikille kävijöille! Palautelomakkeemme on nyt auki.
-              dl.news
-                dt
-                  a(href='#') Kiitos Aiconista 2016 - Lähetä meille palautetta!
-                  small 10.10.2016
-                dd
-                  | Aicon 2016 on nyt ohi, kiitos kaikille kävijöille! Palautelomakkeemme on nyt auki.
+              for blog_post in news_posts
+                dl.news
+                  dt
+                    a(href='{{ blog_post.get_absolute_url }}')= blog_post.title
+                    small {{ blog_post.date|date:"SHORT_DATE_FORMAT" }}
+                  dd= blog_post.excerpt
           .row
             .col-md-12.sponsors.text-center
               include ads_sidebar_banners.jade

@@ -30,3 +30,7 @@
 .sponsors img {
   width: 150px;
 }
+
+.news dt small {
+  margin-left: 0.5em;
+}
