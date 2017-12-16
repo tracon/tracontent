@@ -1,5 +1,5 @@
 body {
-	background: #11011D url(/static/aicon2018/img/aichanbg2.png) no-repeat left top; /* headerkuva tulee tähän */
+	background: white url(/static/aicon2018/img/Web-banneri01_1700.jpg) no-repeat left top; /* headerkuva tulee tähän */
 	background-size: contain;
 	font-size: 15px;
 	word-spacing: 2px;
@@ -37,7 +37,7 @@ h2 {
 /* HEADER */
 
 .jumbotron {
-	background: url(/static/aicon2018/img/logo.png) no-repeat right 140px center; /* logo tulee tähän */
+	background: url(/static/aicon2018/img/Web-banneri01_logo_transparent.png) no-repeat right 140px center; /* logo tulee tähän */
 	background-size: 500px;
 	height: 450px;
 	margin: 0;
