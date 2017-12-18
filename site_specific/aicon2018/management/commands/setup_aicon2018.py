@@ -158,8 +158,8 @@ class Setup(object):
                 )
 
         for stylesheet_name in [
-            'aicon.css',
-            'aicon_tracontent.css',
+            'aicon2018.css',
+            'aicon2018_tracontent.css',
         ]:
             stylesheet_path = os.path.join(
                 os.path.dirname(__file__),

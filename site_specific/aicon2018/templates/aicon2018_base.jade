@@ -9,8 +9,8 @@ html(lang='en')
       block full_title
         |{% if page.title %}{{ page.title }} – {{ site_settings.title }}{% else %}{{ site_settings.title }}{% endif %}
     link(href='{% static "common/css/bootstrap.min.css" %}', rel='stylesheet')
-    link(href='{% url "resources_style_sheet_view" "aicon.css" %}', rel='stylesheet')
-    link(href='{% url "resources_style_sheet_view" "aicon_tracontent.css" %}', rel='stylesheet', type='text/css')
+    link(href='{% url "resources_style_sheet_view" "aicon2018.css" %}', rel='stylesheet')
+    link(href='{% url "resources_style_sheet_view" "aicon2018_tracontent.css" %}', rel='stylesheet', type='text/css')
     link(href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300', rel='stylesheet')
     link(href='{% static "common/aicon_avatar.png" %}', rel='shortcut icon', type='image')
     link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
