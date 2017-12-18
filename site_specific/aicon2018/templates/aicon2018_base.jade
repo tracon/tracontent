@@ -64,5 +64,5 @@ html(lang='en')
             else
               p: <a href='/admin/'>Sivuston ylläpito</a> · <a href='{{ settings.LOGOUT_URL }}'>Kirjaudu ulos ({{ user_meta.get_full_name }})</a>
 
-    script(src='{% static "common/js/bootstrap.min.js" %}')
     script(src='{% static "common/js/jquery.min.js" %}')
+    script(src='{% static "common/js/bootstrap.min.js" %}')
