@@ -20,67 +20,15 @@ If you have Kompassi OAuth2 support enabled, you're running the Enterprise Editi
 
 ## Getting started
 
-Python 3.6 required. Lower will not work as syntax features introduced in Python 3.6 are used.
-
-### Docker
+Docker required. I will not give you support for development without Docker.
 
     docker-compose up
-    open http://localhost:8001
 
-### Linux, OS X
+This will set up a PostgreSQL database and the Tracontent backend in containers. It will also automatically run `python manage.py setup` in the backend container to set up the site with some placeholder pages.
 
-Install C dependencies:
+You should now be able to view the site at [http://localhost:8001](http://localhost:8001).
 
-    sudo apt-get install python-dev libz-dev libjpeg-dev libffi-dev libssl-dev build-essential
-
-Install Python dependencies:
-
-    virtualenv venv-tracontent
-    source venv-tracontent/bin/activate
-    git clone https://github.com/tracon/tracontent.git
-    cd tracontent
-    pip install -r requirements.txt
-
-The `DEBUG` environment variable is required to run the default development configuration:
-
-    export DEBUG=1
-
-### Windows
-
-PowerShell recommended for running commands. Make sure you have `pip` installed and update `setuptools` and `wheel`:
-
-    easy_install-3.5.exe pip
-    pip install -U setuptools wheel virtualenv
-
-Install Python dependencies:
-
-    set-executionpolicy -scope CurrentUser RemoteSigned
-    python -m venv venv-tracontent
-    venv-tracontent\Scripts\activate.ps1
-    git clone https://github.com/tracon/tracontent.git
-    cd tracontent
-    pip install -r requirements.txt
-
-The `DEBUG` environment variable is required to run the default development configuration:
-
-    $env:DEBUG = 1
-
-### Common
-
-Setup basic example content:
-
-    python manage.py setup
-    python manage.py setup_tracon11 127.0.0.1:8001
-
-Run the server and view the site in your favourite web browser:
-
-    python manage.py runserver 127.0.0.1:8001
-    iexplore http://127.0.0.1:8001
-    iexplore http://127.0.0.1:8001/admin/login/
-
-Note that due to multisite support, `127.0.0.1:8001` needs to match whatever `host:port` you use to access your development instance.
-
-The `python manage.py setup` command created a superuser called `mahti` with the password `mahti`.
+Note that the login links probably try to log you in via OAuth2 which will fail. Use [http://localhost:8001/admin/login/](http://localhost:8001/admin/login/) instead.
 
 ## Kompassi OAuth2 Enabled
 
