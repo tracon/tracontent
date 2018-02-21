@@ -24,14 +24,8 @@ Python 3.6 required. Lower will not work as syntax features introduced in Python
 
 ### Docker
 
-    TRACONTENT_SITE=tracon2017 docker-compose up
+    docker-compose up
     open http://localhost:8001
-
-Replace `TRACONTENT_SITE` with any site under `site_specific/`. The site selection only affects the setup script to run and if you want to change the default site, clear your current installation first with
-
-    docker-compose down -v
-
-Also if you want to change the hostname you will access the site at, use the `TRACONTENT_HOSTNAME` environment variable (without port, default `localhost`). Port is hard-coded at 8001. Changing the hostname requires changes to the `Site` object in the database, so it is easiest to clear your installation if you need to change this in development.
 
 ### Linux, OS X
 
