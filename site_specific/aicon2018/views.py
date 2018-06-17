@@ -21,7 +21,7 @@ def organizers_page_controller(request, page, num_organizers_per_row=5):
     )
 
 
-def programme_page_controller(request, page, event_slug='aicon2016'):
+def programme_page_controller(request, page, event_slug='aicon2018'):
     programme = kompassi_get_programme(event_slug)
 
     return dict(
