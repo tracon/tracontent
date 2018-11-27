@@ -37,7 +37,7 @@ node {
           --ignore-not-found && \
         emrichen kubernetes/jobs/setup.in.yml \
           -f kubernetes/${environmentName}.vars.yml \
-          -D edegal_tag=${tag} | \
+          -D tracontent_tag=${tag} | \
         kubectl apply -n tracontent-${environmentName} -f -
       """
     }
@@ -49,7 +49,7 @@ node {
       sh """
         emrichen kubernetes/template.in.yml \
           -f kubernetes/${environmentName}.vars.yml \
-          -D edegal_tag=${tag} | \
+          -D tracontent_tag=${tag} | \
         kubectl apply -n tracontent-${environmentName} -f -
       """
     } else {
