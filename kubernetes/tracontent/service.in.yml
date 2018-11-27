@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tracontent
+  labels:
+    stack: tracontent
+    component: tracontent
+spec:
+  ports:
+  - port: 8000
+    targetPort: 8000
+  selector:
+    stack: tracontent
+    component: tracontent

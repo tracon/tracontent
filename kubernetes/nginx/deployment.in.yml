@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  selector:
+    matchLabels:
+      stack: tracontent
+      component: nginx
+  template:
+    metadata:
+      labels:
+        stack: tracontent
+        component: nginx
+    spec:
+      containers:
+        - name: master
+          image: !Var tracontent_static_image
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - !If
+                test: !Var tracontent_enable_volumes
+                then:
+                  mountPath: /usr/share/nginx/html/media
+                  name: tracontent-media
+      volumes:
+        - !If
+            test: !Var tracontent_enable_volumes
+            then:
+              name: tracontent-media
+              persistentVolumeClaim:
+                claimName: tracontent-media

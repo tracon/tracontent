@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
 
-from .views import logout_view
+from .views import logout_view, status_view
 
 
 admin.autodiscover()
@@ -19,7 +19,8 @@ if 'kompassi_oauth2' in settings.INSTALLED_APPS and not settings.DEBUG:
 urlpatterns.extend((
     url(r'^admin/', include(admin.site.urls)),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
-    url(r'^logout/?', logout_view, name='logout_view'),
+    url(r'^logout/?$', logout_view, name='logout_view'),
+    url(r'^api/v1/status/?$', status_view, name='status_view'),
 ))
 
 
