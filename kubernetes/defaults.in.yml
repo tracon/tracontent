@@ -46,5 +46,7 @@ environment:
       secretKeyRef:
         name: tracontent
         key: secretKey
+  - name: DEBUG
+    value: "true"
   - name: ALLOWED_HOSTS
     value: !Join,Var ingress_public_hostnames
