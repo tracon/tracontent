@@ -47,4 +47,4 @@ environment:
         name: tracontent
         key: secretKey
   - name: ALLOWED_HOSTS
-    value: !Join,Var tracontent_public_hostnames
+    value: !Join,Var ingress_public_hostnames
