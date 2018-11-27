@@ -21,18 +21,18 @@ spec:
       over: !Var ingress_public_hostnames
       as: hostname
       template:
-        - host: !Var hostname
-          http:
-            paths:
-              - path: /static
-                backend:
-                  serviceName: nginx
-                  servicePort: 80
-              - path: /media
-                backend:
-                  serviceName: nginx
-                  servicePort: 80
-              - path: /
-                backend:
-                  serviceName: tracontent
-                  servicePort: 8000
+        host: !Var hostname
+        http:
+          paths:
+            - path: /static
+              backend:
+                serviceName: nginx
+                servicePort: 80
+            - path: /media
+              backend:
+                serviceName: nginx
+                servicePort: 80
+            - path: /
+              backend:
+                serviceName: tracontent
+                servicePort: 8000
