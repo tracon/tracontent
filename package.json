@@ -27,7 +27,7 @@
     "babelify": "^7.2.0",
     "bootstrap": "3.3.6",
     "bootstrap-less": "^3.3.8",
-    "browser-sync": "^2.11.1",
+    "browser-sync": "^2.26.3",
     "browserify": "^13.0.0",
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
@@ -58,7 +58,7 @@
     "page": "^1.6.4",
     "rimraf": "^2.5.2",
     "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.7.0",
+    "watchify": "^3.11.0",
     "whatwg-fetch": "^0.11.0"
   },
   "browserify": {
