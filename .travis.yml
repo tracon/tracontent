@@ -8,8 +8,8 @@ python:
 - 3.6
 install:
 - ". $HOME/.nvm/nvm.sh"
-- nvm install stable
-- nvm use stable
+- nvm install 8
+- nvm use 8
 - npm install
 - pip install -U pip
 - pip install -r requirements.txt
