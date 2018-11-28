@@ -38,7 +38,8 @@ node {
         emrichen kubernetes/jobs/setup.in.yml \
           -f kubernetes/${environmentName}.vars.yml \
           -D tracontent_tag=${tag} | \
-        kubectl apply -n tracontent-${environmentName} -f -
+        kubectl apply -n tracontent-${environmentName} -f - && \
+        kubectl wait --for condition=complete -n tracontent-${environmentName} job/setup
       """
     }
   }
