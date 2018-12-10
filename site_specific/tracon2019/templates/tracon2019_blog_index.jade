@@ -1,0 +1,17 @@
+extends tracon2019_base.jade
+block content
+  include content_toolbar_admin_blog_index.jade
+  h1 {{ page.title }}
+  {{ page.body|safe }}
+  for blog_post in blog_posts
+    article(class='#{blog_post.featured_css}')
+      //- TODO ugly, do with css instead
+      if blog_post.is_featured
+        h2: a(href='#{blog_post.get_absolute_url()}')= blog_post.title
+        p.post-meta
+          include content_blog_post_meta.html
+        p.lead= blog_post.excerpt
+      else
+        h4: a(href='#{blog_post.get_absolute_url()}')= blog_post.title
+        p.post-meta
+          include content_blog_post_meta.html

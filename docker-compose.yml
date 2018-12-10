@@ -1,7 +1,8 @@
-version: '2'
+version: '2.2'
 services:
   web:
     build: .
+    init: true
     command: scripts/wait-for-it.sh postgres:5432 -- python manage.py docker_start
     ports:
       - 8001:8001
@@ -14,7 +15,7 @@ services:
       PYTHONUNBUFFERED: 1
       DEBUG: 1
       DATABASE_URL: psql://tracontent:secret@postgres/tracontent
-      TRACONTENT_SITE: aicon2018
+      TRACONTENT_SITE: tracon2019
       TRACONTENT_HOSTNAME: localhost
   postgres:
     image: postgres
