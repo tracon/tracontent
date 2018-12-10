@@ -12,6 +12,7 @@ spec:
       labels:
         stack: tracontent
         component: tracontent
+        build: !Var tracontent_tag
     spec:
       containers:
       - name: master

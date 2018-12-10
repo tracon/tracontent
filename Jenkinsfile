@@ -1,3 +1,5 @@
+def appName = "tracontent"
+
 def imageMap = [
   "development": "staging",
   "master": "latest"
@@ -10,9 +12,10 @@ def environmentNameMap = [
 
 def tag = "${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
 def environmentName = environmentNameMap[env.BRANCH_NAME]
+def namespace = "${appName}-${environmentName}"
 
-def backendImage = "tracon/tracontent:${tag}"
-def staticImage = "tracon/tracontent-static:${tag}"
+def backendImage = "tracon/${appName}:${tag}"
+def staticImage = "tracon/${appName}-static:${tag}"
 
 
 node {
@@ -33,13 +36,13 @@ node {
     if (env.BRANCH_NAME == "development") {
       sh """
         kubectl delete job/setup \
-          -n tracontent-${environmentName} \
+          -n ${namespace} \
           --ignore-not-found && \
         emrichen kubernetes/jobs/setup.in.yml \
           -f kubernetes/${environmentName}.vars.yml \
-          -D tracontent_tag=${tag} | \
-        kubectl apply -n tracontent-${environmentName} -f - && \
-        kubectl wait --for condition=complete -n tracontent-${environmentName} job/setup
+          -D ${appName}_tag=${tag} | \
+        kubectl apply -n ${namespace} -f - && \
+        kubectl wait --for condition=complete -n ${namespace} job/setup
       """
     }
   }
@@ -50,20 +53,21 @@ node {
       sh """
         emrichen kubernetes/template.in.yml \
           -f kubernetes/${environmentName}.vars.yml \
-          -D tracontent_tag=${tag} | \
-        kubectl apply -n tracontent-${environmentName} -f -
+          -D ${appName}_tag=${tag} | \
+        kubectl apply -n ${namespace} -f - && \
+        kubectl wait -n ${namespace} --for condition=Ready --selector build=${tag} pod
       """
     } else {
       // Legacy deployment
       git url: "git@github.com:tracon/ansible-tracon"
       sh """
-        docker tag $backendImage tracon/tracontent:latest && \
-        docker push tracon/tracontent:latest && \
+        docker tag $backendImage tracon/${appName}:latest && \
+        docker push tracon/${appName}:latest && \
         ansible-playbook \
           --vault-password-file=~/.vault_pass.txt \
           --user root \
           --limit nuoli.tracon.fi \
-          --tags tracontent-deploy \
+          --tags ${appName}-deploy \
           tracon.yml
       """
     }
