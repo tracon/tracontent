@@ -164,8 +164,7 @@ class Setup(object):
             ('Säätöyhteisö B2 ry', 'http://b2.fi', 'site_specific/tracon11/static/tracon11/img/b2-saatoa2008-wh-200.png'),
         ]:
             try:
-                banner = Banner.objects.get(url=banner_url)
-                banner.sites.add(self.site)
+                Banner.objects.get(sites=self.site, url=banner_url)
             except Banner.DoesNotExist:
                 with open(banner_path, 'rb') as banner_file:
                     banner = Banner(
@@ -176,7 +175,7 @@ class Setup(object):
 
                     banner.save()
 
-                    banner.sites = [self.site,]
+                    banner.sites = [self.site, ]
                     banner.save()
 
     def setup_blog(self):
