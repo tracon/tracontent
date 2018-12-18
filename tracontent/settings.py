@@ -67,6 +67,7 @@ INSTALLED_APPS = (
     'site_specific.tracon2018',
     'site_specific.aicon2018',
     'site_specific.tracon2019',
+    'site_specific.hitpoint2019',
 
     'site_specific.japsufi',
 )
