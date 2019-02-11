@@ -1,4 +1,4 @@
-FROM python:3.6
+FROM python:3.7
 WORKDIR /usr/src/app
 COPY requirements.txt requirements-production.txt /usr/src/app/
 RUN groupadd -r tracontent && useradd -r -g tracontent tracontent && \
