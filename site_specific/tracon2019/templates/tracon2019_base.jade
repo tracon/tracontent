@@ -13,11 +13,12 @@ html
     link(rel='stylesheet', type='text/css', href='{% static "tracon2019/css/tracon2019.css" %}')
     link(rel='alternate', type='application/rss+xml', title='Blog', href='{{ feeds.rss }}')
     link(rel='alternate', type='application/atom+xml', title='Blog', href='{{ feeds.atom }}')
+    link(rel='icon', type='image/png', href='{% static "tracon2019/img/tracon-vaakuna-favicon-32.png" %}')
     script(src='{% static "common/js/jquery.min.js" %}', defer)
     script(src='{% static "common/js/bootstrap.min.js" %}', defer)
   body
     .wrap
-      img(src='{% static "tracon2019/img/header-web-valiaikainen2.png" %}', id='logo')
+      img(src='{% static "tracon2019/img/tracon_web_banneri_leveampi_valmis_opt.jpg" %}', id='logo')
       .navbar.navbar-inverse.navbar-fixed-top.tracon-navbar
         .container
           .navbar-header
