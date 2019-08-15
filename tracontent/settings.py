@@ -126,6 +126,10 @@ DATABASES = {
     'default': env.db(default='sqlite:///tracontent.sqlite3'),
 }
 
+CACHES = {
+    'default': env.cache(default='locmemcache://'),
+}
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

@@ -5,6 +5,7 @@ from django.db.models import F
 from django.http import Http404, HttpResponse
 from django.shortcuts import redirect, get_object_or_404, render
 from django.utils.timezone import now
+from django.views.decorators.cache import cache_page, cache_control
 from django.views.decorators.http import require_http_methods, require_safe
 
 from ipware.ip import get_ip
@@ -16,6 +17,7 @@ from .utils import initialize_form
 
 @require_safe
 def content_page_view(request, path):
+    print('Lower view:', path)
     site_settings = request.site.site_settings
 
     # Look for redirect at the current path
@@ -36,6 +38,13 @@ def content_page_view(request, path):
     page = get_object_or_404(Page, **criteria)
 
     return page.render(request)
+
+
+@cache_control(public=True, max_age=5 * 60)
+@cache_page(5 * 60)
+def content_cached_page_view(request, path):
+    print('Cache miss:', path)
+    return content_page_view(request, path)
 
 
 class BlogIndexPseudoPage(RenderPageMixin):
@@ -141,4 +150,3 @@ def content_blog_post_view(request, year, month, day, slug):
         blog_comment_form=blog_comment_form,
         blog_comments=list(blog_post.get_comments()),
     )
-

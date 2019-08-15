@@ -5,19 +5,25 @@ block content
     h1 {{ page.title }}
     {{ page.body|safe }}
 
-    p &nbsp;
-
+    p: &nbsp;
+    p
+      strong Suodata taiteilijoita:
+      for key, text, active in artist_filters
+        | &nbsp;
+        a(href='?day={{ key }}', class='{% if active %}label-primary{% else %}label-default{% endif %}').label= text
     if artists.exists
       table.table.table-striped
         thead
           tr
             th(scope='row') Pöytä
+            th(scope='col') Päivä
             th(scope='col', style='width: 30%') Kuva
             th(scope='col') Nimi ja kuvaus
         tbody
           for artist in artists
             tr
               th(scope='row') {{ artist.table_number }}.
+              td= artist.get_day_display
               td
                 if artist.image_file
                   img(src='{{ artist.image_file.url }}' style='width: 100%')
