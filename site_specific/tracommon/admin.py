@@ -7,8 +7,8 @@ from .models import Artist
 
 class ArtistAdmin(VersionAdmin):
     model = Artist
-    list_display = ('site', 'table_number', 'name')
-    list_filter = ('site',)
+    list_display = ('site', 'day', 'table_number', 'name')
+    list_filter = ('site', 'day')
     search_fields = ('table_number', 'name')
 
 
