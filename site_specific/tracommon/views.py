@@ -1,6 +1,6 @@
 from content.models import SiteSettings
 
-from .models import Artist
+from .models import Artist, DAY_CHOICES
 
 
 def front_page_controller(request, page, num_blog_posts=5):
@@ -15,4 +15,13 @@ def front_page_controller(request, page, num_blog_posts=5):
 
 
 def artists_alley_page_controller(request, page):
-    return dict(artists=Artist.objects.filter(site=request.site))
+    criteria = dict(site=request.site)
+
+    day = request.GET.get('day')
+    if day:
+        criteria.update(day=day)
+
+    return dict(
+        artists=Artist.objects.filter(**criteria),
+        artist_filters=[(key, text, key == day) for (key, text) in DAY_CHOICES],
+    )
