@@ -41,17 +41,17 @@ urlpatterns = [
     ),
 
     # CACHED PAGES
-    url(
-        r'^(?P<path>liput)/?$',
-        content_cached_page_view,
-        name='content_cached_page_view_liput',
-    ),
-    url(
-        r'^$',
-        content_cached_page_view,
-        dict(path='front-page'),
-        name='content_front_page_view',
-    ),
+    # url(
+    #     r'^(?P<path>liput)/?$',
+    #     content_cached_page_view,
+    #     name='content_cached_page_view_liput',
+    # ),
+    # url(
+    #     r'^$',
+    #     content_cached_page_view,
+    #     dict(path='front-page'),
+    #     name='content_front_page_view',
+    # ),
 
     url(
         r'^(?P<path>[a-z0-9-]+(/[a-z0-9-]+)*)/?$',
@@ -60,10 +60,10 @@ urlpatterns = [
     ),
 
     # NON-CACHED FRONT PAGE
-    # url(
-    #     r'^$',
-    #     content_page_view,
-    #     dict(path='front-page'),
-    #     name='content_front_page_view',
-    # ),
+    url(
+        r'^$',
+        content_page_view,
+        dict(path='front-page'),
+        name='content_front_page_view',
+    ),
 ]
