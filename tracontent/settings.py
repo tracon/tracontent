@@ -97,18 +97,19 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.core.context_processors.request',
                 'content.context_processors.content_context',
                 'users.context_processors.users_context',
             ],
+            # PyPugJS part:
             'loaders': [
-                # PyJade part:   ##############################
-                ('pyjade.ext.django.Loader', (
+                ('pypugjs.ext.django.Loader', (
                     'django.template.loaders.filesystem.Loader',
                     'django.template.loaders.app_directories.Loader',
                 ))
             ],
-            'builtins': ['pyjade.ext.django.templatetags'],
+            'builtins': [
+                'pypugjs.ext.django.templatetags',
+            ],
         },
     },
 ]

@@ -17,7 +17,6 @@ from .utils import initialize_form
 
 @require_safe
 def content_page_view(request, path):
-    print('Lower view:', path)
     site_settings = request.site.site_settings
 
     # Look for redirect at the current path
