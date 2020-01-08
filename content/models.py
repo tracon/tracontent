@@ -213,9 +213,8 @@ class MenuEntry(BaseMenuEntry):
 
 class RenderPageMixin(object):
     def render(self, request, **extra_vars):
-        vars = dict(extra_vars,
-            page=self,
-        )
+        vars = dict(page=self)
+        vars.update(extra_vars)
 
         return render(request, self.template, vars)
 
