@@ -4,7 +4,6 @@
 #
 #    pip-compile
 #
-appnope==0.1.0            # via ipython
 backcall==0.1.0           # via ipython
 bleach==3.1.0
 certifi==2019.11.28       # via requests
@@ -17,7 +16,7 @@ django-environ==0.4.5
 django-ipware==2.1.0
 django-js-asset==1.2.2    # via django-ckeditor
 django-reversion==3.0.5
-django==1.11.27
+django==1.11.28
 gunicorn==20.0.4
 idna==2.8                 # via requests
 ipython-genutils==0.2.0   # via traitlets
@@ -47,4 +46,4 @@ wcwidth==0.1.8            # via prompt-toolkit
 webencodings==0.5.1       # via bleach
 
 # The following packages are considered to be unsafe in a requirements file:
-# setuptools==44.0.0        # via gunicorn, ipython
+# setuptools
