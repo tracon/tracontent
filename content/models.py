@@ -275,6 +275,11 @@ class Page(models.Model, RenderPageMixin, PageAdminMixin):
     )
     body = models.TextField(**CommonFields.body)
 
+    header_image = models.FileField(
+        upload_to='headers',
+        blank=True,
+    )
+
     @property
     def edit_link(self):
         return reverse('admin:content_page_change', args=(self.id,))
