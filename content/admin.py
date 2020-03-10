@@ -146,7 +146,7 @@ class PageAdmin(VersionAdmin):
             fields=('title', 'body')
         )),
         (u'Julkaisuasetukset', dict(
-            fields=('parent', 'public_from', 'visible_from')
+            fields=('parent', 'public_from', 'visible_from', 'header_image')
         )),
         (u'Lisäasetukset', dict(
             fields=('site', 'order', 'slug', 'path', 'override_menu_text', 'override_page_template', 'created_at', 'updated_at'),
