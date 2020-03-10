@@ -26,7 +26,6 @@ class Banner(models.Model):
 
     image_file = models.FileField(
         upload_to='banners',
-
     )
 
     active = models.BooleanField(
