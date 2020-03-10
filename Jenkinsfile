@@ -2,11 +2,11 @@ def appName = "tracontent"
 
 def imageMap = [
   "development": "staging",
-  "master": "latest"
+  "premium": "latest"
 ]
 
 def environmentNameMap = [
-  "master": "production",
+  "premium": "production",
   "development": "staging"
 ]
 
