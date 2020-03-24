@@ -5,39 +5,39 @@
 #    pip-compile
 #
 backcall==0.1.0           # via ipython
-bleach==3.1.1
+bleach==3.1.2             # via -r requirements.in
 certifi==2019.11.28       # via requests
 chardet==3.0.4            # via pypugjs, requests
 decorator==4.4.1          # via ipython, traitlets
-dj-static==0.0.6
-django-ckeditor==5.8.0
-django-crispy-forms==1.8.1
-django-environ==0.4.5
-django-ipware==2.1.0
+dj-static==0.0.6          # via -r requirements.in
+django-ckeditor==5.8.0    # via -r requirements.in
+django-crispy-forms==1.8.1  # via -r requirements.in
+django-environ==0.4.5     # via -r requirements.in
+django-ipware==2.1.0      # via -r requirements.in
 django-js-asset==1.2.2    # via django-ckeditor
-django-reversion==3.0.5
-django==1.11.28
-gunicorn==20.0.4
+django-reversion==3.0.5   # via -r requirements.in
+django==1.11.28           # via -r requirements.in, django-reversion
+gunicorn==20.0.4          # via -r requirements.in
 idna==2.8                 # via requests
 ipython-genutils==0.2.0   # via traitlets
-ipython==7.11.1
+ipython==7.11.1           # via -r requirements.in
 jedi==0.15.2              # via ipython
-loremipsum==1.0.5
+loremipsum==1.0.5         # via -r requirements.in
 oauthlib==3.1.0           # via requests-oauthlib
 parso==0.5.2              # via jedi
 pexpect==4.7.0            # via ipython
 pickleshare==0.7.5        # via ipython
-pillow==7.0.0
+pillow==7.0.0             # via -r requirements.in
 prompt-toolkit==3.0.2     # via ipython
-psycopg2==2.8.4
+psycopg2==2.8.4           # via -r requirements.in
 ptyprocess==0.6.0         # via pexpect
 pygments==2.5.2           # via ipython
-pypugjs==5.8.1
-python-dateutil==2.8.1
-python-memcached==1.59
+pypugjs==5.8.1            # via -r requirements.in
+python-dateutil==2.8.1    # via -r requirements.in
+python-memcached==1.59    # via -r requirements.in
 pytz==2019.3              # via django
-requests-oauthlib==1.3.0
-requests==2.22.0
+requests-oauthlib==1.3.0  # via -r requirements.in
+requests==2.22.0          # via -r requirements.in, requests-oauthlib
 six==1.13.0               # via bleach, pypugjs, python-dateutil, python-memcached, traitlets
 static3==0.7.0            # via dj-static
 traitlets==4.3.3          # via ipython
