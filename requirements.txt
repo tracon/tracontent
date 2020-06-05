@@ -16,7 +16,7 @@ django-environ==0.4.5     # via -r requirements.in
 django-ipware==2.1.0      # via -r requirements.in
 django-js-asset==1.2.2    # via django-ckeditor
 django-reversion==3.0.5   # via -r requirements.in
-django==1.11.28           # via -r requirements.in, django-reversion
+django==1.11.29           # via -r requirements.in, django-reversion
 gunicorn==20.0.4          # via -r requirements.in
 idna==2.8                 # via requests
 ipython-genutils==0.2.0   # via traitlets
