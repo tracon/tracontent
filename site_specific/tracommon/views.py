@@ -1,7 +1,7 @@
 from content.models import SiteSettings
 
 from .models import Artist, DAY_CHOICES
-from .utils import event_slug_from_domain
+from .utils import event_slug_from_domain, kompassi_get_teams
 
 
 def front_page_controller(request, page, num_blog_posts=5):
