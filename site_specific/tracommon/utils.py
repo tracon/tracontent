@@ -1,3 +1,5 @@
+import re
+
 from django.conf import settings
 from django.core.cache import caches
 
@@ -50,3 +52,22 @@ def kompassi_get_teams(event_slug):
     cache.set(cache_key, content, settings.KOMPASSI_PROGRAMME_EXPIRY_SECONDS)
 
     return content
+
+
+DOMAIN_REGEXEN = [
+    re.compile(r'^(?P<year>\d+)\.(?P<event>tracon)\.fi$'),
+    re.compile(r'^(?P<year>\d+)\.(?P<event>hitpoint)\.tracon.fi$'),
+]
+
+def event_slug_from_domain(domain):
+    for regex in DOMAIN_REGEXEN:
+        match = regex.match(domain)
+        if match:
+            year = match['year']
+            event = match['event']
+            return f"{event}{year}"
+
+    if settings.DEBUG:
+        return "tracon2020"
+    else:
+        raise ValueError(f"Could not deduce event from domain: {domain}")
