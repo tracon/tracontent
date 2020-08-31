@@ -1,6 +1,7 @@
 from content.models import SiteSettings
 
 from .models import Artist, DAY_CHOICES
+from .utils import event_slug_from_domain
 
 
 def front_page_controller(request, page, num_blog_posts=5):
@@ -26,4 +27,15 @@ def artists_alley_page_controller(request, page):
     return dict(
         artists=Artist.objects.filter(**criteria),
         artist_filters=artist_filters,
+    )
+
+
+def organizers_page_controller(request, page, event_slug=None):
+    if not event_slug:
+        event_slug = event_slug_from_domain(request.site.domain)
+
+    teams = kompassi_get_teams(event_slug)
+
+    return dict(
+        teams=teams,
     )
