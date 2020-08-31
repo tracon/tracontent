@@ -1,6 +1,6 @@
 extends tracon11_base.jade
 block content
-  include content_toolbar_admin_blog_index.jade
+  include content_toolbar_admin_blog_index.pug
   h1 {{ page.title }}
   {{ page.body|safe }}
   for blog_post in blog_posts
