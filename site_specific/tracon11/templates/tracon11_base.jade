@@ -26,13 +26,13 @@ html
               span(class="icon-bar")
               span(class="icon-bar")
               span(class="icon-bar")
-  
+
             a.navbar-brand(href='/') {{ site_settings.title }}
-  
+
           .collapse.navbar-collapse#tracon-navbar-collapse
-            include content_navbar_menu.jade
-            include content_navbar_user.jade
-  
+            include content_navbar_menu.pug
+            include content_navbar_user.pug
+
       .tracon-content-wrap
         block full_width_content
           .container
@@ -43,14 +43,14 @@ html
               .col-md-2
                 .tracon-banners
                   include ads_sidebar_banners.jade
-  
+
         .tracon-footer-push
 
       footer
         .container
           p.tracon-credit
             small.text-muted Traconin järjestää <a href='http://ry.tracon.fi'>Tracon ry</a>. Sivustoa pyörittää {{ tracontent_footer|safe }}
-  
+
       if site_settings.google_analytics_token
         if not request.user.is_staff
           script.

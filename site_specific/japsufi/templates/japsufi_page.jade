@@ -5,7 +5,7 @@ block title
   else
     h1 {{ site_settings.title }} &raquo; {{ page.title }}
 block content
-  include content_toolbar_admin_page.jade
+  include content_toolbar_admin_page.pug
   article.clearfix
     h1 {{ page.title }}
     {{ page.body|safe }}

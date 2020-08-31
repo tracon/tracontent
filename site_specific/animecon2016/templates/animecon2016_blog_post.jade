@@ -1,7 +1,7 @@
 extends animecon2016_base.jade
 - load crispy_forms_tags
 block content
-  include content_toolbar_admin_blog_post.jade
+  include content_toolbar_admin_blog_post.pug
   h2 {{ blog_post.title }}
   p.animecon-post-meta: small #{blog_post.formatted_author} <time pubdate datetime="{{ blog_post.date.isoformat }}">{{ blog_post.date|date:"j.n.Y" }}</time>
   {{ blog_post.body|safe }}
