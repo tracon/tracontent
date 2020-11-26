@@ -1,75 +1,38 @@
-def appName = "tracontent"
-
-def imageMap = [
-  "development": "staging",
-  "master": "latest"
+def environmentMap = [
+  "master": ["con2"],
+  "premium": ["tracon"],
 ]
 
-def environmentNameMap = [
-  "master": "production",
-  "development": "staging"
-]
+pipeline {
+  agent any
 
-def tag = "${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
-def environmentName = environmentNameMap[env.BRANCH_NAME]
-def namespace = "${appName}-${environmentName}"
-
-def backendImage = "tracon/${appName}:${tag}"
-def staticImage = "tracon/${appName}-static:${tag}"
-
-
-node {
-  stage("Build") {
-    checkout scm
-    sh "docker build --tag $backendImage ."
-    sh "docker build --file Dockerfile.static --build-arg BACKEND_IMAGE=$backendImage --tag $staticImage ."
+  environment {
+    PYTHONUNBUFFERED = "1"
+    SKAFFOLD_DEFAULT_REPO = "harbor.con2.fi/con2"
   }
 
-  stage("Push") {
-    sh """
-      docker push $backendImage && \
-      docker push $staticImage
-    """
-  }
+  stages {
+    stage("Build") {
+      steps {
+        sh "emskaffolden -- build --file-output build.json"
+      }
+    }
 
-  stage("Setup") {
-    if (env.BRANCH_NAME == "development") {
-      sh """
-        kubectl delete job/setup \
-          -n ${namespace} \
-          --ignore-not-found && \
-        emrichen kubernetes/jobs/setup.in.yml \
-          -f kubernetes/${environmentName}.vars.yml \
-          -D ${appName}_tag=${tag} | \
-        kubectl apply -n ${namespace} -f - && \
-        kubectl wait --for condition=complete -n ${namespace} job/setup
-      """
+    stage("Deploy") {
+      steps {
+        script {
+          for (environmentName in environmentMap.get(env.BRANCH_NAME, [])) {
+            sh "emskaffolden -E ${environmentName} -- deploy -n tracontent-${environmentName} -a build.json"
+          }
+        }
+      }
     }
   }
 
-  stage("Deploy") {
-    if (env.BRANCH_NAME == "development") {
-      // Kubernetes deployment
-      sh """
-        emrichen kubernetes/template.in.yml \
-          -f kubernetes/${environmentName}.vars.yml \
-          -D ${appName}_tag=${tag} | \
-        kubectl apply -n ${namespace} -f - && \
-        kubectl wait -n ${namespace} --for condition=Ready --selector build=${tag} pod
-      """
-    } else {
-      // Legacy deployment
-      git url: "git@github.com:tracon/ansible-tracon"
-      sh """
-        docker tag $backendImage tracon/${appName}:latest && \
-        docker push tracon/${appName}:latest && \
-        ansible-playbook \
-          --vault-password-file=~/.vault_pass.txt \
-          --user root \
-          --limit nuoli.tracon.fi \
-          --tags ${appName}-deploy \
-          tracon.yml
-      """
+  post {
+    always {
+      archiveArtifacts "build.json"
+      archiveArtifacts "kubernetes/template.compiled.yaml"
     }
   }
 }

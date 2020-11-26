@@ -1,7 +1,3 @@
-# encoding: utf-8
-
-from __future__ import print_function, unicode_literals
-
 from datetime import datetime, timedelta, date
 
 from django.contrib.auth.models import User
@@ -33,7 +29,7 @@ class Setup(object):
         self.domain = domain
 
     def setup(self):
-        print('NOTE: Setting up japsu.fi site at {domain}'.format(domain=self.domain))
+        print(f'NOTE: Setting up japsu.fi site at {self.domain}')
         self.setup_site()
         self.setup_content()
 
@@ -63,7 +59,7 @@ class Setup(object):
         ]:
             if len(page_data) == 3:
                 page_slug, page_title, child_pages = page_data
-                override_menu_text = u''
+                override_menu_text = ''
             elif len(page_data) == 4:
                 page_slug, page_title, override_menu_text, child_pages = page_data
             else:

@@ -1,14 +1,11 @@
-# encoding: utf-8
-
 from __future__ import absolute_import, unicode_literals
 
 import os
 from datetime import datetime, timedelta
 from email.utils import parseaddr
 
-from django.utils.translation import ugettext_lazy as _
-
 import environ
+from django.utils.translation import gettext_lazy as _
 
 
 env = environ.Env(DEBUG=(bool, False),)
@@ -72,7 +69,9 @@ INSTALLED_APPS = (
     'site_specific.japsufi',
 )
 
-MIDDLEWARE_CLASSES = (
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -80,7 +79,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.sites.middleware.CurrentSiteMiddleware',
-)
+]
 
 AUTHENTICATION_BACKENDS = (
     'kompassi_oauth2.backends.KompassiOAuth2AuthenticationBackend',

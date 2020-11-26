@@ -1,0 +1,29 @@
+ingress_public_hostnames:
+  # - 2015.hitpoint.tracon.fi
+  # - 2016.hitpoint.tracon.fi
+  # - 2016.tracon.fi
+  # - 2017.hitpoint.tracon.fi
+  # - 2017.tracon.fi
+  # - 2018.tracon.fi
+  # - 2019.hitpoint.tracon.fi
+  # - 2019.tracon.fi
+  # - 2020.hitpoint.tracon.fi
+  # - 2020.tracon.fi
+  - 2021.tracon.fi
+  # - blog.tracon.fi
+  # - r.tracon.fi
+  # - ry.tracon.fi
+
+postgres_managed: false
+postgres_hostname: siilo.tracon.fi
+postgres_database: tracontent
+postgres_username: tracontent
+postgres_ssl: true
+
+tracontent_storage_pvc: true
+tracontent_storage_pvc_storageclass: longhorn-nfs
+
+setup_should_run: false
+
+ingress_letsencrypt_enabled: true
+ingress_letsencrypt_cluster_issuer: letsencrypt-prod
