@@ -1,0 +1,22 @@
+ingress_public_hostnames:
+  - con2.fi
+
+postgres_managed: false
+postgres_hostname: siilo.tracon.fi
+postgres_database: con2
+postgres_username: con2
+postgres_ssl: true
+
+redis_managed: false
+redis_hostname: redis-ha-haproxy.redis-ha.svc.cluster.local
+redis_broker_database: 9
+redis_cache_database: 10
+
+tracnotent_secret_managed: false
+tracontent_storage_pvc: true
+tracontent_storage_pvc_storageclass: longhorn-nfs
+
+setup_should_run: true
+
+ingress_letsencrypt_enabled: true
+ingress_letsencrypt_cluster_issuer: letsencrypt-prod

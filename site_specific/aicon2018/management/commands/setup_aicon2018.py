@@ -1,7 +1,3 @@
-# encoding: utf-8
-
-from __future__ import print_function, unicode_literals
-
 import os.path
 from datetime import datetime, timedelta, date
 
@@ -36,7 +32,7 @@ class Setup(object):
         self.domain = domain
 
     def setup(self):
-        print('NOTE: Setting up Aicon site at {domain}'.format(domain=self.domain))
+        print(f'NOTE: Setting up Aicon site at {self.domain}')
         self.setup_site()
         self.setup_content()
         self.setup_ads()
@@ -187,5 +183,5 @@ class Setup(object):
 
                     banner.save()
 
-                    banner.sites = [self.site,]
+                    banner.sites.set([self.site,])
                     banner.save()

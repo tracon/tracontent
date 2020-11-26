@@ -1,7 +1,5 @@
-# encoding: utf-8
-
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.timezone import now
 
 from .utils import get_code
@@ -27,7 +25,7 @@ def content_context(request):
         ),
         tracontent_app_name=app_name,
         tracontent_footer=u"<a href='https://github.com/tracon/tracontent' target='_blank'>{app_name}"
-            u"</a> © 2014–2018 <a href='https://github.com/tracon/tracontent/blob/master/LICENSE'>"
+            "</a> © 2014–2018 <a href='https://github.com/tracon/tracontent/blob/master/LICENSE'>"
             "Santtu Pajukanta</a>.".format(app_name=app_name)
     )
 

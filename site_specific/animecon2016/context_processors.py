@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 from django.utils.timezone import now
 
 from content.models import MenuEntry, Page

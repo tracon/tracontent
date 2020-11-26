@@ -4,8 +4,8 @@ django-ckeditor
 django-crispy-forms
 django-environ
 django-ipware
+django-redis
 django-reversion
-Django<2
 gunicorn
 ipython
 loremipsum

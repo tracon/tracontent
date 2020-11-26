@@ -12,23 +12,14 @@ spec:
       labels:
         stack: tracontent
         component: nginx
-        build: !Var tracontent_tag
     spec:
+      enableServiceLinks: false
       containers:
         - name: master
           image: !Var tracontent_static_image
           ports:
             - containerPort: 80
           volumeMounts:
-            - !If
-                test: !Var tracontent_enable_volumes
-                then:
-                  mountPath: /usr/share/nginx/html/media
-                  name: tracontent-media
-      volumes:
-        - !If
-            test: !Var tracontent_enable_volumes
-            then:
+            - mountPath: /usr/share/nginx/html/media
               name: tracontent-media
-              persistentVolumeClaim:
-                claimName: tracontent-media
+      volumes: !Var tracontent_media_volumes_definition

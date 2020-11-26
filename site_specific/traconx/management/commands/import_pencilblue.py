@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 from django.contrib.sites.models import Site
 from django.core.management.base import BaseCommand
 

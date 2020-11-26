@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
 from django.db import models
@@ -12,10 +10,10 @@ NAME_DISPLAY_STYLE_FORMATS = dict(
     nick=u'{self.nick}',
 )
 NAME_DISPLAY_STYLE_CHOICES = [
-    (u'firstname_nick_surname', u'Etunimi "Nick" Sukunimi'),
-    (u'firstname_surname', u'Etunimi Sukunimi'),
-    (u'firstname', u'Etunimi'),
-    (u'nick', u'Nick'),
+    (u'firstname_nick_surname', 'Etunimi "Nick" Sukunimi'),
+    (u'firstname_surname', 'Etunimi Sukunimi'),
+    (u'firstname', 'Etunimi'),
+    (u'nick', 'Nick'),
 ]
 
 
@@ -48,11 +46,11 @@ class UserMetaMethodsMixin(object):
         if self.nick and 'nick' in self.name_display_style:
             return self.nick.strip()
         else:
-            return self.first_name.strip() if self.first_name else u''
+            return self.first_name.strip() if self.first_name else ''
 
     @classmethod
     def get_for_user(cls, user):
-        if user.is_anonymous():
+        if user.is_anonymous:
             return ANONYMOUS_USER_META
         else:
             user_meta, created = cls.objects.get_or_create(user=user)
@@ -60,7 +58,7 @@ class UserMetaMethodsMixin(object):
 
 
 class UserMeta(models.Model, UserMetaMethodsMixin):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, verbose_name=u'Käyttäjä')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, verbose_name=u'Käyttäjä', on_delete=models.CASCADE)
     nick = models.CharField(blank=True, max_length=1023, help_text=u'Lempi- tai kutsumanimi')
 
     preferred_name_display_style = models.CharField(
@@ -75,15 +73,15 @@ class UserMeta(models.Model, UserMetaMethodsMixin):
         return self.get_full_name()
 
     class Meta:
-        verbose_name = u'Käyttäjän lisätiedot'
-        verbose_name_plural = u'Käyttäjien lisätiedot'
+        verbose_name = 'Käyttäjän lisätiedot'
+        verbose_name_plural = 'Käyttäjien lisätiedot'
 
 
 class AnonymousUserMeta(UserMetaMethodsMixin):
     def __init__(self):
         self.user = AnonymousUser()
-        self.nick = u'Anonymous User'
-        self.preferred_name_display_style = u'nick'
+        self.nick = 'Anonymous User'
+        self.preferred_name_display_style = 'nick'
 
 
 ANONYMOUS_USER_META = AnonymousUserMeta()

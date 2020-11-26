@@ -1,14 +1,10 @@
-# encoding: utf-8
-
 from django.contrib.sites.models import Site
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models, transaction, IntegrityError
 from django.db.models import F
 from django.utils.timezone import now
-from django.utils.encoding import python_2_unicode_compatible
 
 
-@python_2_unicode_compatible
 class Banner(models.Model):
     sites = models.ManyToManyField(Site, verbose_name='Sivustot')
 
@@ -35,7 +31,7 @@ class Banner(models.Model):
     )
 
     def admin_get_sites(self):
-        return u', '.join(site.domain for site in self.sites.all())
+        return ', '.join(site.domain for site in self.sites.all())
     admin_get_sites.short_description = 'Sivustot'
     admin_get_sites.admin_order_field = 'sites'
 
@@ -68,10 +64,11 @@ class Banner(models.Model):
 
 
 class BannerClick(models.Model):
-    site = models.ForeignKey(Site, verbose_name='Sivusto', null=True)
+    site = models.ForeignKey(Site, verbose_name='Sivusto', null=True, on_delete=models.CASCADE)
     banner = models.ForeignKey(Banner,
         verbose_name='Banneri',
-        related_name='banner_click_set'
+        related_name='banner_click_set',
+        on_delete=models.CASCADE,
     )
 
     date = models.DateField(verbose_name='Päivämäärä')
@@ -96,7 +93,7 @@ class BannerClick(models.Model):
                 banner_click.save()
 
     def __str__(self):
-        return u"{banner_title} ({date})".format(
+        return "{banner_title} ({date})".format(
             banner_title=self.banner.title if self.banner else None,
             date=self.date.isoformat() if self.date else None,
         )

@@ -1,7 +1,6 @@
-# encoding: utf-8
-
 from django.contrib import admin
 from django.contrib.sites.models import Site
+from django.db import ProgrammingError
 from django.forms import ValidationError
 from django.utils.timezone import now
 from django import forms
@@ -18,6 +17,7 @@ from .models import (
     Redirect,
     SiteSettings,
 )
+from django.urls import re_path
 
 
 class CommonAdminFormMixin(object):
@@ -36,7 +36,7 @@ class CommonAdminFormMixin(object):
 
 def make_is_null_list_filter(field_name, title, yes_is_null=False):
     _title = title
-    _parameter_name = "{field_name}__isnull".format(field_name=field_name)
+    _parameter_name = f"{field_name}__isnull"
 
     class _IsNullListFilter(admin.SimpleListFilter):
         title = _title
@@ -44,8 +44,8 @@ def make_is_null_list_filter(field_name, title, yes_is_null=False):
 
         def lookups(self, request, model_admin):
             return (
-                (1, u'Kyllä'),
-                (0, u'Ei'),
+                (1, 'Kyllä'),
+                (0, 'Ei'),
             )
 
         def queryset(self, request, queryset):
@@ -62,24 +62,24 @@ def make_is_null_list_filter(field_name, title, yes_is_null=False):
 
 def make_selected_pages_private(modeladmin, request, queryset):
     queryset.update(public_from=None, visible_from=None)
-make_selected_pages_private.short_description = u'Aseta valittujen sivujen tila: ei julkinen, ei näkyvissä'
+make_selected_pages_private.short_description = 'Aseta valittujen sivujen tila: ei julkinen, ei näkyvissä'
 
 
 def make_selected_pages_public(modeladmin, request, queryset):
     t = now()
     queryset.update(public_from=t, visible_from=None)
-make_selected_pages_public.short_description = u'Aseta valittujen sivujen tila: julkinen, ei näkyvissä'
+make_selected_pages_public.short_description = 'Aseta valittujen sivujen tila: julkinen, ei näkyvissä'
 
 
 def make_selected_pages_visible(modeladmin, request, queryset):
     t = now()
     queryset.update(public_from=t, visible_from=t)
-make_selected_pages_visible.short_description = u'Aseta valittujen sivujen tila: julkinen, näkyvissä'
+make_selected_pages_visible.short_description = 'Aseta valittujen sivujen tila: julkinen, näkyvissä'
 
 
-ActiveListFilter = make_is_null_list_filter('removed_at', u'Näkyvissä', yes_is_null=True)
-PublishedListFilter = make_is_null_list_filter('public_from', u'Julkinen')
-VisibleListFilter = make_is_null_list_filter('visible_from', u'Näkyvissä')
+ActiveListFilter = make_is_null_list_filter('removed_at', 'Näkyvissä', yes_is_null=True)
+PublishedListFilter = make_is_null_list_filter('public_from', 'Julkinen')
+VisibleListFilter = make_is_null_list_filter('visible_from', 'Näkyvissä')
 
 
 class PageAdminForm(forms.ModelForm, CommonAdminFormMixin):
@@ -119,8 +119,8 @@ class PageAdminTabularInline(admin.TabularInline):
     readonly_fields = ('slug', 'title')
     can_delete = False
     show_change_link = True
-    verbose_name = u'alasivujen järjestys'
-    verbose_name_plural = u'alasivujen järjestys'
+    verbose_name = 'alasivujen järjestys'
+    verbose_name_plural = 'alasivujen järjestys'
     max_num = 0
 
 
@@ -158,14 +158,17 @@ class PageAdmin(VersionAdmin):
     def actions(cls):
         _actions = [make_selected_pages_private, make_selected_pages_public, make_selected_pages_visible]
 
-        for site in Site.objects.all():
-            def _copy_to_site(modeladmin, request, queryset, _site=site):
-                for page in queryset.all():
-                    page.copy_to_site(_site)
-            _copy_to_site.__name__ = "copy_to_site_{id}".format(id=site.id)
-            _copy_to_site.short_description = "Kopioi valitut sivut luonnoksiksi sivustoon: {domain}".format(domain=site.domain)
+        try:
+            for site in Site.objects.all():
+                def _copy_to_site(modeladmin, request, queryset, _site=site):
+                    for page in queryset.all():
+                        page.copy_to_site(_site)
+                _copy_to_site.__name__ = f"copy_to_site_{site.id}"
+                _copy_to_site.short_description = f"Kopioi valitut sivut luonnoksiksi sivustoon: {site.domain}"
 
-            _actions.append(_copy_to_site)
+                _actions.append(_copy_to_site)
+        except ProgrammingError:
+            pass
 
         return _actions
 
@@ -251,11 +254,11 @@ class BlogPostAdmin(VersionAdmin):
 def hide_selected_blog_comments(modeladmin, request, queryset):
     t = now()
     queryset.update(removed_at=t, removed_by=request.user)
-hide_selected_blog_comments.short_description = u'Piilota valitut blogikommentit'
+hide_selected_blog_comments.short_description = 'Piilota valitut blogikommentit'
 
 def restore_selected_blog_comments(modeladmin, request, queryset):
     queryset.update(removed_at=None, removed_by=None)
-restore_selected_blog_comments.short_description = u'Palauta valitut blogikommentit'
+restore_selected_blog_comments.short_description = 'Palauta valitut blogikommentit'
 
 
 class BlogCommentAdminForm(forms.ModelForm):

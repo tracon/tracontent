@@ -1,0 +1,150 @@
+# let skaffold manage the image tag
+tracontent_image: tracontent
+tracontent_static_image: tracontent-static
+
+# By default image storage is configured using a PersistentVolumeClaim.
+# In order to use NFS, set this to false.
+# See also redis_storage_…
+tracontent_storage_pvc: true
+
+# Storage class used for upload storage, or !Void for default
+tracontent_storage_pvc_storageclass: !Void
+
+# To use an existing NFS export as the image storage, set tracontent_storage_nfs to the IP of the server.
+tracontent_storage_nfs: ''
+tracontent_storage_nfs_path: /
+
+tracontent_secret_managed: true
+tracontent_secret_key: ''
+
+# Set this to the public hostname of your service.
+ingress_public_hostnames:
+  - tracontent.localhost
+
+# If you use ingress-nginx and cert-manager, TLS can be automatically configured by setting this to true.
+ingress_letsencrypt_enabled: false
+ingress_letsencrypt_cluster_issuer: letsencrypt-prod
+
+redis_managed: true
+redis_image: redis
+redis_hostname: redis
+redis_cache_database: 2
+redis_storage_pvc: true
+redis_storage_pvc_storageclass: !Void
+
+# NOTE: "managed" PostgreSQL should not be considered production-ready.
+postgres_managed: true
+postgres_image: postgres
+postgres_hostname: postgres
+postgres_database: tracontent
+postgres_username: tracontent
+postgres_password: ''
+postgres_storage_pvc_storageclass: !Void
+
+# note: managed postgres doesn't provide ssl, only enable if using external postgres
+postgres_ssl: false
+
+# Whether or not "python manage.py setup" should run as init container
+setup_should_run: true
+
+# Configuration vars end here. Configuration snippets follow. May be overridden for advanced configuration.
+
+# Security context for Edegal and Celery pods
+# User 998 (tracontent) is guaranteed to exist in the Docker image, only change if you know what you're doing
+tracontent_pod_security_context:
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+tracontent_container_security_context:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+
+# Common environment vars for both tracontent and celery pods.
+tracontent_environment:
+  - name: POSTGRES_HOSTNAME
+    valueFrom:
+      secretKeyRef:
+        name: postgres
+        key: hostname
+  - name: POSTGRES_DATABASE
+    valueFrom:
+      secretKeyRef:
+        name: postgres
+        key: database
+  - name: POSTGRES_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: postgres
+        key: username
+  - name: POSTGRES_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: postgres
+        key: password
+  - !If
+      test: !Var postgres_ssl
+      then:
+        name: POSTGRES_EXTRAS
+        value: '?sslmode=require'
+  - name: REDIS_HOSTNAME
+    value: !Var redis_hostname
+  - name: REDIS_CACHE_DATABASE
+    value: !Format "{redis_cache_database}"
+  - name: KOMPASSI_OAUTH2_CLIENT_ID
+    valueFrom:
+      secretKeyRef:
+        name: tracontent
+        key: kompassiClientId
+  - name: KOMPASSI_OAUTH2_CLIENT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: tracontent
+        key: kompassiClientId
+  - name: SECRET_KEY
+    valueFrom:
+      secretKeyRef:
+        name: tracontent
+        key: secretKey
+  - name: ALLOWED_HOSTS
+    value: !Join
+      items: !Var ingress_public_hostnames
+      separator: " "
+
+# Common volumes for tracontent, celery and nginx pods.
+tracontent_media_volume_mounts:
+  - mountPath: /usr/src/app/media
+    name: tracontent-media
+  - mountPath: /tmp
+    name: tracontent-temp
+tracontent_media_volumes_definition:
+  - name: tracontent-temp
+    emptyDir: {}
+  - !If
+      test: !Var tracontent_storage_pvc
+      then:
+        name: tracontent-media
+        persistentVolumeClaim:
+          claimName: tracontent-media
+  - !If
+      test: !Var tracontent_storage_nfs
+      then:
+        name: tracontent-media
+        nfs:
+          server: !Var tracontent_storage_nfs
+          path: !Var tracontent_storage_nfs_path
+
+# Default annotations work for nginx ingress with or without LetsEncrypt TLS. Override if you need something else.
+ingress_annotations: !Merge
+  - nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    nginx.org/client-max-body-size: "100m"
+  - !If
+      test: !Var ingress_letsencrypt_enabled
+      then:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        nginx.ingress.kubernetes.io/ssl-redirect: "true"
+
+ingress_tls: !If
+  test: !Var ingress_letsencrypt_enabled
+  then:
+    - secretName: ingress-letsencrypt
+      hosts: !Var ingress_public_hostnames

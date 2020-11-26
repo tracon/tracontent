@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    stack: tracontent
+    component: tracontent
+  name: tracontent-media
+spec:
+  storageClassName: !Var tracontent_storage_pvc_storageclass
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1000Mi

@@ -1,4 +1,3 @@
-from django.conf.urls import url
 
 from .views import (
     content_cached_page_view,
@@ -7,35 +6,31 @@ from .views import (
     content_blog_index_view,
 )
 from .feeds import BlogFeedRSS, BlogFeedAtom
+from django.urls import path, re_path
 
 
 urlpatterns = [
-    url(
-        r'^blog/(?P<year>[0-9]{4})/(?P<month>[0-9]{1,2})/(?P<day>[0-9]{1,2})/(?P<slug>[a-z0-9-]+)/?$',
+    re_path(r'^blog/(?P<year>[0-9]{4})/(?P<month>[0-9]{1,2})/(?P<day>[0-9]{1,2})/(?P<slug>[a-z0-9-]+)/?$',
         content_blog_post_view,
         name='content_blog_post_view',
     ),
 
-    url(
-        r'^blog/rss/?$',
+    re_path(r'^blog/rss/?$',
         BlogFeedRSS(),
         name='content_blog_feed_rss_view',
     ),
 
-    url(
-        r'^blog/atom/?$',
+    re_path(r'^blog/atom/?$',
         BlogFeedAtom(),
         name='content_blog_feed_atom_view',
     ),
 
-    url(
-        r'^blog/?$',
+    re_path(r'^blog/?$',
         content_blog_index_view,
         name='content_blog_index_view',
     ),
 
-    url(
-        r'^blog/category/(?P<category_slug>[a-z0-9-]+)/?$',
+    re_path(r'^blog/category/(?P<category_slug>[a-z0-9-]+)/?$',
         content_blog_index_view,
         name='content_blog_category_index_view',
     ),
@@ -53,16 +48,13 @@ urlpatterns = [
     #     name='content_front_page_view',
     # ),
 
-    url(
-        r'^(?P<path>[a-z0-9-]+(/[a-z0-9-]+)*)/?$',
+    re_path(r'^(?P<path>[a-z0-9-]+(/[a-z0-9-]+)*)/?$',
         content_page_view,
         name='content_page_view',
     ),
 
     # NON-CACHED FRONT PAGE
-    url(
-        r'^$',
-        content_page_view,
+    path('', content_page_view,
         dict(path='front-page'),
         name='content_front_page_view',
     ),

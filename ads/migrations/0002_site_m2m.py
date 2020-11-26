@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.db import models, migrations
 
 
@@ -9,7 +6,7 @@ def migrate_site_m2m(apps, schema_editor):
     BannerClick = apps.get_model('ads', 'bannerclick')
 
     for banner in Banner.objects.all():
-        banner.sites = [banner.site]
+        banner.sites.set([banner.site])
         banner.save()
 
     for banner_click in BannerClick.objects.all():
@@ -33,7 +30,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='bannerclick',
             name='site',
-            field=models.ForeignKey(verbose_name='Sivusto', to='sites.Site', null=True),
+            field=models.ForeignKey(verbose_name='Sivusto', to='sites.Site', null=True, on_delete=models.CASCADE),
         ),
         migrations.RunPython(migrate_site_m2m),
         migrations.RemoveField(

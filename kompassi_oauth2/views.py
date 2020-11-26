@@ -1,10 +1,8 @@
-# encoding: utf-8
-
 from django.http import HttpResponse
 from django.views.generic import View
 from django.shortcuts import redirect
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import re_path, reverse
 from django.contrib.auth import authenticate, login
 
 from requests_oauthlib import OAuth2Session
@@ -35,8 +33,8 @@ class LoginFailedPage(RenderPageMixin):
     """
     def __init__(self, site):
         self.site = site
-        self.title = u'Sisäänkirjautuminen epäonnistui'
-        self.body = u"""
+        self.title = 'Sisäänkirjautuminen epäonnistui'
+        self.body = """
             <p>Sisäänkirjautuminen Kompassin kautta epäonnistui. Todennäköisesti tämä johtuu siitä, että sinulla
             ei ole oikeutta sivuston muokkaamiseen.</p>
             <ul>

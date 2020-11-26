@@ -8,7 +8,7 @@ from django.utils.timezone import now
 from django.views.decorators.cache import cache_page, cache_control
 from django.views.decorators.http import require_http_methods, require_safe
 
-from ipware.ip import get_ip
+from ipware import get_client_ip
 
 from .models import Page, BlogPost, Redirect, RenderPageMixin, BlogCategory
 from .forms import BlogCommentForm
@@ -53,7 +53,7 @@ class BlogIndexPseudoPage(RenderPageMixin):
     def __init__(self, site, title):
         self.site = site
         self.title = title
-        self.body = u''
+        self.body = ''
         self.template = site.site_settings.page_template
 
 
@@ -87,7 +87,7 @@ def content_blog_index_view(request, category_slug=None):
     try:
         page = Page.objects.get(**page_criteria)
     except Page.DoesNotExist:
-        title = category.title if category else u'Blog'
+        title = category.title if category else 'Blog'
         page = BlogIndexPseudoPage(request.site, title)
 
     vars = dict(
@@ -137,7 +137,7 @@ def content_blog_post_view(request, year, month, day, slug):
     if request.method == 'POST' and blog_comment_form.is_valid():
         blog_comment = blog_comment_form.save(commit=False)
         blog_comment.blog_post = blog_post
-        blog_comment.author_ip_address = get_ip(request)
+        blog_comment.author_ip_address, unused = get_client_ip(request)
         blog_comment.save()
 
         blog_comment.send_mail_to_moderators(request)

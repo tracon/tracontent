@@ -1,7 +1,3 @@
-# encoding: utf-8
-
-from __future__ import unicode_literals
-
 import re
 
 import loremipsum
@@ -42,7 +38,7 @@ def horizontal_form_helper():
 
 
 def indented_without_label(input, css_class='col-md-offset-3 col-md-9'):
-    return Div(Div(input, css_class='controls {}'.format(css_class)), css_class='form-group')
+    return Div(Div(input, css_class=f'controls {css_class}'), css_class='form-group')
 
 
 def initialize_form(FormClass, request, **kwargs):
@@ -63,7 +59,7 @@ def pick_attrs(obj, *attr_names, **extra_attrs):
 
 def format_emails(names_and_addresses):
     return [
-      "{name} <{address}>".format(name=name, address=address)
+      f"{name} <{address}>"
       for (name, address) in names_and_addresses
     ]
 

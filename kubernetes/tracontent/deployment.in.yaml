@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tracontent
+spec:
+  selector:
+    matchLabels:
+      stack: tracontent
+      component: tracontent
+  template:
+    metadata:
+      labels:
+        stack: tracontent
+        component: tracontent
+    spec:
+      enableServiceLinks: false
+      securityContext: !Var tracontent_pod_security_context
+      initContainers:
+        - !If
+            test: !Var setup_should_run
+            then:
+              name: setup
+              image: !Var tracontent_image
+              args: ["scripts/wait-for-it.sh", "-t", "60", "$(POSTGRES_HOSTNAME):5432", "--", "python", "manage.py", "setup"]
+              env: !Var tracontent_environment
+              securityContext: !Var tracontent_container_security_context
+      containers:
+        - name: master
+          image: !Var tracontent_image
+          ports:
+            - containerPort: 8000
+          env: !Var tracontent_environment
+          securityContext: !Var tracontent_container_security_context
+          startupProbe:
+            httpGet:
+              path: /api/v1/status
+              port: 8000
+              httpHeaders:
+                - name: Host
+                  value: !Lookup ingress_public_hostnames[0]
+            periodSeconds: 5
+            failureThreshold: 5
+          livenessProbe:
+            httpGet:
+              path: /api/v1/status
+              port: 8000
+              httpHeaders:
+                - name: Host
+                  value: !Lookup ingress_public_hostnames[0]
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          volumeMounts:
+            - mountPath: /usr/src/app/media
+              name: tracontent-media
+            - mountPath: /tmp
+              name: tracontent-temp
+      volumes: !Var tracontent_media_volumes_definition

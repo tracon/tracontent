@@ -1,18 +1,13 @@
-# encoding: utf-8
-
-from __future__ import print_function, unicode_literals
-
 from collections import namedtuple
 
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.core.validators import RegexValidator
 from django.db import models
 from django.shortcuts import render
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now
 from django.template.loader import get_template
 
@@ -71,6 +66,7 @@ class CommonFields:
     site = dict(
         verbose_name='Sivusto',
         help_text='Sivusto, jolle tämä sivu kuuluu. HUOM! Kun haluat luoda saman sivun toiselle sivustolle, älä siirrä vanhaa sivua vaan käytä sivunkopiointitoimintoa.',
+        on_delete=models.CASCADE,
     )
 
     public_from = dict(
@@ -98,11 +94,11 @@ class CommonFields:
     )
 
 
-@python_2_unicode_compatible
 class SiteSettings(models.Model):
     site = models.OneToOneField(Site,
         verbose_name='Sivusto',
         related_name='site_settings',
+        on_delete=models.CASCADE,
     )
 
     description = models.TextField(
@@ -183,13 +179,10 @@ class SiteSettings(models.Model):
         ]
 
     def get_absolute_url(self):
-        return '//{domain}'.format(domain=self.site.domain)
+        return f'//{self.site.domain}'
 
     def get_protocol_relative_uri(self, view_name, *args, **kwargs):
-        return '//{domain}{path}'.format(
-            domain=self.site.domain,
-            path=reverse(view_name, args=args, kwargs=kwargs),
-        )
+        return f'//{self.site.domain}{reverse(view_name, args=args, kwargs=kwargs)}'
 
     def get_visible_blog_posts(self, **extra_criteria):
         t = now()
@@ -233,7 +226,6 @@ class PageAdminMixin(object):
     admin_is_visible.admin_order_field = 'visible_from'
 
 
-@python_2_unicode_compatible
 class Page(models.Model, RenderPageMixin, PageAdminMixin):
     site = models.ForeignKey(Site, **CommonFields.site)
     path = models.CharField(**CommonFields.path)
@@ -243,6 +235,7 @@ class Page(models.Model, RenderPageMixin, PageAdminMixin):
         verbose_name='Yläsivu',
         help_text='Jos valitset tähän sivun, tämä sivu luodaan valitun sivun alaisuuteen. Jos jätät tämän tyhjäksi, sivu luodaan päätasolle.',
         related_name='child_page_set',
+        on_delete=models.CASCADE,
     )
 
     slug = models.CharField(**CommonFields.slug)
@@ -314,14 +307,10 @@ class Page(models.Model, RenderPageMixin, PageAdminMixin):
         return self.parent is None and self.slug == 'front-page'
 
     def get_absolute_url(self):
-        return u'//{domain}/{path}'.format(
-            domain=self.site.domain,
-            path='' if self.is_front_page else self.path,
-
-        )
+        return f"//{self.site.domain}/{'' if self.is_front_page else self.path}"
 
     def get_local_url(self):
-        return u'/' if self.is_front_page else u'/' + self.path
+        return '/' if self.is_front_page else '/' + self.path
 
     def get_menu_entry(self, child_levels=1, t=None, current_url=None):
         # Guard against infinite recursion on parent loop and prevent lots of queries on default 2-level menu structure
@@ -371,7 +360,7 @@ class Page(models.Model, RenderPageMixin, PageAdminMixin):
 
     def get_parent_path(self):
         assert self.path
-        return u'/'.join(self.path.split('/')[:-1])
+        return '/'.join(self.path.split('/')[:-1])
 
     def copy_to_site(self, site, **extra_keys):
         parent_path = self.get_parent_path()
@@ -389,7 +378,7 @@ class Page(models.Model, RenderPageMixin, PageAdminMixin):
             counter = 0
             while True:
                 counter += 1
-                page_copy_attrs['slug'] = "{original_slug}-copy-{counter}".format(original_slug=original_slug, counter=counter)
+                page_copy_attrs['slug'] = f"{original_slug}-copy-{counter}"
                 if not Page.objects.filter(site=site, parent=parent, slug=page_copy_attrs['slug']).exists():
                     break
 
@@ -433,7 +422,7 @@ class Page(models.Model, RenderPageMixin, PageAdminMixin):
             child_page.save()
 
     def __str__(self):
-        return u'{title} ({site})'.format(title=self.title, site=self.site)
+        return f'{self.title} ({self.site})'
 
     class Meta:
         verbose_name = 'sivu'
@@ -444,9 +433,8 @@ class Page(models.Model, RenderPageMixin, PageAdminMixin):
         ordering = ('order',)
 
 
-@python_2_unicode_compatible
 class Redirect(models.Model):
-    site = models.ForeignKey(Site)
+    site = models.ForeignKey(Site, on_delete=models.CASCADE)
     path = models.CharField(**CommonFields.path)
     target = models.CharField(max_length=1023)
 
@@ -459,9 +447,8 @@ class Redirect(models.Model):
         verbose_name_plural = 'uudelleenohjaukset'
 
 
-@python_2_unicode_compatible
 class BlogCategory(models.Model):
-    site = models.ForeignKey(Site, verbose_name='Sivusto')
+    site = models.ForeignKey(Site, verbose_name='Sivusto', on_delete=models.CASCADE)
     slug = models.CharField(**CommonFields.slug)
     title = models.CharField(**CommonFields.title)
 
@@ -473,16 +460,10 @@ class BlogCategory(models.Model):
         return reverse("content_blog_category_index_view", args=(self.slug,))[1:] # remove leading /
 
     def get_absolute_url(self):
-        return u'//{domain}/{path}'.format(
-            domain=self.site.domain,
-            path=self.path,
-        )
+        return f'//{self.site.domain}/{self.path}'
 
     def __str__(self):
-        return u'{title} ({domain})'.format(
-            title=self.title,
-            domain=self.site.domain if self.site else None,
-        )
+        return f'{self.title} ({self.site.domain if self.site else None})'
 
     def save(self, *args, **kwargs):
         if self.title and not self.slug:
@@ -498,13 +479,12 @@ class BlogCategory(models.Model):
 
 
 STATE_CHOICES = [
-    ('draft', u'Luonnos'),
-    ('review', u'Odottaa tarkistusta'),
-    ('ready', u'Valmis julkaistavaksi'),
+    ('draft', 'Luonnos'),
+    ('review', 'Odottaa tarkistusta'),
+    ('ready', 'Valmis julkaistavaksi'),
 ]
 
 
-@python_2_unicode_compatible
 class BlogPost(models.Model, RenderPageMixin, PageAdminMixin):
     site = models.ForeignKey(Site, related_name='blog_post_set', **CommonFields.site)
     path = models.CharField(**CommonFields.path)
@@ -520,6 +500,7 @@ class BlogPost(models.Model, RenderPageMixin, PageAdminMixin):
         blank=True,
         verbose_name='Tekijä',
         help_text='Jos jätät kentän tyhjäksi, tekijäksi asetetaan automaattisesti sinut.',
+        on_delete=models.SET_NULL,
     )
 
     state = models.CharField(
@@ -585,7 +566,7 @@ class BlogPost(models.Model, RenderPageMixin, PageAdminMixin):
             if len(plain_text) <= max_chars:
                 return plain_text
             else:
-                return plain_text[:max_chars] + u'…'
+                return plain_text[:max_chars] + '…'
 
     @property
     def template(self):
@@ -608,7 +589,7 @@ class BlogPost(models.Model, RenderPageMixin, PageAdminMixin):
 
     @property
     def categories_html(self):
-        return u', '.join(
+        return ', '.join(
             '<a href="{href}">{title}</a>'.format(
                 href=category.get_absolute_url(),
                 title=category.title,
@@ -616,10 +597,7 @@ class BlogPost(models.Model, RenderPageMixin, PageAdminMixin):
         )
 
     def get_absolute_url(self):
-        return u'//{domain}/{path}'.format(
-            domain=self.site.domain,
-            path=self.path,
-        )
+        return f'//{self.site.domain}/{self.path}'
 
     def get_comments(self):
         return self.blog_comment_set.filter(removed_at__isnull=True)
@@ -627,8 +605,8 @@ class BlogPost(models.Model, RenderPageMixin, PageAdminMixin):
     def _make_path(self):
         return reverse('content_blog_post_view', kwargs=dict(
             year=self.date.year,
-            month="{:02d}".format(self.date.month),
-            day="{:02d}".format(self.date.day),
+            month=f"{self.date.month:02d}",
+            day=f"{self.date.day:02d}",
             slug=self.slug,
         ))[1:] # remove leading /
 
@@ -653,9 +631,8 @@ class BlogPost(models.Model, RenderPageMixin, PageAdminMixin):
         ordering = ('-date', '-public_from')
 
 
-@python_2_unicode_compatible
 class BlogComment(models.Model):
-    blog_post = models.ForeignKey(BlogPost, verbose_name='Blogipostaus', db_index=True, related_name='blog_comment_set')
+    blog_post = models.ForeignKey(BlogPost, verbose_name='Blogipostaus', db_index=True, related_name='blog_comment_set', on_delete=models.CASCADE)
     author_name = models.CharField(
         max_length=1023,
         verbose_name='Nimi tai nimimerkki',
@@ -687,6 +664,7 @@ class BlogComment(models.Model):
         null=True,
         blank=True,
         verbose_name='Piilottaja',
+        on_delete=models.SET_NULL,
     )
 
     def admin_get_site(self):
@@ -697,7 +675,7 @@ class BlogComment(models.Model):
     @property
     def excerpt(self):
         if self.comment and len(self.comment) > BlogComment.admin_get_excerpt.max_length:
-            return self.comment[:BlogComment.admin_get_excerpt.max_length] + u'…'
+            return self.comment[:BlogComment.admin_get_excerpt.max_length] + '…'
         else:
             return self.comment
 
@@ -718,14 +696,14 @@ class BlogComment(models.Model):
     admin_is_active.admin_order_field = 'removed_at'
 
     def get_absolute_url(self):
-        return self.blog_post.get_absolute_url() + u'#comment-{id}'.format(id=self.id)
+        return self.blog_post.get_absolute_url() + f'#comment-{self.id}'
 
     @property
     def edit_link(self):
         return reverse('admin:content_blogcomment_change', args=(self.id,))
 
     def send_mail_to_moderators(self, request):
-        subject = "{site_title}: Uusi blogikommentti".format(site_title=request.site.site_settings.title)
+        subject = f"{request.site.site_settings.title}: Uusi blogikommentti"
         body = get_template('content_email_blog_new_comment.eml').render(dict(
             site_settings=request.site.site_settings,
             blog_comment=self,

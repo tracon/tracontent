@@ -3,11 +3,12 @@ kind: PersistentVolumeClaim
 metadata:
   labels:
     stack: tracontent
-    component: tracontent
-  name: tracontent-media
+    component: postgres
+  name: postgres-data
 spec:
+  storageClass: !Var postgres_storage_pvc_storageclass
   accessModes:
-  - ReadWriteMany
+  - ReadWriteOnce
   resources:
     requests:
       storage: 1000Mi

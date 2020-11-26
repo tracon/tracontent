@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.db import models, migrations
 from django.conf import settings
 
@@ -25,6 +22,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='blogcomment',
             name='removed_by',
-            field=models.ForeignKey(verbose_name='Piilottaja', blank=True, to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(verbose_name='Piilottaja', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL),
         ),
     ]

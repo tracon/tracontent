@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 from unittest import skip
 
 from django.test import TestCase, Client

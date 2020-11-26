@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.db import models, migrations
 from django.conf import settings
 import django.core.validators
@@ -25,7 +22,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='blogpost',
             name='author',
-            field=models.ForeignKey(blank=True, to=settings.AUTH_USER_MODEL, help_text='Jos j\xe4t\xe4t kent\xe4n tyhj\xe4ksi, tekij\xe4ksi asetetaan automaattisesti sinut.', null=True, verbose_name='Tekij\xe4'),
+            field=models.ForeignKey(blank=True, to=settings.AUTH_USER_MODEL, help_text='Jos j\xe4t\xe4t kent\xe4n tyhj\xe4ksi, tekij\xe4ksi asetetaan automaattisesti sinut.', null=True, verbose_name='Tekij\xe4', on_delete=models.SET_NULL),
         ),
         migrations.AddField(
             model_name='blogpost',
@@ -58,7 +55,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='blogpost',
             name='site',
-            field=models.ForeignKey(related_name='blog_post_set', verbose_name='Sivusto', to='sites.Site', help_text='Sivusto, jolle t\xe4m\xe4 sivu kuuluu. HUOM! Kun haluat luoda saman sivun toiselle sivustolle, \xe4l\xe4 siirr\xe4 vanhaa sivua vaan k\xe4yt\xe4 sivunkopiointitoimintoa.'),
+            field=models.ForeignKey(related_name='blog_post_set', verbose_name='Sivusto', to='sites.Site', help_text='Sivusto, jolle t\xe4m\xe4 sivu kuuluu. HUOM! Kun haluat luoda saman sivun toiselle sivustolle, \xe4l\xe4 siirr\xe4 vanhaa sivua vaan k\xe4yt\xe4 sivunkopiointitoimintoa.', on_delete=models.CASCADE),
         ),
         migrations.AlterField(
             model_name='blogpost',
@@ -83,6 +80,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='sitesettings',
             name='site',
-            field=models.OneToOneField(related_name='site_settings', verbose_name='Sivusto', to='sites.Site'),
+            field=models.OneToOneField(related_name='site_settings', verbose_name='Sivusto', to='sites.Site', on_delete=models.CASCADE),
         ),
     ]
