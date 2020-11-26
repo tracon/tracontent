@@ -12,7 +12,7 @@ redis_hostname: redis-ha-haproxy.redis-ha.svc.cluster.local
 redis_broker_database: 9
 redis_cache_database: 10
 
-tracnotent_secret_managed: false
+tracontent_secret_managed: false
 tracontent_storage_pvc: true
 tracontent_storage_pvc_storageclass: longhorn-nfs
 
