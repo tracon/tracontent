@@ -99,7 +99,7 @@ tracontent_environment:
     valueFrom:
       secretKeyRef:
         name: tracontent
-        key: kompassiClientId
+        key: kompassiClientSecret
   - name: SECRET_KEY
     valueFrom:
       secretKeyRef:
