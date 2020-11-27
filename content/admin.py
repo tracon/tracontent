@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.sites.models import Site
-from django.db import ProgrammingError
+from django.db import ProgrammingError, OperationalError
 from django.forms import ValidationError
 from django.utils.timezone import now
 from django import forms
@@ -167,7 +167,7 @@ class PageAdmin(VersionAdmin):
                 _copy_to_site.short_description = f"Kopioi valitut sivut luonnoksiksi sivustoon: {site.domain}"
 
                 _actions.append(_copy_to_site)
-        except ProgrammingError:
+        except (ProgrammingError, OperationalError):
             pass
 
         return _actions

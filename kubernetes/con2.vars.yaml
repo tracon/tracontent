@@ -16,6 +16,15 @@ tracontent_secret_managed: false
 tracontent_storage_pvc: true
 tracontent_storage_pvc_storageclass: longhorn-nfs
 
+tracontent_editor_groups:
+  - con2-staff
+
+tracontent_admins:
+  - Santtu Pajukanta <santtu@pajukanta.fi>
+
+smtp_server: sr1.pahaip.fi
+smtp_default_from_email: root@tracon.fi
+
 setup_should_run: true
 
 ingress_letsencrypt_enabled: true

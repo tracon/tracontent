@@ -23,6 +23,17 @@ postgres_ssl: true
 tracontent_storage_pvc: true
 tracontent_storage_pvc_storageclass: longhorn-nfs
 
+tracontent_editor_groups:
+  - turska-tracon2021-labour-conitea
+  - turska-hitpoint2020-labour-conitea
+  - traconry-hallitus-nykyinen
+
+tracontent_admins:
+  - Santtu Pajukanta <santtu@pajukanta.fi>
+
+smtp_server: sr1.pahaip.fi
+smtp_default_from_email: root@tracon.fi
+
 setup_should_run: false
 
 ingress_letsencrypt_enabled: true
