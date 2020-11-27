@@ -17,6 +17,11 @@ tracontent_storage_nfs_path: /
 tracontent_secret_managed: true
 tracontent_secret_key: ''
 
+tracontent_editor_groups:
+  - tracontent-staff
+
+tracontent_admins: []
+
 # Set this to the public hostname of your service.
 ingress_public_hostnames:
   - tracontent.localhost
@@ -40,6 +45,9 @@ postgres_database: tracontent
 postgres_username: tracontent
 postgres_password: ''
 postgres_storage_pvc_storageclass: !Void
+
+smtp_server: ''
+smtp_default_from_email: ''
 
 # note: managed postgres doesn't provide ssl, only enable if using external postgres
 postgres_ssl: false
@@ -100,6 +108,10 @@ tracontent_environment:
       secretKeyRef:
         name: tracontent
         key: kompassiClientSecret
+  - name: KOMPASSI_EDITOR_GROUPS
+    value: !Join
+      items: !Var tracontent_editor_groups
+      separator: " "
   - name: SECRET_KEY
     valueFrom:
       secretKeyRef:
@@ -109,6 +121,14 @@ tracontent_environment:
     value: !Join
       items: !Var ingress_public_hostnames
       separator: " "
+  - name: EMAIL_HOST
+    value: !Var smtp_server
+  - name: DEFAULT_FROM_EMAIL
+    value: !Var smtp_default_from_email
+  - name: ADMINS
+    value: !Join
+      items: !Var tracontent_admins
+      separator: ","
 
 # Common volumes for tracontent, celery and nginx pods.
 tracontent_media_volume_mounts:
