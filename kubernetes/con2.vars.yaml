@@ -9,8 +9,7 @@ postgres_ssl: true
 
 redis_managed: false
 redis_hostname: redis-ha-haproxy.redis-ha.svc.cluster.local
-redis_broker_database: 9
-redis_cache_database: 10
+redis_cache_database: 2
 
 tracontent_secret_managed: false
 tracontent_storage_pvc: true
