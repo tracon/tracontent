@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.db import models, migrations
 from django.conf import settings
 
@@ -23,8 +20,8 @@ class Migration(migrations.Migration):
                 ('comment', models.TextField()),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('removed_at', models.DateTimeField(null=True, blank=True)),
-                ('blog_post', models.ForeignKey(related_name='blog_comment_set', verbose_name='Blogipostaus', to='content.BlogPost')),
-                ('removed_by', models.ForeignKey(blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('blog_post', models.ForeignKey(related_name='blog_comment_set', verbose_name='Blogipostaus', to='content.BlogPost', on_delete=models.CASCADE)),
+                ('removed_by', models.ForeignKey(blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)),
             ],
             options={
                 'ordering': ('-created_at',),

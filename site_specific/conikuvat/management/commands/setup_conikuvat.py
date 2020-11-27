@@ -1,7 +1,3 @@
-# encoding: utf-8
-
-from __future__ import print_function, unicode_literals
-
 from datetime import datetime, timedelta, date
 
 from django.contrib.auth.models import User
@@ -32,7 +28,7 @@ class Setup(object):
         self.domain = domain
 
     def setup(self):
-        print('NOTE: Setting up conikuvat site at {domain}'.format(domain=self.domain))
+        print(f'NOTE: Setting up conikuvat site at {self.domain}')
         self.setup_site()
         self.setup_content()
         self.setup_ads()
@@ -70,7 +66,7 @@ class Setup(object):
                 slug=page_slug,
                 defaults=dict(
                     title=page_title,
-                    body='Placeholder for {slug}'.format(slug=page_slug),
+                    body=f'Placeholder for {page_slug}',
                     public_from=t,
                     visible_from=t,
                     order=ordering,
@@ -87,7 +83,7 @@ class Setup(object):
                     slug=child_slug,
                     defaults=dict(
                         title=child_title,
-                        body='Placeholder for {slug}'.format(slug=child_slug),
+                        body=f'Placeholder for {child_slug}',
                         public_from=t,
                         visible_from=t,
                         order=child_ordering,
@@ -126,6 +122,6 @@ class Setup(object):
 
                     banner.save()
 
-                    banner.sites = [self.site,]
+                    banner.sites.set([self.site,])
                     banner.save()
 

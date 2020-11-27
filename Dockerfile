@@ -1,4 +1,4 @@
-FROM python:3.7
+FROM python:3.9
 WORKDIR /usr/src/app
 COPY requirements.txt /usr/src/app/
 RUN groupadd -r tracontent && useradd -r -g tracontent tracontent && \
@@ -13,4 +13,4 @@ VOLUME /usr/src/app/media
 USER tracontent
 EXPOSE 8000
 ENTRYPOINT ["/usr/src/app/scripts/docker-entrypoint.sh"]
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["gunicorn", "--bind=0.0.0.0", "--workers=4", "--access-logfile=-", "--capture-output", "tracontent.wsgi"]

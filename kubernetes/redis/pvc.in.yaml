@@ -3,9 +3,10 @@ kind: PersistentVolumeClaim
 metadata:
   labels:
     stack: tracontent
-    component: postgres
-  name: postgres-data
+    component: redis
+  name: redis-data
 spec:
+  storageClass: !Var postgres_storage_pvc_storageclass
   accessModes:
   - ReadWriteOnce
   resources:

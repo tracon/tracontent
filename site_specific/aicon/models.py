@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 from django.db import models
 
 
@@ -46,8 +44,8 @@ class Organizer(models.Model):
     )
 
     class Meta:
-        verbose_name = u'Järjestäjä'
-        verbose_name_plural = u'Järjestäjät'
+        verbose_name = 'Järjestäjä'
+        verbose_name_plural = 'Järjestäjät'
         ordering = ('order', 'last_name', 'first_name')
 
     def __unicode__(self):
@@ -56,13 +54,6 @@ class Organizer(models.Model):
     @property
     def name(self):
         if self.nick:
-            return u'{first_name} ”{nick}” {last_name}'.format(
-                first_name=self.first_name,
-                nick=self.nick,
-                last_name=self.last_name,
-            )
+            return f'{self.first_name} ”{self.nick}” {self.last_name}'
         else:
-            return u'{first_name} {last_name}'.format(
-                first_name=self.first_name,
-                last_name=self.last_name,
-            )
+            return f'{self.first_name} {self.last_name}'

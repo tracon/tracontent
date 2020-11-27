@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.db import models, migrations
 
 
@@ -19,7 +16,7 @@ class Migration(migrations.Migration):
                 ('url', models.CharField(help_text='Bannerin klikkaaja ohjataan t\xe4h\xe4n osoitteeseen.', max_length=1023, verbose_name='Osoite')),
                 ('image_file', models.FileField(upload_to=b'banners')),
                 ('active', models.BooleanField(default=True, help_text='Voit piilottaa bannerin poistamatta sit\xe4 ottamalla t\xe4st\xe4 ruksin pois.', verbose_name='Aktiivinen')),
-                ('site', models.ForeignKey(verbose_name='Sivusto', to='sites.Site')),
+                ('site', models.ForeignKey(verbose_name='Sivusto', to='sites.Site', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'banneri',
@@ -32,7 +29,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('date', models.DateField(verbose_name='P\xe4iv\xe4m\xe4\xe4r\xe4')),
                 ('clicks', models.IntegerField(verbose_name='Klikkauksia')),
-                ('banner', models.ForeignKey(related_name='banner_click_set', verbose_name='Banneri', to='ads.Banner')),
+                ('banner', models.ForeignKey(related_name='banner_click_set', verbose_name='Banneri', to='ads.Banner', on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'bannerin klikkaukset',

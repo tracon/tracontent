@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 import re
 
 from django import forms
@@ -37,7 +35,7 @@ class BlogCommentForm(forms.ModelForm):
             'author_email',
             'comment',
             'kissa',
-            Submit('submit', u'Lähetä', css_class='btn-success')
+            Submit('submit', 'Lähetä', css_class='btn-success')
         )
 
     class Meta:

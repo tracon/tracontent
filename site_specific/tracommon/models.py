@@ -9,7 +9,7 @@ DAY_CHOICES = [
 
 
 class Artist(models.Model):
-    site = models.ForeignKey('sites.Site')
+    site = models.ForeignKey('sites.Site', on_delete=models.CASCADE)
     day = models.CharField(max_length=max(len(i) for (i, j) in DAY_CHOICES), default=DAY_CHOICES[0][0], choices=DAY_CHOICES)
     table_number = models.IntegerField(blank=True, null=True)
     name = models.CharField(max_length=255)
