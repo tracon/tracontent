@@ -9,4 +9,4 @@ def ads_banner_redirect_view(request, banner_id):
     if not request.user.is_staff:
         BannerClick.click(request.site, banner)
 
-    return redirect(banner.path)
+    return redirect(banner.url)
