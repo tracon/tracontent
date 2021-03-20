@@ -101,7 +101,7 @@ static3==0.7.0
     # via dj-static
 traitlets==5.0.5
     # via ipython
-urllib3==1.26.2
+urllib3==1.26.3
     # via requests
 wcwidth==0.2.5
     # via prompt-toolkit
