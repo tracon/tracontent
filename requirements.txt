@@ -68,7 +68,7 @@ psycopg2==2.8.6
     # via -r requirements.in
 ptyprocess==0.6.0
     # via pexpect
-pygments==2.7.2
+pygments==2.7.4
     # via ipython
 pyparsing==2.4.7
     # via packaging
