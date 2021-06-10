@@ -34,7 +34,7 @@ django-redis==4.12.1
     # via -r requirements.in
 django-reversion==3.0.8
     # via -r requirements.in
-django==3.1.8
+django==3.1.12
     # via
     #   django-redis
     #   django-reversion
