@@ -1,4 +1,4 @@
-ARG BACKEND_IMAGE=tracon/tracontent
+ARG BACKEND_IMAGE
 FROM $BACKEND_IMAGE
 
 FROM nginx:1-alpine
