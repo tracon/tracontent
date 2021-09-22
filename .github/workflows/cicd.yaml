@@ -50,4 +50,4 @@ jobs:
           python3 -m pip install emskaffolden
           base64 -d <<< "${{ needs.build.outputs.build_json }}" > build.json
           emskaffolden -E con2 -- deploy -n tracontent-con2 -a build.json
-          emskaffolden -E production -- deploy -n tracontent-tracon -a build.json
+          emskaffolden -E tracon -- deploy -n tracontent-tracon -a build.json
