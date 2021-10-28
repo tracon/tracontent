@@ -28,8 +28,7 @@ tracontent_storage_pvc: true
 tracontent_storage_pvc_storageclass: longhorn-nfs
 
 tracontent_editor_groups:
-  - turska-tracon2021-labour-conitea
-  - turska-hitpoint2020-labour-conitea
+  - turska-tracon2022-labour-conitea
   - traconry-hallitus-nykyinen
 
 tracontent_admins:
