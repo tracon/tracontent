@@ -20,7 +20,7 @@ decorator==4.4.2
     # via ipython
 dj-static==0.0.6
     # via -r requirements.in
-django==3.1.12
+django==3.1.14
     # via
     #   django-redis
     #   django-reversion
