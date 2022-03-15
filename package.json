@@ -54,7 +54,7 @@
     "mocha": "^2.4.5",
     "moment": "^2.11.2",
     "nib": "^1.1.0",
-    "node-notifier": "^4.5.0",
+    "node-notifier": "^8.0.1",
     "page": "^1.6.4",
     "rimraf": "^2.5.2",
     "vinyl-source-stream": "^1.1.0",
