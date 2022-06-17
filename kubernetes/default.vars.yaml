@@ -153,7 +153,7 @@ tracontent_media_volumes_definition:
           server: !Var tracontent_storage_nfs
           path: !Var tracontent_storage_nfs_path
   - !If
-      test: !Any [!Var tracontent_storage_pvc, !Var tracontent_storage_nfs]
+      test: !Not,Any [!Var tracontent_storage_pvc, !Var tracontent_storage_nfs]
       then:
         name: tracontent-media
         emptyDir: {}
