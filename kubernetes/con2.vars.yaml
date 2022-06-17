@@ -12,7 +12,8 @@ redis_hostname: redis-ha-haproxy.redis-ha.svc.cluster.local
 redis_cache_database: 2
 
 tracontent_secret_managed: false
-tracontent_storage_pvc: true
+# FIXME
+tracontent_storage_pvc: false
 tracontent_storage_pvc_storageclass: longhorn-nfs
 
 tracontent_editor_groups:

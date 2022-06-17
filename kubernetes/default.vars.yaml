@@ -152,6 +152,11 @@ tracontent_media_volumes_definition:
         nfs:
           server: !Var tracontent_storage_nfs
           path: !Var tracontent_storage_nfs_path
+  - !If
+      test: !Any [!Var tracontent_storage_pvc, !Var tracontent_storage_nfs]
+      then:
+        name: tracontent-media
+        emptyDir: {}
 
 # Default annotations work for nginx ingress with or without LetsEncrypt TLS. Override if you need something else.
 ingress_annotations: !Merge
