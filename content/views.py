@@ -113,7 +113,7 @@ def content_blog_post_view(request, year, month, day, slug):
     try:
         post_date = date(int(year), int(month), int(day))
     except ValueError:
-        raise Http404(u'Invalid date')
+        raise Http404('Invalid date')
 
     base_criteria = dict(site=request.site, slug=slug)
 
@@ -128,7 +128,7 @@ def content_blog_post_view(request, year, month, day, slug):
         try:
             blog_post = get_object_or_404(BlogPost, **base_criteria)
         except BlogPost.MultipleObjectsReturned:
-            raise Http404(u'Duplicate slug and wrong date')
+            raise Http404('Duplicate slug and wrong date')
 
         return redirect(blog_post.get_absolute_url())
 

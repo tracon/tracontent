@@ -9,7 +9,7 @@ STAFF_GROUPS.add(settings.KOMPASSI_ADMIN_GROUP)
 
 
 def user_attrs_from_kompassi(kompassi_user):
-    return dict((django_key, accessor_func(kompassi_user)) for (django_key, accessor_func) in [
+    return {django_key: accessor_func(kompassi_user) for (django_key, accessor_func) in [
         ('username', lambda u: u['username']),
         ('email', lambda u: u['email']),
         ('first_name', lambda u: u['first_name']),
@@ -17,17 +17,17 @@ def user_attrs_from_kompassi(kompassi_user):
         ('is_superuser', lambda u: settings.KOMPASSI_ADMIN_GROUP in u['groups']),
         ('is_staff', lambda u: bool(STAFF_GROUPS.intersection(kompassi_user['groups']))),
         ('groups', lambda u: [Group.objects.get_or_create(name=group_name)[0] for group_name in u['groups']]),
-    ])
+    ]}
 
 
 def user_meta_attrs_from_kompassi(kompassi_user):
-    return dict((django_key, accessor_func(kompassi_user)) for (django_key, accessor_func) in [
+    return {django_key: accessor_func(kompassi_user) for (django_key, accessor_func) in [
         ('nick', lambda u: u['nick']),
         ('preferred_name_display_style', lambda u: u['preferred_name_display_style']),
-    ])
+    ]}
 
 
-class KompassiOAuth2AuthenticationBackend(object):
+class KompassiOAuth2AuthenticationBackend:
     def authenticate(self, request, oauth2_session=None, **kwargs):
         if oauth2_session is None:
             # Not ours (password login)

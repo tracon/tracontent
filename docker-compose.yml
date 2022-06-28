@@ -18,6 +18,10 @@ services:
       TRACONTENT_SITE: ${TRACONTENT_SITE:-hitpoint2019}
       TRACONTENT_HOSTNAME: localhost
       CACHE_URL: memcache://memcache
+      MINIO_BUCKET_NAME: tracontent
+      MINIO_ACCESS_KEY_ID: tracontent
+      MINIO_SECRET_ACCESS_KEY: tracontent
+      MINIO_ENDPOINT_URL: http://minio:9000
   postgres:
     image: postgres
     volumes:
@@ -29,8 +33,19 @@ services:
   memcache:
     image: memcached
     init: true
+  minio:
+    image: minio/minio
+    entrypoint: /usr/bin/env
+    command: sh -c 'mkdir -p /data/tracontent && minio server /data --console-address ":9001"'
+    ports:
+      - 9000:9000
+      - 9001:9001
+    volumes:
+      - minio-data:/data
+    environment:
+      MINIO_ROOT_USER: tracontent
+      MINIO_ROOT_PASSWORD: tracontent
 volumes:
-  postgres-data:
-    driver: local
-  tracontent-media:
-    driver: local
+  postgres-data: {}
+  tracontent-media: {}
+  minio-data: {}

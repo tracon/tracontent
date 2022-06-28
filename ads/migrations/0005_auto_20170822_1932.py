@@ -10,6 +10,6 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterUniqueTogether(
             name='bannerclick',
-            unique_together=set([('site', 'banner', 'date')]),
+            unique_together={('site', 'banner', 'date')},
         ),
     ]

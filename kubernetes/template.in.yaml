@@ -67,7 +67,8 @@
 !Include nginx/service.in.yaml
 ---
 !Include nginx/deployment.in.yaml
-
+---
+!Include nginx/configmap.in.yaml
 
 ###########
 # INGRESS #

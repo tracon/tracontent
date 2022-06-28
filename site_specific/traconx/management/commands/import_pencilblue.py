@@ -32,8 +32,8 @@ class Command(BaseCommand):
             site=tc_site,
             slug='imported',
             defaults=dict(
-                title=u'PencilBluesta tuodut sivut',
-                body=u'<p>Tämän sivun alasivut on tuotu automaattisesti PencilBluesta.</p>'
+                title='PencilBluesta tuodut sivut',
+                body='<p>Tämän sivun alasivut on tuotu automaattisesti PencilBluesta.</p>'
             )
         )
 

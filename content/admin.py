@@ -20,16 +20,16 @@ from .models import (
 from django.urls import re_path
 
 
-class CommonAdminFormMixin(object):
+class CommonAdminFormMixin:
     def clean_visible_from(self):
         public_from = self.cleaned_data.get('public_from')
         visible_from = self.cleaned_data.get('visible_from')
 
         if visible_from:
             if not public_from:
-                raise forms.ValidationError(u'Jotta sivu voi olla näkyvissä, sen tulee myös olla julkinen')
+                raise forms.ValidationError('Jotta sivu voi olla näkyvissä, sen tulee myös olla julkinen')
             elif public_from > visible_from:
-                raise forms.ValidationError(u'Sivun täytyy tulla julkiseksi viimeistään samalla hetkellä kun se tulee näkyväksi')
+                raise forms.ValidationError('Sivun täytyy tulla julkiseksi viimeistään samalla hetkellä kun se tulee näkyväksi')
 
         return visible_from
 
@@ -103,7 +103,7 @@ class PageAdminForm(forms.ModelForm, CommonAdminFormMixin):
         parent = self.cleaned_data.get('parent')
 
         if site and parent and parent.site != site:
-            raise forms.ValidationError(u'Yläsivun tulee olla valitulla sivustolla')
+            raise forms.ValidationError('Yläsivun tulee olla valitulla sivustolla')
 
         return site
 
@@ -124,7 +124,7 @@ class PageAdminTabularInline(admin.TabularInline):
     max_num = 0
 
 
-class classproperty(object):
+class classproperty:
     def __init__(self, f):
         self.f = f
     def __get__(self, obj, owner):
@@ -142,13 +142,13 @@ class PageAdmin(VersionAdmin):
     search_fields = ('path', 'title')
     inlines = (PageAdminTabularInline,)
     fieldsets = (
-        (u'Sisältö', dict(
+        ('Sisältö', dict(
             fields=('title', 'body')
         )),
-        (u'Julkaisuasetukset', dict(
+        ('Julkaisuasetukset', dict(
             fields=('parent', 'public_from', 'visible_from', 'header_image')
         )),
-        (u'Lisäasetukset', dict(
+        ('Lisäasetukset', dict(
             fields=('site', 'order', 'slug', 'path', 'override_menu_text', 'override_page_template', 'created_at', 'updated_at'),
             classes=('collapse',),
         ))
@@ -176,7 +176,7 @@ class PageAdmin(VersionAdmin):
         if db_field.name == 'site':
             kwargs['initial'] = request.site
 
-        return super(PageAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 class RedirectAdmin(VersionAdmin):
@@ -193,7 +193,7 @@ class BlogPostAdminForm(forms.ModelForm, CommonAdminFormMixin):
     )
 
     def __init__(self, *args, **kwargs):
-        super(BlogPostAdminForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.fields['date'].initial = now().date()
 
@@ -206,12 +206,12 @@ class BlogPostAdminForm(forms.ModelForm, CommonAdminFormMixin):
                 self.fields['categories'].queryset = BlogCategory.objects.filter(site=site)
 
     def clean(self):
-        cleaned_data = super(BlogPostAdminForm, self).clean()
+        cleaned_data = super().clean()
         site = self.cleaned_data.get('site')
         categories = self.cleaned_data.get('categories')
 
         if categories and site and any(category.site != site for category in categories):
-            raise ValidationError(u'Kaikkien kategorioiden, joihin postaus kuuluu, tulee olla samalla sivustolla postauksen kanssa.')
+            raise ValidationError('Kaikkien kategorioiden, joihin postaus kuuluu, tulee olla samalla sivustolla postauksen kanssa.')
 
     class Meta:
         model = BlogPost
@@ -226,16 +226,16 @@ class BlogPostAdmin(VersionAdmin):
     readonly_fields = ('path', 'created_at', 'updated_at')
     view_on_site = True
     fieldsets = (
-        (u'Sisältö', dict(
+        ('Sisältö', dict(
             fields=('title', 'override_excerpt', 'body'),
         )),
-        (u'Sisäiset muistiinpanot', dict(
+        ('Sisäiset muistiinpanot', dict(
             fields=('state', 'internal_notes'),
         )),
-        (u'Julkaisuasetukset', dict(
+        ('Julkaisuasetukset', dict(
             fields=('date', 'public_from', 'visible_from', 'categories', 'is_featured'),
         )),
-        (u'Lisäasetukset', dict(
+        ('Lisäasetukset', dict(
             fields=('site', 'slug', 'author', 'path', 'created_at', 'updated_at'),
             classes=('collapse',),
         ))
@@ -248,7 +248,7 @@ class BlogPostAdmin(VersionAdmin):
         elif db_field.name == 'author':
             kwargs['initial'] = request.user
 
-        return super(BlogPostAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 def hide_selected_blog_comments(modeladmin, request, queryset):
@@ -262,10 +262,10 @@ restore_selected_blog_comments.short_description = 'Palauta valitut blogikomment
 
 
 class BlogCommentAdminForm(forms.ModelForm):
-    is_active = forms.BooleanField(label=u'Näkyvissä', help_text=u'Poistamalla ruksin tästä voit piilottaa asiattoman kommentin sivustolta.', required=False)
+    is_active = forms.BooleanField(label='Näkyvissä', help_text='Poistamalla ruksin tästä voit piilottaa asiattoman kommentin sivustolta.', required=False)
 
     def __init__(self, *args, **kwargs):
-        super(BlogCommentAdminForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.fields['is_active'].initial = self.instance.removed_at is None
 
@@ -283,13 +283,13 @@ class BlogCommentAdmin(admin.ModelAdmin):
     actions = [hide_selected_blog_comments, restore_selected_blog_comments]
 
     fieldsets = (
-        (u'Kommentti', dict(
+        ('Kommentti', dict(
             fields=('blog_post', 'created_at', 'comment'),
         )),
-        (u'Kirjoittaja', dict(
+        ('Kirjoittaja', dict(
             fields=('author_name', 'author_email', 'author_ip_address'),
         )),
-        (u'Moderointi', dict(
+        ('Moderointi', dict(
             fields=('is_active', 'removed_at', 'removed_by'),
         ))
     )
@@ -301,7 +301,7 @@ class BlogCommentAdmin(admin.ModelAdmin):
         return False
 
     def get_actions(self, request):
-        actions = super(BlogCommentAdmin, self).get_actions(request)
+        actions = super().get_actions(request)
         del actions['delete_selected']
         return actions
 

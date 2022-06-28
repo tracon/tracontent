@@ -13,19 +13,19 @@ from .utils import horizontal_form_helper, indented_without_label
 kissa_validator = RegexValidator(
     regex=r'^kissa$',
     flags=re.IGNORECASE,
-    message=u'Vihje: kissa',
+    message='Vihje: kissa',
 )
 
 
 class BlogCommentForm(forms.ModelForm):
     kissa = forms.CharField(
         label='Mikä eläin sanoo miau?',
-        help_text=u'Tällä tarkistamme, että et ole robotti.',
+        help_text='Tällä tarkistamme, että et ole robotti.',
         validators=[kissa_validator,],
     )
 
     def __init__(self, *args, **kwargs):
-        super(BlogCommentForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         # self.helper = horizontal_form_helper()
         self.helper = FormHelper()

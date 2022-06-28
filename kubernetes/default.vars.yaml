@@ -22,6 +22,14 @@ tracontent_editor_groups:
 
 tracontent_admins: []
 
+minio_bucket_name: tracontent
+minio_endpoint_url: http://minio:9000
+minio_internal_url: http://minio.minio.svc.cluster.local
+
+# these only take effect if tracontent_secret_managed: true
+minio_access_key_id: tracontent
+minio_secret_access_key: tracontent
+
 # Set this to the public hostname of your service.
 ingress_public_hostnames:
   - tracontent.localhost
@@ -29,6 +37,8 @@ ingress_public_hostnames:
 # If you use ingress-nginx and cert-manager, TLS can be automatically configured by setting this to true.
 ingress_letsencrypt_enabled: false
 ingress_letsencrypt_cluster_issuer: letsencrypt-prod
+
+ingress_class_name: nginx
 
 redis_managed: true
 redis_image: redis
@@ -129,6 +139,25 @@ tracontent_environment:
     value: !Join
       items: !Var tracontent_admins
       separator: ","
+  - name: SENTRY_DSN
+    valueFrom:
+      secretKeyRef:
+        name: kompassi
+        key: sentryDsn
+  - name: MINIO_BUCKET_NAME
+    value: !Var minio_bucket_name
+  - name: MINIO_ACCESS_KEY_ID
+    valueFrom:
+      secretKeyRef:
+        name: kompassi
+        key: minioAccessKeyId
+  - name: MINIO_SECRET_ACCESS_KEY
+    valueFrom:
+      secretKeyRef:
+        name: kompassi
+        key: minioSecretAccessKey
+  - name: MINIO_ENDPOINT_URL
+    value: !Var minio_endpoint_url
 
 # Common volumes for tracontent, celery and nginx pods.
 tracontent_media_volume_mounts:

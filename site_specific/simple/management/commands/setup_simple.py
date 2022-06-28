@@ -24,7 +24,7 @@ class Command(BaseCommand):
         Setup(domain=options['domain'], name=options['name']).setup()
 
 
-class Setup(object):
+class Setup:
     def __init__(self, domain, name):
         self.domain = domain
         self.name = name

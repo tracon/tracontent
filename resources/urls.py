@@ -1,4 +1,3 @@
-
 from .views import resources_style_sheet_view
 from django.urls import re_path
 

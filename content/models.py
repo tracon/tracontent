@@ -204,7 +204,7 @@ class MenuEntry(BaseMenuEntry):
         return 'active' if self.active else ''
 
 
-class RenderPageMixin(object):
+class RenderPageMixin:
     def render(self, request, **extra_vars):
         vars = dict(page=self)
         vars.update(extra_vars)
@@ -212,7 +212,7 @@ class RenderPageMixin(object):
         return render(request, self.template, vars)
 
 
-class PageAdminMixin(object):
+class PageAdminMixin:
     def admin_is_published(self):
         return self.public_from is not None
     admin_is_published.short_description = 'Julkinen'
@@ -399,7 +399,7 @@ class Page(models.Model, RenderPageMixin, PageAdminMixin):
             page_controller_func = get_code(self.page_controller_code)
             extra_vars.update(page_controller_func(request, self))
 
-        return super(Page, self).render(request, **extra_vars)
+        return super().render(request, **extra_vars)
 
     def _make_path(self):
         if self.parent is None:
@@ -414,7 +414,7 @@ class Page(models.Model, RenderPageMixin, PageAdminMixin):
         if self.slug:
             self.path = self._make_path()
 
-        return_value = super(Page, self).save(*args, **kwargs)
+        return_value = super().save(*args, **kwargs)
 
         # In case path changed, update child pages' paths.
         # TODO prevent parent loop in somewhere else
@@ -469,7 +469,7 @@ class BlogCategory(models.Model):
         if self.title and not self.slug:
             self.slug = slugify(self.title)
 
-        return super(BlogCategory, self).save(*args, **kwargs)
+        return super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Blogin kategoria'
@@ -617,7 +617,7 @@ class BlogPost(models.Model, RenderPageMixin, PageAdminMixin):
         if self.date and self.slug:
             self.path = self._make_path()
 
-        return super(BlogPost, self).save(*args, **kwargs)
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title

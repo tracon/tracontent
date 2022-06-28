@@ -20,6 +20,10 @@ spec:
           ports:
             - containerPort: 80
           volumeMounts:
-            - mountPath: /usr/share/nginx/html/media
-              name: tracontent-media
-      volumes: !Var tracontent_media_volumes_definition
+            - mountPath: /etc/nginx/conf.d
+              name: config
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: nginx

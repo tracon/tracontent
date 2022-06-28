@@ -14,7 +14,7 @@ class BannerAdmin(VersionAdmin):
         if db_field.name == 'sites':
             kwargs['initial'] = [request.site]
 
-        return super(BannerAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 class BannerClickAdmin(admin.ModelAdmin):

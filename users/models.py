@@ -4,16 +4,16 @@ from django.db import models
 
 
 NAME_DISPLAY_STYLE_FORMATS = dict(
-    firstname=u'{self.first_name}',
-    firstname_nick_surname=u'{self.first_name} "{self.nick}" {self.surname}',
-    firstname_surname=u'{self.first_name} {self.surname}',
-    nick=u'{self.nick}',
+    firstname='{self.first_name}',
+    firstname_nick_surname='{self.first_name} "{self.nick}" {self.surname}',
+    firstname_surname='{self.first_name} {self.surname}',
+    nick='{self.nick}',
 )
 NAME_DISPLAY_STYLE_CHOICES = [
-    (u'firstname_nick_surname', 'Etunimi "Nick" Sukunimi'),
-    (u'firstname_surname', 'Etunimi Sukunimi'),
-    (u'firstname', 'Etunimi'),
-    (u'nick', 'Nick'),
+    ('firstname_nick_surname', 'Etunimi "Nick" Sukunimi'),
+    ('firstname_surname', 'Etunimi Sukunimi'),
+    ('firstname', 'Etunimi'),
+    ('nick', 'Nick'),
 ]
 
 
@@ -25,7 +25,7 @@ def delegate_to_user(field_name):
     return _the_property
 
 
-class UserMetaMethodsMixin(object):
+class UserMetaMethodsMixin:
     first_name = delegate_to_user('first_name')
     surname = delegate_to_user('last_name')
 
@@ -58,13 +58,13 @@ class UserMetaMethodsMixin(object):
 
 
 class UserMeta(models.Model, UserMetaMethodsMixin):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, verbose_name=u'Käyttäjä', on_delete=models.CASCADE)
-    nick = models.CharField(blank=True, max_length=1023, help_text=u'Lempi- tai kutsumanimi')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, verbose_name='Käyttäjä', on_delete=models.CASCADE)
+    nick = models.CharField(blank=True, max_length=1023, help_text='Lempi- tai kutsumanimi')
 
     preferred_name_display_style = models.CharField(
         max_length=31,
-        verbose_name=u'Nimen esittäminen',
-        help_text=u'Tässä voit vaikuttaa siihen, missä muodossa nimesi esitetään (esim. painetaan badgeesi).',
+        verbose_name='Nimen esittäminen',
+        help_text='Tässä voit vaikuttaa siihen, missä muodossa nimesi esitetään (esim. painetaan badgeesi).',
         blank=True,
         choices=NAME_DISPLAY_STYLE_CHOICES,
     )

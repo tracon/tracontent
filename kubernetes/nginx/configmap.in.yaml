@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx
+data: !Index
+  over: !Var ingress_public_hostnames
+  as: hostname
+  by: !Format "{hostname}.conf"
+  template: !Format |
+    server {{
+      listen 80;
+      server_name {hostname};
+
+      root /usr/share/nginx/html;
+
+      location /media {{
+        rewrite /media/(.*) /{minio_bucket_name}/$1 break;
+        proxy_pass {minio_internal_url};
+        proxy_redirect off;
+      }}
+
+      location /static {{
+      }}
+
+      location / {{
+        return 400;
+      }}
+    }}

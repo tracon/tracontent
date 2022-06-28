@@ -77,7 +77,7 @@ def get_code(path):
 
 def lorem(paragraphs=5):
     return '\n\n'.join(
-        '<p>{}</p>'.format(par)
+        f'<p>{par}</p>'
         for par in loremipsum.get_paragraphs(paragraphs, start_with_lorem=True)
     )
 

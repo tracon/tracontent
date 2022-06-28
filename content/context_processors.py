@@ -24,7 +24,7 @@ def content_context(request):
             atom=request.build_absolute_uri(reverse('content_blog_feed_atom_view')),
         ),
         tracontent_app_name=app_name,
-        tracontent_footer=u"<a href='https://github.com/tracon/tracontent' target='_blank'>{app_name}"
+        tracontent_footer="<a href='https://github.com/tracon/tracontent' target='_blank'>{app_name}"
             "</a> © 2014–2018 <a href='https://github.com/tracon/tracontent/blob/master/LICENSE'>"
             "Santtu Pajukanta</a>.".format(app_name=app_name)
     )

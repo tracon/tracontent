@@ -4,42 +4,42 @@ from django.db import models
 class Organizer(models.Model):
     image_file = models.FileField(
         upload_to='organizers',
-        verbose_name=u'Naamakuva',
+        verbose_name='Naamakuva',
         blank=True,
         null=True,
     )
 
     first_name = models.CharField(
         max_length=127,
-        verbose_name=u'Etunimi',
+        verbose_name='Etunimi',
     )
 
     last_name = models.CharField(
         max_length=127,
-        verbose_name=u'Sukunimi',
+        verbose_name='Sukunimi',
         blank=True,
     )
 
     nick = models.CharField(
         max_length=127,
-        verbose_name=u'Nick',
+        verbose_name='Nick',
         blank=True,
     )
 
     job_title = models.CharField(
         max_length=127,
-        verbose_name=u'Tehtävä',
+        verbose_name='Tehtävä',
         blank=True,
     )
 
     email = models.EmailField(
-        verbose_name=u'Sähköpostiosoite',
+        verbose_name='Sähköpostiosoite',
         blank=True,
     )
 
     order = models.IntegerField(
-        verbose_name=u'Järjestys',
-        help_text=u'Pienin ensin, samannumeroiset sukunimen mukaan',
+        verbose_name='Järjestys',
+        help_text='Pienin ensin, samannumeroiset sukunimen mukaan',
         default=0,
     )
 

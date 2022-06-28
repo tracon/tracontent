@@ -31,6 +31,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterIndexTogether(
             name='blogcomment',
-            index_together=set([('blog_post', 'removed_at')]),
+            index_together={('blog_post', 'removed_at')},
         ),
     ]

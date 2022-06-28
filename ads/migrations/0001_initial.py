@@ -38,6 +38,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterUniqueTogether(
             name='bannerclick',
-            unique_together=set([('banner', 'date')]),
+            unique_together={('banner', 'date')},
         ),
     ]
