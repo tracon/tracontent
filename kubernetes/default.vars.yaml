@@ -142,19 +142,19 @@ tracontent_environment:
   - name: SENTRY_DSN
     valueFrom:
       secretKeyRef:
-        name: kompassi
+        name: tracontent
         key: sentryDsn
   - name: MINIO_BUCKET_NAME
     value: !Var minio_bucket_name
   - name: MINIO_ACCESS_KEY_ID
     valueFrom:
       secretKeyRef:
-        name: kompassi
+        name: tracontent
         key: minioAccessKeyId
   - name: MINIO_SECRET_ACCESS_KEY
     valueFrom:
       secretKeyRef:
-        name: kompassi
+        name: tracontent
         key: minioSecretAccessKey
   - name: MINIO_ENDPOINT_URL
     value: !Var minio_endpoint_url
