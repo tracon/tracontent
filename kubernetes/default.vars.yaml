@@ -24,7 +24,7 @@ tracontent_admins: []
 
 minio_bucket_name: tracontent
 minio_endpoint_url: http://minio:9000
-minio_internal_url: http://minio.minio.svc.cluster.local
+minio_internal_url: http://minio.minio.svc.cluster.local:9000
 
 # these only take effect if tracontent_secret_managed: true
 minio_access_key_id: tracontent
