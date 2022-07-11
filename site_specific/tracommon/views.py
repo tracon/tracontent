@@ -25,7 +25,8 @@ def artists_alley_page_controller(request, page):
         criteria.update(days__slug=day)
 
     artist_filters = [("", "Kaikki", not day)] + [
-        (d.slug, d.name, day == d.slug) for d in Day.objects.filter(site=request.site)
+        (d.slug, d.name.capitalize(), day == d.slug)
+        for d in Day.objects.filter(site=request.site)
     ]
 
     return dict(
