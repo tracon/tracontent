@@ -9,16 +9,20 @@ block content
         small
           include content_blog_post_meta.html
     {{ blog_post.body|safe }}
-  h2 Kommentit
-  if blog_comments
-    for comment in blog_comments
-      .tracon-blog-comment
-        a.tracon-blog-comment-anchor(id='comment-{{ comment.id }}')
-        p.text-muted: small {{ comment.author_name }} {{ comment.created_at|date:"j.n.Y G:i:s"}}
-        {{ comment.comment|linebreaks }}
-  else
-    p.text-muted Ei kommentteja.
-  h3 Lähetä kommentti
-  .row
-    .tracon-blog-comment.col-md-8
-      {% crispy blog_comment_form %}
+  if blog_comments or blog_post.is_commenting_enabled
+    h2 Kommentit
+    if blog_comments
+      for comment in blog_comments
+        .tracon-blog-comment
+          a.tracon-blog-comment-anchor(id='comment-{{ comment.id }}')
+          p.text-muted: small {{ comment.author_name }} {{ comment.created_at|date:"j.n.Y G:i:s"}}
+          {{ comment.comment|linebreaks }}
+    else
+      p.text-muted Ei kommentteja.
+    if blog_post.is_commenting_enabled
+      h3 Lähetä kommentti
+      .row
+        .tracon-blog-comment.col-md-8
+          {% crispy blog_comment_form %}
+    else
+      p.text-muted Kommentointi on suljettu.

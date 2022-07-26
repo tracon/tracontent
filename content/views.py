@@ -42,7 +42,7 @@ def content_page_view(request, path):
 @cache_control(public=True, max_age=5 * 60)
 @cache_page(5 * 60)
 def content_cached_page_view(request, path):
-    print('Cache miss:', path)
+    print("Cache miss:", path)
     return content_page_view(request, path)
 
 
@@ -50,10 +50,11 @@ class BlogIndexPseudoPage(RenderPageMixin):
     """
     Renders a default blog index into the site base template.
     """
+
     def __init__(self, site, title):
         self.site = site
         self.title = title
-        self.body = ''
+        self.body = ""
         self.template = site.site_settings.page_template
 
 
@@ -63,7 +64,9 @@ def content_blog_index_view(request, category_slug=None):
 
     # Look for redirect at the current path
     try:
-        current_url_redirect = Redirect.objects.get(site=request.site, path=request.path[1:])
+        current_url_redirect = Redirect.objects.get(
+            site=request.site, path=request.path[1:]
+        )
     except Redirect.DoesNotExist:
         pass
     else:
@@ -73,12 +76,14 @@ def content_blog_index_view(request, category_slug=None):
     post_criteria = dict()
 
     if category_slug is not None:
-        category = get_object_or_404(BlogCategory, site=request.site, slug=category_slug)
+        category = get_object_or_404(
+            BlogCategory, site=request.site, slug=category_slug
+        )
         page_criteria.update(path=category.path)
         post_criteria.update(categories=category)
     else:
         category = None
-        page_criteria.update(path='blog')
+        page_criteria.update(path="blog")
 
     if not request.user.is_staff:
         # Only show published pages
@@ -87,7 +92,7 @@ def content_blog_index_view(request, category_slug=None):
     try:
         page = Page.objects.get(**page_criteria)
     except Page.DoesNotExist:
-        title = category.title if category else 'Blog'
+        title = category.title if category else "Blog"
         page = BlogIndexPseudoPage(request.site, title)
 
     vars = dict(
@@ -98,13 +103,15 @@ def content_blog_index_view(request, category_slug=None):
     return render(request, site_settings.blog_index_template, vars)
 
 
-@require_http_methods(['GET', 'HEAD', 'POST'])
+@require_http_methods(["GET", "HEAD", "POST"])
 def content_blog_post_view(request, year, month, day, slug):
     site_settings = request.site.site_settings
 
     # Look for redirect at the current path
     try:
-        current_url_redirect = Redirect.objects.get(site=request.site, path=request.path[1:])
+        current_url_redirect = Redirect.objects.get(
+            site=request.site, path=request.path[1:]
+        )
     except Redirect.DoesNotExist:
         pass
     else:
@@ -113,7 +120,7 @@ def content_blog_post_view(request, year, month, day, slug):
     try:
         post_date = date(int(year), int(month), int(day))
     except ValueError:
-        raise Http404('Invalid date')
+        raise Http404("Invalid date")
 
     base_criteria = dict(site=request.site, slug=slug)
 
@@ -128,13 +135,17 @@ def content_blog_post_view(request, year, month, day, slug):
         try:
             blog_post = get_object_or_404(BlogPost, **base_criteria)
         except BlogPost.MultipleObjectsReturned:
-            raise Http404('Duplicate slug and wrong date')
+            raise Http404("Duplicate slug and wrong date")
 
         return redirect(blog_post.get_absolute_url())
 
     blog_comment_form = initialize_form(BlogCommentForm, request)
 
-    if request.method == 'POST' and blog_comment_form.is_valid():
+    if (
+        request.method == "POST"
+        and blog_post.is_commenting_enabled
+        and blog_comment_form.is_valid()
+    ):
         blog_comment = blog_comment_form.save(commit=False)
         blog_comment.blog_post = blog_post
         blog_comment.author_ip_address, unused = get_client_ip(request)
@@ -144,7 +155,8 @@ def content_blog_post_view(request, year, month, day, slug):
 
         return redirect(blog_post.get_absolute_url())
 
-    return blog_post.render(request,
+    return blog_post.render(
+        request,
         blog_post=blog_post,
         blog_comment_form=blog_comment_form,
         blog_comments=list(blog_post.get_comments()),
