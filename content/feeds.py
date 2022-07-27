@@ -1,10 +1,6 @@
-from collections import namedtuple
-
 from django.contrib.syndication.views import Feed
 from django.utils.feedgenerator import Atom1Feed
 from django.urls import reverse
-
-from .models import BlogPost
 
 
 class BlogFeedRSS(Feed):
@@ -15,7 +11,7 @@ class BlogFeedRSS(Feed):
         return request.site.site_settings.title
 
     def link(self, request):
-        return request.build_absolute_uri(reverse('content_blog_index_view'))
+        return request.build_absolute_uri(reverse("content_blog_index_view"))
 
     def description(self, request):
         return request.site.site_settings.description
@@ -30,7 +26,7 @@ class BlogFeedRSS(Feed):
         return blog_post.excerpt
 
     def item_author_name(self, blog_post):
-        return blog_post.author.get_full_name()
+        return blog_post.author.get_full_name() if blog_post.author else None
 
     def item_updateddate(self, blog_post):
         return blog_post.public_from
