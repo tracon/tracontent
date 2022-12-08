@@ -10,7 +10,7 @@ backcall==0.2.0
     # via ipython
 bleach==3.3.0
     # via -r requirements.in
-certifi==2020.11.8
+certifi==2022.12.7
     # via requests
 chardet==3.0.4
     # via
