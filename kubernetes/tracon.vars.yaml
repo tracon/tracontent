@@ -29,7 +29,7 @@ tracontent_secret_managed: false
 tracontent_storage_pvc: false
 
 tracontent_editor_groups:
-  - turska-tracon2022-labour-conitea
+  - turska-tracon2023-labour-conitea
   - traconry-hallitus-nykyinen
 
 tracontent_admins:
