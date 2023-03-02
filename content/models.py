@@ -218,6 +218,15 @@ class RenderPageMixin:
 
         return render(request, self.template, vars)
 
+    @property
+    def some_header_image(self):
+        if self.header_image:
+            return self.header_image
+        elif self.parent:
+            return self.parent.some_header_image
+        else:
+            return None
+
 
 class PageAdminMixin:
     def admin_is_published(self):
@@ -286,15 +295,6 @@ class Page(models.Model, RenderPageMixin, PageAdminMixin):
         upload_to="headers",
         blank=True,
     )
-
-    @property
-    def some_header_image(self):
-        if self.header_image:
-            return self.header_image
-        elif self.parent:
-            return self.parent.some_header_image
-        else:
-            return None
 
     @property
     def edit_link(self):
@@ -577,6 +577,17 @@ class BlogPost(models.Model, RenderPageMixin, PageAdminMixin):
         default=True,
         verbose_name="Kommentointi sallittu",
     )
+
+    header_image = models.FileField(
+        verbose_name="Otsikkokuva",
+        help_text="Näytetään sivun ylälaidassa, jos käytettävä teema tukee tätä. Mikäli otsikkokuvaa ei ole asetettu, käytetään yläsivun otsikkokuvaa.",
+        upload_to="headers",
+        blank=True,
+    )
+
+    @property
+    def parent(self):
+        return Page.objects.get(site=self.site, path="blog")
 
     @property
     def edit_link(self):

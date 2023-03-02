@@ -15,7 +15,7 @@ services:
       PYTHONUNBUFFERED: 1
       DEBUG: 1
       DATABASE_URL: psql://tracontent:secret@postgres/tracontent
-      TRACONTENT_SITE: ${TRACONTENT_SITE:-hitpoint2019}
+      TRACONTENT_SITE: ${TRACONTENT_SITE:-tracon2023_premium}
       TRACONTENT_HOSTNAME: localhost
       CACHE_URL: memcache://memcache
       MINIO_BUCKET_NAME: tracontent

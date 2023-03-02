@@ -62,6 +62,7 @@ INSTALLED_APPS = (
     "site_specific.tracon2019",
     "site_specific.hitpoint2019",
     "site_specific.tracon2020_premium",
+    "site_specific.tracon2023_premium",
     "site_specific.japsufi",
 )
 

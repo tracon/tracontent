@@ -1,0 +1,21 @@
+extends tracon2023_premium_base
+
+block content
+
+  // Hero
+  section.module-cover.parallax.text-center(data-background="{{ page.some_header_image.url }}" data-overlay="0.3")
+    .container
+
+      .row
+        .col-md-12
+          h2.sr-only= page.title
+
+  section
+    .container
+      .row
+        .col-lg-8.m-auto
+          article.post
+            .post-preview
+            .post-wrapper
+              include tracon2023_premium_toolbar_admin_page
+              {{ page.body|safe }}

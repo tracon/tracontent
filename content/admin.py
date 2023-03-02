@@ -279,6 +279,7 @@ class BlogPostAdminForm(forms.ModelForm, CommonAdminFormMixin):
             "body",
             "public_from",
             "visible_from",
+            "header_image",
             "path",
             "author",
         )
@@ -318,6 +319,7 @@ class BlogPostAdmin(VersionAdmin):
                     "date",
                     "public_from",
                     "visible_from",
+                    "header_image",
                     "categories",
                     "is_featured",
                     "is_commenting_enabled",

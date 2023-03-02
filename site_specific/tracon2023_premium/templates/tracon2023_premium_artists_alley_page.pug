@@ -1,0 +1,61 @@
+extends tracon2023_premium_base
+
+
+block content
+
+  // Hero
+  section.module-cover.parallax.text-center(data-background="{{ page.some_header_image.url }}" data-overlay="0.3")
+    .container
+
+      .row
+        .col-md-12
+          h2= page.title
+          //- ol.breadcrumb.justify-content-center
+          //-    li.breadcrumb-item: a(href="#") Home
+          //-    li.breadcrumb-item: a(href="#") Blog
+          //-    li.breadcrumb-item.active Single Post
+  // Hero end
+
+
+  // Blog
+  section
+    .container
+      .row
+        .col-lg-8.m-auto
+          // Post
+          article.post
+            .post-preview
+              //- img(src="assets/images/blog/1.jpg" alt="")
+            .post-wrapper
+              include tracon2023_premium_toolbar_admin_page
+              {{ page.body|safe }}
+
+              p: &nbsp;
+              p
+                strong Suodata taiteilijoita:
+                for key, text, active in artist_filters
+                  | &nbsp;
+                  a(href='?day={{ key }}', class='{% if active %}badge-primary{% else %}badge-secondary{% endif %}').badge= text
+              if artists.exists
+                table.table.table-striped
+                  thead
+                    tr
+                      th(scope='row') Pöytä
+                      th(scope='col') Päivä
+                      th(scope='col', style='width: 30%') Kuva
+                      th(scope='col') Nimi ja kuvaus
+                  tbody
+                    for artist in artists
+                      tr
+                        th(scope='row') {{ artist.table_number }}.
+                        td= artist.formatted_days
+                        td
+                          if artist.image_file
+                            img(src='{{ artist.image_file.url }}' style='width: 100%')
+                        td
+                          p
+                            if artist.homepage_url
+                              strong: a(href='{{ artist.homepage_url }}' target='_blank' rel="noopener noreferrer") {{ artist.name }}
+                            else
+                              strong {{ artist.name }}
+                          {{ artist.description|linebreaks }}

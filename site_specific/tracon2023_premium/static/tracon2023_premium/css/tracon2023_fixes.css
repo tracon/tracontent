@@ -1,0 +1,91 @@
+@font-face {
+    font-family: Sigokae;
+    src: url("/static/tracon2023_premium/fonts/Sigokae.otf") format("opentype");
+}
+
+@font-face {
+    font-family: Gelica;
+    font-weight: bold;
+    src: url("/static/tracon2023_premium/fonts/gelicabold.otf") format("opentype");
+}
+
+@font-face {
+    font-family: Macho;
+    src: url("/static/tracon2023_premium/fonts/machomedium.otf") format("opentype");
+}
+
+@font-face {
+    font-family: Macho;
+    font-style: italic;
+    src: url("/static/tracon2023_premium/fonts/machomediumitalic.otf") format("opentype");
+}
+
+@font-face {
+    font-family: Macho;
+    font-weight: bold;
+    src: url("/static/tracon2023_premium/fonts/machobold.otf") format("opentype");
+}
+
+@font-face {
+    font-family: Macho;
+    font-weight: bold;
+    font-style: italic;
+    src: url("/static/tracon2023_premium/fonts/machobolditalic.otf") format("opentype");
+}
+
+article ul li {
+    list-style-type: disc;
+}
+
+article ol li {
+    list-style-type: decimal;
+}
+
+body, .header, .sub-menu, .sub-menu-open {
+    background: #0E171E !important;
+    color: #E6FFDD;
+    font-family: Macho;
+    font-size: 1.0rem;
+    line-height: 1.5rem;
+}
+
+a {
+    color: #58D0B5 !important;
+}
+
+a:hover {
+    color: #F75B00 !important;
+}
+
+.inner-nav > ul > li > a {
+    font-size: 0.9rem;
+}
+
+.inner-nav .sub-menu.mega-menu-row li > a {
+    font-size: 0.85rem;
+}
+
+.header.header-small, .header.header-transparent {
+    border-bottom: 1px solid rgba(255, 255, 255, .1)
+}
+
+.module-cover {
+    padding: 180px 0 120px 0;
+}
+
+.module-cover h2 {
+    font-family: Sigokae;
+    font-weight: bold;
+    color: #E6FFDD !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: Gelica;
+    font-weight: bold;
+    color: #E6FFDD;
+}
+
+
+.inner-brand {
+    font-size: 1.5rem;
+}
