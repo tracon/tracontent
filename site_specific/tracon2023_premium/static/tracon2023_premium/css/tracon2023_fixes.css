@@ -58,11 +58,13 @@ a:hover {
 }
 
 .inner-nav > ul > li > a {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    text-transform: none;
 }
 
 .inner-nav .sub-menu.mega-menu-row li > a {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    text-transform: none;
 }
 
 .header.header-small, .header.header-transparent {
@@ -77,6 +79,7 @@ a:hover {
     font-family: Sigokae;
     font-weight: bold;
     color: #E6FFDD !important;
+    text-shadow: 3px 3px 6px rgb(40, 40, 40, .85);
 }
 
 h1, h2, h3, h4, h5, h6 {
