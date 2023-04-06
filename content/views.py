@@ -48,14 +48,16 @@ def content_cached_page_view(request, path):
 
 class BlogIndexPseudoPage(RenderPageMixin):
     """
-    Renders a default blog index into the site base template.
+    The blog index pseudo page is used to render the blog index
+    if there is no /blog page.
     """
 
     def __init__(self, site, title):
         self.site = site
         self.title = title
         self.body = ""
-        self.template = site.site_settings.page_template
+        self.template = site.site_settings.blog_index_template
+        self.header_image = None
 
 
 @require_safe
@@ -100,6 +102,7 @@ def content_blog_index_view(request, category_slug=None):
         blog_posts=site_settings.get_visible_blog_posts(**post_criteria),
     )
 
+    # TODO page.template instead (but check that /blog pages in production have it set to blog_index_templaet)
     return render(request, site_settings.blog_index_template, vars)
 
 
