@@ -58,6 +58,7 @@ class BlogIndexPseudoPage(RenderPageMixin):
         self.body = ""
         self.template = site.site_settings.blog_index_template
         self.header_image = None
+        self.parent = None
 
 
 @require_safe
