@@ -27,9 +27,7 @@ class CommonAdminFormMixin:
 
         if visible_from:
             if not public_from:
-                raise forms.ValidationError(
-                    "Jotta sivu voi olla näkyvissä, sen tulee myös olla julkinen"
-                )
+                raise forms.ValidationError("Jotta sivu voi olla näkyvissä, sen tulee myös olla julkinen")
             elif public_from > visible_from:
                 raise forms.ValidationError(
                     "Sivun täytyy tulla julkiseksi viimeistään samalla hetkellä kun se tulee näkyväksi"
@@ -57,9 +55,7 @@ def make_is_null_list_filter(field_name, title, yes_is_null=False):
                 if yes_is_null:
                     return queryset.filter(**{_parameter_name: bool(int(self.value()))})
                 else:
-                    return queryset.filter(
-                        **{_parameter_name: not bool(int(self.value()))}
-                    )
+                    return queryset.filter(**{_parameter_name: not bool(int(self.value()))})
 
     return _IsNullListFilter
 
@@ -68,9 +64,7 @@ def make_selected_pages_private(modeladmin, request, queryset):
     queryset.update(public_from=None, visible_from=None)
 
 
-make_selected_pages_private.short_description = (
-    "Aseta valittujen sivujen tila: ei julkinen, ei näkyvissä"
-)
+make_selected_pages_private.short_description = "Aseta valittujen sivujen tila: ei julkinen, ei näkyvissä"
 
 
 def make_selected_pages_public(modeladmin, request, queryset):
@@ -78,9 +72,7 @@ def make_selected_pages_public(modeladmin, request, queryset):
     queryset.update(public_from=t, visible_from=None)
 
 
-make_selected_pages_public.short_description = (
-    "Aseta valittujen sivujen tila: julkinen, ei näkyvissä"
-)
+make_selected_pages_public.short_description = "Aseta valittujen sivujen tila: julkinen, ei näkyvissä"
 
 
 def make_selected_pages_visible(modeladmin, request, queryset):
@@ -88,9 +80,7 @@ def make_selected_pages_visible(modeladmin, request, queryset):
     queryset.update(public_from=t, visible_from=t)
 
 
-make_selected_pages_visible.short_description = (
-    "Aseta valittujen sivujen tila: julkinen, näkyvissä"
-)
+make_selected_pages_visible.short_description = "Aseta valittujen sivujen tila: julkinen, näkyvissä"
 
 
 ActiveListFilter = make_is_null_list_filter("removed_at", "Näkyvissä", yes_is_null=True)
@@ -168,6 +158,7 @@ class PageAdmin(VersionAdmin):
     view_on_site = True
     ordering = ("site", "parent", "order")
     search_fields = ("path", "title")
+    raw_id_fields = ("parent",)
     inlines = (PageAdminTabularInline,)
     fieldsets = (
         ("Sisältö", dict(fields=("title", "body"))),
@@ -250,20 +241,14 @@ class BlogPostAdminForm(forms.ModelForm, CommonAdminFormMixin):
             pass
         else:
             if site:
-                self.fields["categories"].queryset = BlogCategory.objects.filter(
-                    site=site
-                )
+                self.fields["categories"].queryset = BlogCategory.objects.filter(site=site)
 
     def clean(self):
         cleaned_data = super().clean()
         site = self.cleaned_data.get("site")
         categories = self.cleaned_data.get("categories")
 
-        if (
-            categories
-            and site
-            and any(category.site != site for category in categories)
-        ):
+        if categories and site and any(category.site != site for category in categories):
             raise ValidationError(
                 "Kaikkien kategorioiden, joihin postaus kuuluu, tulee olla samalla sivustolla postauksen kanssa."
             )
