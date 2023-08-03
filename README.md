@@ -24,7 +24,7 @@ Docker required. I will not give you support for development without Docker.
 
     docker-compose up
 
-This will set up a PostgreSQL database and the Tracontent backend in containers. It will also automatically run `python manage.py setup` in the backend container to set up the site with some placeholder pages.
+This will set up a PostgreSQL database and the Tracontent backend in containers. It will also automatically run `python manage.py setup` in the backend container to set up the site with some placeholder pages along with an admin user account called `mahti` with the password `mahti`.
 
 You should now be able to view the site at [http://localhost:8001](http://localhost:8001).
 
