@@ -24,13 +24,6 @@ def slugify(ustr):
     return ustr
 
 
-def make_horizontal_form_helper(helper):
-    helper.form_class = "form-horizontal"
-    helper.label_class = "col-md-3"
-    helper.field_class = "col-md-9"
-    return helper
-
-
 def initialize_form(FormClass, request, **kwargs):
     if request.method == "POST":
         form = FormClass(request.POST, **kwargs)
