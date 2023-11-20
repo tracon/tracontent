@@ -19,3 +19,4 @@ python-memcached
 requests
 requests-oauthlib
 sentry-sdk
+tabulate
