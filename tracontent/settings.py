@@ -40,7 +40,6 @@ INSTALLED_APPS = (
     "django.contrib.sites",
     "ckeditor",
     "ckeditor_uploader",
-    "crispy_forms",
     "reversion",
     "kompassi_oauth2",
     "content",
@@ -136,9 +135,7 @@ LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
-        "verbose": {
-            "format": "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s"
-        },
+        "verbose": {"format": "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s"},
         "simple": {"format": "%(levelname)s %(message)s"},
     },
     "filters": {"require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}},
@@ -233,9 +230,7 @@ KOMPASSI_INSTALLATION_SLUG = env("KOMPASSI_INSTALLATION_SLUG", default="turska")
 KOMPASSI_HOST = env("KOMPASSI_HOST", default="https://kompassi.eu")
 KOMPASSI_OAUTH2_AUTHORIZATION_URL = f"{KOMPASSI_HOST}/oauth2/authorize"
 KOMPASSI_OAUTH2_TOKEN_URL = f"{KOMPASSI_HOST}/oauth2/token"
-KOMPASSI_OAUTH2_CLIENT_ID = env(
-    "KOMPASSI_OAUTH2_CLIENT_ID", default="kompassi_insecure_test_client_id"
-)
+KOMPASSI_OAUTH2_CLIENT_ID = env("KOMPASSI_OAUTH2_CLIENT_ID", default="kompassi_insecure_test_client_id")
 KOMPASSI_OAUTH2_CLIENT_SECRET = env(
     "KOMPASSI_OAUTH2_CLIENT_SECRET", default="kompassi_insecure_test_client_secret"
 )
@@ -243,9 +238,7 @@ KOMPASSI_OAUTH2_SCOPE = ["read"]
 KOMPASSI_API_V2_USER_INFO_URL = f"{KOMPASSI_HOST}/api/v2/people/me"
 KOMPASSI_API_V2_EVENT_INFO_URL_TEMPLATE = "{kompassi_host}/api/v2/events/{event_slug}"
 KOMPASSI_ADMIN_GROUP = env("KOMPASSI_ADMIN_GROUP", default="admins")
-KOMPASSI_EDITOR_GROUPS = env(
-    "KOMPASSI_EDITOR_GROUPS", default="tracontent-staff"
-).split()
+KOMPASSI_EDITOR_GROUPS = env("KOMPASSI_EDITOR_GROUPS", default="tracontent-staff").split()
 KOMPASSI_PROGRAMME_EXPIRY_SECONDS = 300
 
 LOGIN_URL = "/oauth2/login" if "kompassi_oauth2" in INSTALLED_APPS else "/admin/login/"
@@ -254,9 +247,7 @@ LOGOUT_REDIRECT_URL = f"{KOMPASSI_HOST}/logout"
 
 TRACONTENT_BLOG_AUTO_EXCERPT_MAX_CHARS = 300
 TRACONTENT_BLOG_COMMENT_MODERATORS = [
-    parseaddr(addr)
-    for addr in env("TRACONTENT_BLOG_COMMENT_MODERATORS", default="").split(",")
-    if addr
+    parseaddr(addr) for addr in env("TRACONTENT_BLOG_COMMENT_MODERATORS", default="").split(",") if addr
 ] or ADMINS
 
 CRISPY_TEMPLATE_PACK = "bootstrap3"

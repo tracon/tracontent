@@ -33,14 +33,11 @@ dj-static==0.0.6
 django==4.2.7
     # via
     #   django-ckeditor
-    #   django-crispy-forms
     #   django-js-asset
     #   django-redis
     #   django-reversion
     #   django-storages
 django-ckeditor==6.7.0
-    # via -r requirements.in
-django-crispy-forms==2.1
     # via -r requirements.in
 django-environ==0.11.2
     # via -r requirements.in
