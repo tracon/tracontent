@@ -1,8 +1,5 @@
 import re
 
-import loremipsum
-
-
 SLUGIFY_CHAR_MAP = {
     "ä": "a",
     "å": "a",
@@ -34,7 +31,10 @@ def initialize_form(FormClass, request, **kwargs):
 
 
 def pick_attrs(obj, *attr_names, **extra_attrs):
-    return dict(((attr_name, getattr(obj, attr_name)) for attr_name in attr_names), **extra_attrs)
+    return dict(
+        ((attr_name, getattr(obj, attr_name)) for attr_name in attr_names),
+        **extra_attrs,
+    )
 
 
 def format_emails(names_and_addresses):
@@ -55,7 +55,10 @@ def get_code(path):
 
 def lorem(paragraphs=5):
     return "\n\n".join(
-        f"<p>{par}</p>" for par in loremipsum.get_paragraphs(paragraphs, start_with_lorem=True)
+        [
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+        ]
+        * paragraphs
     )
 
 

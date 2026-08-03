@@ -65,8 +65,6 @@ jmespath==1.0.1
     # via
     #   boto3
     #   botocore
-loremipsum==1.0.5
-    # via -r requirements.in
 matplotlib-inline==0.1.6
     # via ipython
 oauthlib==3.2.2

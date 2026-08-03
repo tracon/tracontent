@@ -9,7 +9,6 @@ django-reversion
 django-storages
 gunicorn
 ipython
-loremipsum
 Pillow
 psycopg2
 pypugjs
