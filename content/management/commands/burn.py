@@ -98,7 +98,8 @@ class Command(BaseCommand):
             fetch_media_files(site_dir, media_keys_seen, failures)
 
             if not no_upload:
-                upload_site_tree(s3, resolved_bucket, site_dir, site.domain, key_map)
+                skip_local_keys = resolve_dual_key_conflicts(key_map)
+                upload_site_tree(s3, resolved_bucket, site_dir, site.domain, key_map, skip_local_keys, failures)
 
             report[site.domain] = dict(failures=failures, shadowed=shadowed)
 
@@ -235,21 +236,61 @@ def build_redirect_html(target):
     return REDIRECT_HTML_TEMPLATE.format(target=html.escape(target)).encode("utf-8")
 
 
-def upload_site_tree(s3, bucket, site_dir, domain, key_map):
+def resolve_dual_key_conflicts(key_map):
+    # This Minio server enforces that an object's key can't have a prefix
+    # that's already an object itself (XMinioParentIsObject) -- so "P" and
+    # "P/index.html" can never both exist, let alone "P" and a real child
+    # page's "P/child". For each dual-key pair written by write_dual_key,
+    # keep the bare form (it matches internal links exactly) unless some
+    # OTHER key is genuinely nested under "P/" (a real child page, or an
+    # RSS/Atom feed under "blog/"), in which case only ".../index.html"
+    # can be written. "static"/"media" are forced conflicted defensively,
+    # in case a page ever collides with one of those asset prefixes.
+    all_s3_keys = {s3_key for s3_key, _content_type in key_map.values()}
+    skip_local_keys = set()
+
+    for local_key, (s3_key, _content_type) in key_map.items():
+        if not local_key.endswith(".html") or local_key in ("index.html",) or local_key.endswith("/index.html"):
+            continue
+
+        path = s3_key
+        sibling_local_key = path + "/index.html"
+        if sibling_local_key not in key_map:
+            continue
+
+        has_real_descendant = path in ("static", "media") or any(
+            other != path and other != sibling_local_key and other.startswith(path + "/") for other in all_s3_keys
+        )
+        if has_real_descendant:
+            skip_local_keys.add(local_key)
+        else:
+            skip_local_keys.add(sibling_local_key)
+
+    return skip_local_keys
+
+
+def upload_site_tree(s3, bucket, site_dir, domain, key_map, skip_local_keys, failures):
     for root, _dirs, files in os.walk(site_dir):
         for filename in files:
             full_path = os.path.join(root, filename)
             relative_path = os.path.relpath(full_path, site_dir)
+            if relative_path in skip_local_keys:
+                continue
+
             if relative_path in key_map:
                 s3_key, content_type = key_map[relative_path]
             else:
                 # static/media files, never registered in key_map: local path == S3 key.
                 s3_key = relative_path
                 content_type = mimetypes.guess_type(relative_path)[0] or "application/octet-stream"
-            with open(full_path, "rb") as f:
-                s3.put_object(
-                    Bucket=bucket,
-                    Key=f"{domain}/{s3_key}",
-                    Body=f.read(),
-                    ContentType=content_type,
-                )
+
+            try:
+                with open(full_path, "rb") as f:
+                    s3.put_object(
+                        Bucket=bucket,
+                        Key=f"{domain}/{s3_key}",
+                        Body=f.read(),
+                        ContentType=content_type,
+                    )
+            except Exception as e:
+                failures.append((f"upload:{s3_key}", str(e)))
