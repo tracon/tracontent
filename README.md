@@ -1,18 +1,20 @@
-# TraContent CMS
+# Public archive of TraContent CMS
 
-Too long have we suffered of Wordpress, Drupal and PencilBlue. We shall have content! And we shall be content!
+> Too long have we suffered of Wordpress, Drupal and PencilBlue. We shall have content! And we shall be content!
+
+TraContent is no longer maintained. Use Wordpress instead.
 
 ## Standard Edition vs. Enterprise Edition
 
 Here's a cool feature matrix:
 
-| Feature | Standard Edition | Enterprise Edition |
-|---------|------------------|--------------------|
-| License | MIT | MIT |
-| Price | Free | Free |
-| Support | Purchased separately | Purchased separately |
-| Multisite support | Yes (always on) | Yes (always on) |
-| OAuth2 authentication | No | Yes |
+| Feature               | Standard Edition     | Enterprise Edition   |
+| --------------------- | -------------------- | -------------------- |
+| License               | MIT                  | MIT                  |
+| Price                 | Free                 | Free                 |
+| Support               | Purchased separately | Purchased separately |
+| Multisite support     | Yes (always on)      | Yes (always on)      |
+| OAuth2 authentication | No                   |  Yes                 |
 
 ### No, really, what's the difference?
 
