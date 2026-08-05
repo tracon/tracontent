@@ -73,4 +73,3 @@ jobs:
           python3 -m pip install -U pip setuptools wheel
           python3 -m pip install emskaffolden
           emskaffolden -E con2 -- deploy -n tracontent-con2 -a build.json
-          emskaffolden -E tracon -- deploy -n tracontent-tracon -a build.json

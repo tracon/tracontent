@@ -1,3 +1,7 @@
+# INERT: tracontent-tracon was decommissioned (burned to static HTML, see
+# content/management/commands/burn.py) and its CI/CD deploy step removed
+# in .github/workflows/cicd.yaml. Kept here for future reference only --
+# not deployed anywhere anymore.
 ingress_public_hostnames:
   - 2015.hitpoint.tracon.fi
   - 2016.hitpoint.tracon.fi
