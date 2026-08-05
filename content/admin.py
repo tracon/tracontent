@@ -20,16 +20,18 @@ from .models import (
 from django.urls import re_path
 
 
-class CommonAdminFormMixin(object):
+class CommonAdminFormMixin:
     def clean_visible_from(self):
-        public_from = self.cleaned_data.get('public_from')
-        visible_from = self.cleaned_data.get('visible_from')
+        public_from = self.cleaned_data.get("public_from")
+        visible_from = self.cleaned_data.get("visible_from")
 
         if visible_from:
             if not public_from:
-                raise forms.ValidationError(u'Jotta sivu voi olla näkyvissä, sen tulee myös olla julkinen')
+                raise forms.ValidationError("Jotta sivu voi olla näkyvissä, sen tulee myös olla julkinen")
             elif public_from > visible_from:
-                raise forms.ValidationError(u'Sivun täytyy tulla julkiseksi viimeistään samalla hetkellä kun se tulee näkyväksi')
+                raise forms.ValidationError(
+                    "Sivun täytyy tulla julkiseksi viimeistään samalla hetkellä kun se tulee näkyväksi"
+                )
 
         return visible_from
 
@@ -44,8 +46,8 @@ def make_is_null_list_filter(field_name, title, yes_is_null=False):
 
         def lookups(self, request, model_admin):
             return (
-                (1, 'Kyllä'),
-                (0, 'Ei'),
+                (1, "Kyllä"),
+                (0, "Ei"),
             )
 
         def queryset(self, request, queryset):
@@ -55,38 +57,42 @@ def make_is_null_list_filter(field_name, title, yes_is_null=False):
                 else:
                     return queryset.filter(**{_parameter_name: not bool(int(self.value()))})
 
-
     return _IsNullListFilter
-
 
 
 def make_selected_pages_private(modeladmin, request, queryset):
     queryset.update(public_from=None, visible_from=None)
-make_selected_pages_private.short_description = 'Aseta valittujen sivujen tila: ei julkinen, ei näkyvissä'
+
+
+make_selected_pages_private.short_description = "Aseta valittujen sivujen tila: ei julkinen, ei näkyvissä"
 
 
 def make_selected_pages_public(modeladmin, request, queryset):
     t = now()
     queryset.update(public_from=t, visible_from=None)
-make_selected_pages_public.short_description = 'Aseta valittujen sivujen tila: julkinen, ei näkyvissä'
+
+
+make_selected_pages_public.short_description = "Aseta valittujen sivujen tila: julkinen, ei näkyvissä"
 
 
 def make_selected_pages_visible(modeladmin, request, queryset):
     t = now()
     queryset.update(public_from=t, visible_from=t)
-make_selected_pages_visible.short_description = 'Aseta valittujen sivujen tila: julkinen, näkyvissä'
 
 
-ActiveListFilter = make_is_null_list_filter('removed_at', 'Näkyvissä', yes_is_null=True)
-PublishedListFilter = make_is_null_list_filter('public_from', 'Julkinen')
-VisibleListFilter = make_is_null_list_filter('visible_from', 'Näkyvissä')
+make_selected_pages_visible.short_description = "Aseta valittujen sivujen tila: julkinen, näkyvissä"
+
+
+ActiveListFilter = make_is_null_list_filter("removed_at", "Näkyvissä", yes_is_null=True)
+PublishedListFilter = make_is_null_list_filter("public_from", "Julkinen")
+VisibleListFilter = make_is_null_list_filter("visible_from", "Näkyvissä")
 
 
 class PageAdminForm(forms.ModelForm, CommonAdminFormMixin):
     body = forms.CharField(
         widget=CKEditorUploadingWidget(),
-        label=CommonFields.body['verbose_name'],
-        required=not CommonFields.body['blank'],
+        label=CommonFields.body["verbose_name"],
+        required=not CommonFields.body["blank"],
     )
 
     def __init__(self, *args, **kwargs):
@@ -94,39 +100,51 @@ class PageAdminForm(forms.ModelForm, CommonAdminFormMixin):
 
         if self.instance:
             try:
-                self.fields['parent'].queryset = self.instance.site.page_set.all()
+                self.fields["parent"].queryset = self.instance.site.page_set.all()
             except Site.DoesNotExist:
                 pass
 
     def clean_site(self):
-        site = self.cleaned_data.get('site')
-        parent = self.cleaned_data.get('parent')
+        site = self.cleaned_data.get("site")
+        parent = self.cleaned_data.get("parent")
 
         if site and parent and parent.site != site:
-            raise forms.ValidationError(u'Yläsivun tulee olla valitulla sivustolla')
+            raise forms.ValidationError("Yläsivun tulee olla valitulla sivustolla")
 
         return site
 
     class Meta:
         model = Page
-        fields = ('site', 'parent', 'slug', 'title', 'body', 'public_from', 'visible_from', 'path', 'order', 'override_menu_text')
+        fields = (
+            "site",
+            "parent",
+            "slug",
+            "title",
+            "body",
+            "public_from",
+            "visible_from",
+            "path",
+            "order",
+            "override_menu_text",
+        )
 
 
 class PageAdminTabularInline(admin.TabularInline):
     model = Page
     extra = 0
-    fields = ('order', 'slug', 'title')
-    readonly_fields = ('slug', 'title')
+    fields = ("order", "slug", "title")
+    readonly_fields = ("slug", "title")
     can_delete = False
     show_change_link = True
-    verbose_name = 'alasivujen järjestys'
-    verbose_name_plural = 'alasivujen järjestys'
+    verbose_name = "alasivujen järjestys"
+    verbose_name_plural = "alasivujen järjestys"
     max_num = 0
 
 
-class classproperty(object):
+class classproperty:
     def __init__(self, f):
         self.f = f
+
     def __get__(self, obj, owner):
         return self.f(owner)
 
@@ -134,37 +152,57 @@ class classproperty(object):
 class PageAdmin(VersionAdmin):
     model = Page
     form = PageAdminForm
-    list_display = ('site', 'path', 'title', 'admin_is_published', 'admin_is_visible')
-    list_filter = ('site', PublishedListFilter, VisibleListFilter)
-    readonly_fields = ('path', 'created_at', 'updated_at')
+    list_display = ("site", "path", "title", "admin_is_published", "admin_is_visible")
+    list_filter = ("site", PublishedListFilter, VisibleListFilter)
+    readonly_fields = ("path", "created_at", "updated_at")
     view_on_site = True
-    ordering = ('site', 'parent', 'order')
-    search_fields = ('path', 'title')
+    ordering = ("site", "parent", "order")
+    search_fields = ("path", "title")
+    raw_id_fields = ("parent",)
     inlines = (PageAdminTabularInline,)
     fieldsets = (
-        (u'Sisältö', dict(
-            fields=('title', 'body')
-        )),
-        (u'Julkaisuasetukset', dict(
-            fields=('parent', 'public_from', 'visible_from', 'header_image')
-        )),
-        (u'Lisäasetukset', dict(
-            fields=('site', 'order', 'slug', 'path', 'override_menu_text', 'override_page_template', 'created_at', 'updated_at'),
-            classes=('collapse',),
-        ))
-    )
+        ("Sisältö", dict(fields=("title", "body"))),
+        (
+            "Julkaisuasetukset",
+            dict(fields=("parent", "public_from", "visible_from", "header_image")),
+        ),
+        (
+            "Lisäasetukset",
+            dict(
+                fields=(
+                    "site",
+                    "order",
+                    "slug",
+                    "path",
+                    "override_menu_text",
+                    "override_page_template",
+                    "created_at",
+                    "updated_at",
+                ),
+                classes=("collapse",),
+            ),
+        ),
+    )  # type: ignore
 
     @classproperty
     def actions(cls):
-        _actions = [make_selected_pages_private, make_selected_pages_public, make_selected_pages_visible]
+        _actions = [
+            make_selected_pages_private,
+            make_selected_pages_public,
+            make_selected_pages_visible,
+        ]
 
         try:
             for site in Site.objects.all():
+
                 def _copy_to_site(modeladmin, request, queryset, _site=site):
                     for page in queryset.all():
                         page.copy_to_site(_site)
+
                 _copy_to_site.__name__ = f"copy_to_site_{site.id}"
-                _copy_to_site.short_description = f"Kopioi valitut sivut luonnoksiksi sivustoon: {site.domain}"
+                _copy_to_site.short_description = (
+                    f"Kopioi valitut sivut luonnoksiksi sivustoon: {site.domain}"
+                )
 
                 _actions.append(_copy_to_site)
         except (ProgrammingError, OperationalError):
@@ -173,29 +211,29 @@ class PageAdmin(VersionAdmin):
         return _actions
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == 'site':
-            kwargs['initial'] = request.site
+        if db_field.name == "site":
+            kwargs["initial"] = request.site
 
-        return super(PageAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 class RedirectAdmin(VersionAdmin):
     model = Redirect
-    list_display = ('site', 'path', 'target')
-    list_filter = ('site',)
+    list_display = ("site", "path", "target")
+    list_filter = ("site",)
 
 
 class BlogPostAdminForm(forms.ModelForm, CommonAdminFormMixin):
     body = forms.CharField(
         widget=CKEditorUploadingWidget(),
-        label=CommonFields.body['verbose_name'],
-        required=not CommonFields.body['blank'],
+        label=CommonFields.body["verbose_name"],
+        required=not CommonFields.body["blank"],
     )
 
     def __init__(self, *args, **kwargs):
-        super(BlogPostAdminForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
-        self.fields['date'].initial = now().date()
+        self.fields["date"].initial = now().date()
 
         try:
             site = self.instance.site
@@ -203,71 +241,125 @@ class BlogPostAdminForm(forms.ModelForm, CommonAdminFormMixin):
             pass
         else:
             if site:
-                self.fields['categories'].queryset = BlogCategory.objects.filter(site=site)
+                self.fields["categories"].queryset = BlogCategory.objects.filter(site=site)
 
     def clean(self):
-        cleaned_data = super(BlogPostAdminForm, self).clean()
-        site = self.cleaned_data.get('site')
-        categories = self.cleaned_data.get('categories')
+        cleaned_data = super().clean()
+        site = self.cleaned_data.get("site")
+        categories = self.cleaned_data.get("categories")
 
         if categories and site and any(category.site != site for category in categories):
-            raise ValidationError(u'Kaikkien kategorioiden, joihin postaus kuuluu, tulee olla samalla sivustolla postauksen kanssa.')
+            raise ValidationError(
+                "Kaikkien kategorioiden, joihin postaus kuuluu, tulee olla samalla sivustolla postauksen kanssa."
+            )
 
     class Meta:
         model = BlogPost
-        fields = ('site', 'date', 'slug', 'title', 'override_excerpt', 'body', 'public_from', 'visible_from', 'path', 'author')
+        fields = (
+            "site",
+            "date",
+            "slug",
+            "title",
+            "override_excerpt",
+            "body",
+            "public_from",
+            "visible_from",
+            "header_image",
+            "path",
+            "author",
+        )
 
 
 class BlogPostAdmin(VersionAdmin):
     model = BlogPost
     form = BlogPostAdminForm
-    list_display = ('site', 'path', 'title', 'state', 'admin_is_published', 'admin_is_visible')
-    list_filter = ('site', 'state', PublishedListFilter, VisibleListFilter)
-    readonly_fields = ('path', 'created_at', 'updated_at')
+    list_display = (
+        "site",
+        "path",
+        "title",
+        "state",
+        "admin_is_published",
+        "admin_is_visible",
+    )
+    list_filter = ("site", "state", PublishedListFilter, VisibleListFilter)
+    readonly_fields = ("path", "created_at", "updated_at")
     view_on_site = True
     fieldsets = (
-        (u'Sisältö', dict(
-            fields=('title', 'override_excerpt', 'body'),
-        )),
-        (u'Sisäiset muistiinpanot', dict(
-            fields=('state', 'internal_notes'),
-        )),
-        (u'Julkaisuasetukset', dict(
-            fields=('date', 'public_from', 'visible_from', 'categories', 'is_featured'),
-        )),
-        (u'Lisäasetukset', dict(
-            fields=('site', 'slug', 'author', 'path', 'created_at', 'updated_at'),
-            classes=('collapse',),
-        ))
-    )
-    actions = [make_selected_pages_private, make_selected_pages_public, make_selected_pages_visible]
+        (
+            "Sisältö",
+            dict(
+                fields=("title", "override_excerpt", "body"),
+            ),
+        ),
+        (
+            "Sisäiset muistiinpanot",
+            dict(
+                fields=("state", "internal_notes"),
+            ),
+        ),
+        (
+            "Julkaisuasetukset",
+            dict(
+                fields=(
+                    "date",
+                    "public_from",
+                    "visible_from",
+                    "header_image",
+                    "categories",
+                    "is_featured",
+                    "is_commenting_enabled",
+                ),
+            ),
+        ),
+        (
+            "Lisäasetukset",
+            dict(
+                fields=("site", "slug", "author", "path", "created_at", "updated_at"),
+                classes=("collapse",),
+            ),
+        ),
+    )  # type: ignore
+    actions = [
+        make_selected_pages_private,
+        make_selected_pages_public,
+        make_selected_pages_visible,
+    ]
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == 'site':
-            kwargs['initial'] = request.site
-        elif db_field.name == 'author':
-            kwargs['initial'] = request.user
+        if db_field.name == "site":
+            kwargs["initial"] = request.site
+        elif db_field.name == "author":
+            kwargs["initial"] = request.user
 
-        return super(BlogPostAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 def hide_selected_blog_comments(modeladmin, request, queryset):
     t = now()
     queryset.update(removed_at=t, removed_by=request.user)
-hide_selected_blog_comments.short_description = 'Piilota valitut blogikommentit'
+
+
+hide_selected_blog_comments.short_description = "Piilota valitut blogikommentit"
+
 
 def restore_selected_blog_comments(modeladmin, request, queryset):
     queryset.update(removed_at=None, removed_by=None)
-restore_selected_blog_comments.short_description = 'Palauta valitut blogikommentit'
+
+
+restore_selected_blog_comments.short_description = "Palauta valitut blogikommentit"
 
 
 class BlogCommentAdminForm(forms.ModelForm):
-    is_active = forms.BooleanField(label=u'Näkyvissä', help_text=u'Poistamalla ruksin tästä voit piilottaa asiattoman kommentin sivustolta.', required=False)
+    is_active = forms.BooleanField(
+        label="Näkyvissä",
+        help_text="Poistamalla ruksin tästä voit piilottaa asiattoman kommentin sivustolta.",
+        required=False,
+    )
 
     def __init__(self, *args, **kwargs):
-        super(BlogCommentAdminForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
-        self.fields['is_active'].initial = self.instance.removed_at is None
+        self.fields["is_active"].initial = self.instance.removed_at is None
 
     class Meta:
         model = BlogComment
@@ -277,22 +369,47 @@ class BlogCommentAdminForm(forms.ModelForm):
 class BlogCommentAdmin(admin.ModelAdmin):
     model = BlogComment
     form = BlogCommentAdminForm
-    list_display = ('admin_get_site', 'blog_post', 'created_at', 'admin_get_excerpt', 'author_name', 'admin_is_active')
-    list_filter = ('blog_post__site', ActiveListFilter)
-    readonly_fields = ('blog_post', 'created_at', 'author_name', 'author_email', 'author_ip_address', 'comment', 'removed_at', 'removed_by')
+    list_display = (
+        "admin_get_site",
+        "blog_post",
+        "created_at",
+        "admin_get_excerpt",
+        "author_name",
+        "admin_is_active",
+    )
+    list_filter = ("blog_post__site", ActiveListFilter)
+    readonly_fields = (
+        "blog_post",
+        "created_at",
+        "author_name",
+        "author_email",
+        "author_ip_address",
+        "comment",
+        "removed_at",
+        "removed_by",
+    )
     actions = [hide_selected_blog_comments, restore_selected_blog_comments]
 
     fieldsets = (
-        (u'Kommentti', dict(
-            fields=('blog_post', 'created_at', 'comment'),
-        )),
-        (u'Kirjoittaja', dict(
-            fields=('author_name', 'author_email', 'author_ip_address'),
-        )),
-        (u'Moderointi', dict(
-            fields=('is_active', 'removed_at', 'removed_by'),
-        ))
-    )
+        (
+            "Kommentti",
+            dict(
+                fields=("blog_post", "created_at", "comment"),
+            ),
+        ),
+        (
+            "Kirjoittaja",
+            dict(
+                fields=("author_name", "author_email", "author_ip_address"),
+            ),
+        ),
+        (
+            "Moderointi",
+            dict(
+                fields=("is_active", "removed_at", "removed_by"),
+            ),
+        ),
+    )  # type: ignore
 
     def has_add_permission(self, *args, **kwargs):
         return False
@@ -301,13 +418,16 @@ class BlogCommentAdmin(admin.ModelAdmin):
         return False
 
     def get_actions(self, request):
-        actions = super(BlogCommentAdmin, self).get_actions(request)
-        del actions['delete_selected']
+        actions = super().get_actions(request)
+
+        if "delete_selected" in actions:
+            del actions["delete_selected"]
+
         return actions
 
     def save_model(self, request, obj, form, change):
         blog_comment = obj
-        is_active = form.cleaned_data['is_active']
+        is_active = form.cleaned_data["is_active"]
 
         if is_active and not blog_comment.is_active:
             blog_comment.removed_at = None
@@ -320,9 +440,9 @@ class BlogCommentAdmin(admin.ModelAdmin):
 
 
 class BlogCategoryAdmin(admin.ModelAdmin):
-    list_display = ('site', 'slug', 'title')
-    list_filter = ('site',)
-    search_fields = ('slug', 'title')
+    list_display = ("site", "slug", "title")
+    list_filter = ("site",)
+    search_fields = ("slug", "title")
 
 
 admin.site.register(Page, PageAdmin)

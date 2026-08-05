@@ -11,6 +11,8 @@ ingress_public_hostnames:
   - 2020.tracon.fi
   - 2021.tracon.fi
   - 2022.tracon.fi
+  - 2023.hitpoint.tracon.fi
+  - 2023.tracon.fi
   - blog.tracon.fi
   - r.tracon.fi
   - ry.tracon.fi
@@ -25,11 +27,11 @@ redis_managed: false
 redis_hostname: redis-ha-haproxy.redis-ha.svc.cluster.local
 redis_cache_database: 4
 tracontent_secret_managed: false
-tracontent_storage_pvc: true
-tracontent_storage_pvc_storageclass: longhorn-nfs
+tracontent_storage_pvc: false
 
 tracontent_editor_groups:
-  - turska-tracon2022-labour-conitea
+  - turska-tracon2023-labour-conitea
+  - turska-hitpoint2023-labour-conitea
   - traconry-hallitus-nykyinen
 
 tracontent_admins:
@@ -42,3 +44,6 @@ setup_should_run: true
 
 ingress_letsencrypt_enabled: true
 ingress_letsencrypt_cluster_issuer: letsencrypt-prod
+
+minio_external_url: https://minio.con2.fi
+minio_bucket_name: tracontent

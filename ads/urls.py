@@ -1,4 +1,3 @@
-
 from .views import ads_banner_redirect_view
 from django.urls import re_path
 

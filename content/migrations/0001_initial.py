@@ -73,14 +73,14 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterUniqueTogether(
             name='redirect',
-            unique_together=set([('site', 'path')]),
+            unique_together={('site', 'path')},
         ),
         migrations.AlterUniqueTogether(
             name='page',
-            unique_together=set([('site', 'path'), ('site', 'parent', 'slug')]),
+            unique_together={('site', 'path'), ('site', 'parent', 'slug')},
         ),
         migrations.AlterUniqueTogether(
             name='blogpost',
-            unique_together=set([('site', 'path'), ('site', 'date', 'slug')]),
+            unique_together={('site', 'path'), ('site', 'date', 'slug')},
         ),
     ]

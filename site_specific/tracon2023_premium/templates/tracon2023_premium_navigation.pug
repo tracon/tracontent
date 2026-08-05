@@ -1,0 +1,15 @@
+- load static from static
+.inner-nav
+  ul
+    for entry in menu
+      li.menu-item-has-children.menu-item-has-mega-menu
+        a(href=entry.href)
+          span.menu-item-span= entry.text
+        .mega-menu
+          ul.sub-menu.mega-menu-row
+            //- Column 1
+            li.menu-item-has-children.mega-menu-col
+                ul.sub-menu
+                  li: a(href='{{ entry.href }}')= entry.text
+                  for child in entry.children
+                    li(class="{{ child.active_css }}"): a(href='{{ child.href }}')= child.text

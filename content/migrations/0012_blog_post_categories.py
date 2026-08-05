@@ -30,6 +30,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterUniqueTogether(
             name='blogcategory',
-            unique_together=set([('site', 'slug')]),
+            unique_together={('site', 'slug')},
         ),
     ]

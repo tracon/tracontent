@@ -1,4 +1,3 @@
-
 from .views import (
     content_cached_page_view,
     content_page_view,

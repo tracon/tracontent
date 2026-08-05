@@ -1,0 +1,41 @@
+extends tracon2023_premium_base
+
+block content
+
+  // Hero
+  section.module-cover.parallax.text-center(data-background="{{ page.some_header_image.url }}" data-overlay="0.3")
+    .container
+
+      .row
+        .col-md-12
+          h2= page.title
+          //- ol.breadcrumb.justify-content-center
+          //-    li.breadcrumb-item: a(href="#") Home
+          //-    li.breadcrumb-item: a(href="#") Blog
+          //-    li.breadcrumb-item.active Single Post
+  // Hero end
+
+
+  // Blog
+  section
+    .container
+      .row
+        .col-lg-8.m-auto
+          // Post
+          article.post
+            .post-preview
+            //-   img(src="assets/images/blog/1.jpg" alt="")
+            .post-wrapper
+              include tracon2023_premium_toolbar_admin_page
+              {{ page.body|safe }}
+
+              p &nbsp;
+              for team in teams
+                h2 {{ team.name }}
+
+                ul
+                  for organizer in team.members
+                    if organizer.is_team_leader
+                      li: strong {{ organizer.display_name }} – {{ organizer.job_title }}
+                    else:
+                      li: {{ organizer.display_name }} – {{ organizer.job_title }}

@@ -22,6 +22,14 @@ tracontent_editor_groups:
 
 tracontent_admins: []
 
+minio_bucket_name: tracontent
+minio_external_url: http://minio:9000
+minio_internal_url: http://minio.minio.svc.cluster.local:9000
+
+# these only take effect if tracontent_secret_managed: true
+minio_access_key_id: tracontent
+minio_secret_access_key: tracontent
+
 # Set this to the public hostname of your service.
 ingress_public_hostnames:
   - tracontent.localhost
@@ -29,6 +37,8 @@ ingress_public_hostnames:
 # If you use ingress-nginx and cert-manager, TLS can be automatically configured by setting this to true.
 ingress_letsencrypt_enabled: false
 ingress_letsencrypt_cluster_issuer: letsencrypt-prod
+
+ingress_class_name: traefik
 
 redis_managed: true
 redis_image: redis
@@ -129,6 +139,25 @@ tracontent_environment:
     value: !Join
       items: !Var tracontent_admins
       separator: ","
+  - name: SENTRY_DSN
+    valueFrom:
+      secretKeyRef:
+        name: tracontent
+        key: sentryDsn
+  - name: MINIO_BUCKET_NAME
+    value: !Var minio_bucket_name
+  - name: MINIO_ACCESS_KEY_ID
+    valueFrom:
+      secretKeyRef:
+        name: tracontent
+        key: minioAccessKeyId
+  - name: MINIO_SECRET_ACCESS_KEY
+    valueFrom:
+      secretKeyRef:
+        name: tracontent
+        key: minioSecretAccessKey
+  - name: MINIO_ENDPOINT_URL
+    value: !Var minio_external_url
 
 # Common volumes for tracontent, celery and nginx pods.
 tracontent_media_volume_mounts:
@@ -152,16 +181,29 @@ tracontent_media_volumes_definition:
         nfs:
           server: !Var tracontent_storage_nfs
           path: !Var tracontent_storage_nfs_path
+  - !If
+      test: !Not,Any [!Var tracontent_storage_pvc, !Var tracontent_storage_nfs]
+      then:
+        name: tracontent-media
+        emptyDir: {}
 
-# Default annotations work for nginx ingress with or without LetsEncrypt TLS. Override if you need something else.
+# Traefik middleware chain. The https-redirect middleware must only be attached where
+# TLS is actually configured (not local/dev without letsencrypt) - see
+# infrastructure/kubernetes/traefik-middlewares.yaml for why this is a per-app opt-in
+# Middleware rather than a global entrypoint redirect (ACME HTTP-01 safety).
+traefik_middlewares_no_tls: default-body-100m@kubernetescrd
+traefik_middlewares_with_tls: default-https-redirect@kubernetescrd,default-body-100m@kubernetescrd
+
+# Default annotations work with or without LetsEncrypt TLS. Override if you need something else.
 ingress_annotations: !Merge
-  - nginx.ingress.kubernetes.io/proxy-body-size: "100m"
-    nginx.org/client-max-body-size: "100m"
+  - traefik.ingress.kubernetes.io/router.middlewares: !If
+      test: !Var ingress_letsencrypt_enabled
+      then: !Var traefik_middlewares_with_tls
+      else: !Var traefik_middlewares_no_tls
   - !If
       test: !Var ingress_letsencrypt_enabled
       then:
         cert-manager.io/cluster-issuer: letsencrypt-prod
-        nginx.ingress.kubernetes.io/ssl-redirect: "true"
 
 ingress_tls: !If
   test: !Var ingress_letsencrypt_enabled

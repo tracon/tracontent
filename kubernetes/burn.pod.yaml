@@ -1,0 +1,106 @@
+# One-off burn job: renders every tracontent-tracon site to static HTML and
+# uploads it to the `static` Minio bucket. Not part of the regular Emrichen/
+# skaffold deploy pipeline -- apply and clean up manually.
+#
+# Before applying, fill in the image tag currently running in tracontent-tracon:
+#   kubectl get deployment tracontent -n tracontent-tracon \
+#     -o jsonpath='{.spec.template.spec.containers[0].image}'
+#
+# Usage:
+#   kubectl apply -f burn.pod.yaml
+#   kubectl logs -n tracontent-tracon tracontent-burn -f
+#   kubectl delete pod tracontent-burn -n tracontent-tracon
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tracontent-burn
+  namespace: tracontent-tracon
+  labels:
+    stack: tracontent
+    component: burn
+spec:
+  enableServiceLinks: false
+  restartPolicy: Never
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+    fsGroup: 1000
+  containers:
+    - name: burn
+      image: ghcr.io/con2/tracontent:bc22f34-dirty@sha256:e7a6adad978980c962c35e48cc6f200b6ce43ed23adf4dce950b116148d5bc87
+      # Not `command:` -- that would override the image's ENTRYPOINT
+      # (docker-entrypoint.sh), which builds DATABASE_URL from POSTGRES_*.
+      args:
+        [
+          "python",
+          "manage.py",
+          "burn",
+          "--output-dir",
+          "/staging",
+          "--bucket",
+          "static",
+        ]
+      env:
+        - name: POSTGRES_HOSTNAME
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: hostname
+        - name: POSTGRES_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: database
+        - name: POSTGRES_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: password
+        - name: POSTGRES_EXTRAS
+          value: "?sslmode=require"
+        - name: REDIS_HOSTNAME
+          value: "redis-ha-haproxy.redis-ha.svc.cluster.local"
+        - name: REDIS_CACHE_DATABASE
+          value: "4"
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: tracontent
+              key: secretKey
+        - name: ALLOWED_HOSTS
+          value: "2015.hitpoint.tracon.fi 2016.hitpoint.tracon.fi 2016.tracon.fi 2017.hitpoint.tracon.fi 2017.tracon.fi 2018.tracon.fi 2019.hitpoint.tracon.fi 2019.tracon.fi 2020.hitpoint.tracon.fi 2020.tracon.fi 2021.tracon.fi 2022.tracon.fi 2023.hitpoint.tracon.fi 2023.tracon.fi blog.tracon.fi r.tracon.fi ry.tracon.fi"
+        - name: MINIO_BUCKET_NAME
+          value: tracontent
+        - name: MINIO_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: tracontent
+              key: minioAccessKeyId
+        - name: MINIO_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: tracontent
+              key: minioSecretAccessKey
+        - name: MINIO_ENDPOINT_URL
+          value: "https://minio.con2.fi"
+        - name: BURN_BUCKET_NAME
+          value: static
+      securityContext:
+        readOnlyRootFilesystem: true
+        allowPrivilegeEscalation: false
+      volumeMounts:
+        - mountPath: /staging
+          name: burn-staging
+        - mountPath: /tmp
+          name: burn-tmp
+  volumes:
+    - name: burn-staging
+      emptyDir:
+        sizeLimit: 8Gi
+    - name: burn-tmp
+      emptyDir: {}

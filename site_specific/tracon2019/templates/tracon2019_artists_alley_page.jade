@@ -23,7 +23,7 @@ block content
           for artist in artists
             tr
               th(scope='row') {{ artist.table_number }}.
-              td= artist.get_day_display
+              td= artist.formatted_days
               td
                 if artist.image_file
                   img(src='{{ artist.image_file.url }}' style='width: 100%')

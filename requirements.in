@@ -1,14 +1,14 @@
 bleach
+boto3
 dj-static
 django-ckeditor
-django-crispy-forms
 django-environ
 django-ipware
 django-redis
 django-reversion
+django-storages
 gunicorn
 ipython
-loremipsum
 Pillow
 psycopg2
 pypugjs
@@ -16,3 +16,5 @@ python-dateutil
 python-memcached
 requests
 requests-oauthlib
+sentry-sdk
+tabulate

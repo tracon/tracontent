@@ -9,10 +9,10 @@ from .models import (
 
 
 RESOURCE_ADMIN_FIELDSETS = (
-    (u'Sisältö', dict(
+    ('Sisältö', dict(
         fields=('name', 'content', 'active'),
     )),
-    (u'Lisätiedot', dict(
+    ('Lisätiedot', dict(
         fields=('created_at', 'updated_at'),
     )),
 )

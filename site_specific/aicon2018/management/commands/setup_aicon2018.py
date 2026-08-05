@@ -27,7 +27,7 @@ class Command(BaseCommand):
         Setup(domain=options['domain']).setup()
 
 
-class Setup(object):
+class Setup:
     def __init__(self, domain):
         self.domain = domain
 
@@ -38,7 +38,7 @@ class Setup(object):
         self.setup_ads()
 
     def setup_site(self):
-        self.site, unused = Site.objects.get_or_create(domain=self.domain, name=u'Aicon')
+        self.site, unused = Site.objects.get_or_create(domain=self.domain, name='Aicon')
 
     def setup_content(self):
         t = now()

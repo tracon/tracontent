@@ -18,7 +18,7 @@ def kompassi_get_programme(event_slug, special=False, category=None):
         kompassi=settings.KOMPASSI_HOST,
         event_slug=event_slug,
         special='special/' if special else '',
-        query='?category={category}'.format(category=category) if category else '',
+        query=f'?category={category}' if category else '',
     )
 
     response = requests.get(url)

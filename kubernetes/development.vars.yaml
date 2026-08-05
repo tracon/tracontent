@@ -1,2 +1,3 @@
 tracontent_secret_key: not a very secret key
 postgres_password: secret
+tracontent_storage_pvc: false
